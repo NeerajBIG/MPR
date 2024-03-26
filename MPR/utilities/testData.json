@@ -1,0 +1,15 @@
+﻿{
+  "DemoUrl": "https://demo.dmba.com/",
+  "usernameValid": "Tester1001",
+  "passwordValid": "Demo@one2345",
+  "usernameInvalid": "aaaaaaaaa",
+  "passwordInvalid": "111111111",
+  "ssnValid": "000001001",
+  "ssnInvalid": "111111111",
+  "dobValid": "01/01/2001",
+  "dobInvalid": "01/01/2002",
+  "dataSet": [ "Tester1001", "Tester1002" ]
+
+
+
+}
