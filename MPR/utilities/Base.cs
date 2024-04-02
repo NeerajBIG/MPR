@@ -19,7 +19,7 @@ using AventStack.ExtentReports.Listener.Entity;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using OpenQA.Selenium.Internal.Logging;
-
+using AventStack.ExtentReports.Model;
 
 
 namespace MPR.utilities
@@ -148,15 +148,104 @@ namespace MPR.utilities
         {
             
             extent.Flush();
-            TestContext.Progress.WriteLine("##########################Flushing the Extent Report");
+            TestContext.Progress.WriteLine("########################## Flushing the Extent Report");
+
+            string clearDataBeforeDays = ConfigurationManager.AppSettings["clearDataBeforeDays"];
+            int clearDataBeforeDaysInt = Int32.Parse(clearDataBeforeDays);
+            TestContext.Progress.WriteLine("------ clearDataBeforeDaysInt " + clearDataBeforeDaysInt);
+
 
             string workingDirectory = Environment.CurrentDirectory;
             string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-            if (File.Exists(projectDirectory+ "\\Reports\\" + "AboutMePageShould_03_21_2024_11_35_23.html"))
+            string reportsDirectory = projectDirectory + "\\Reports";
+            string screenshotsDirectory = projectDirectory + "\\Screenshots";
+
+            var fileCountReports = (from file in Directory.EnumerateFiles(reportsDirectory, "*", SearchOption.AllDirectories)
+                             select file).Count();
+            var fileCountScreenshots = (from file in Directory.EnumerateFiles(screenshotsDirectory, "*", SearchOption.AllDirectories)
+                                    select file).Count();
+
+            TestContext.Progress.WriteLine(" ------------------------------------------ ");                      
+
+            DirectoryInfo dReports = new DirectoryInfo(reportsDirectory);
+            FileInfo[] reportFiles = dReports.GetFiles("*");
+            foreach (FileInfo file in reportFiles)
             {
-                TestContext.Progress.WriteLine("File Exists");
-                File.Delete(projectDirectory + "\\Reports\\" + "AboutMePageShould_03_21_2024_11_35_23.html");
+                TestContext.Progress.WriteLine("Report File : " + file.Name);
+                string fileToDelete = file.Name;
+                string[] fileDateParts = fileToDelete.Split("_");
+
+
+                string fileDate = fileDateParts[2];
+                TestContext.Progress.WriteLine("------ fileDate " + fileDate);
+                int fileDateInt = Int32.Parse(fileDate);
+
+                string fileMonth = fileDateParts[1];
+                TestContext.Progress.WriteLine("------ fileMonth " + fileMonth);
+                int fileMonthInt = Int32.Parse(fileMonth);
+
+                string fileYear = fileDateParts[3];
+                TestContext.Progress.WriteLine("------ fileYear " + fileYear);
+                int fileYearInt = Int32.Parse(fileYear);
+
+                DateTime fileTimestamp = new DateTime(fileYearInt, fileMonthInt, fileDateInt);
+                DateTime dateTimeNow = DateTime.Now;
+                TimeSpan days = dateTimeNow - fileTimestamp;
+                TestContext.Progress.WriteLine("------ " + days.Days);
+
+                if (days.Days >= clearDataBeforeDaysInt)
+                {
+                    TestContext.Progress.WriteLine("File can be deleted ");
+                    File.Delete(reportsDirectory + "\\" + file.Name);
+                    TestContext.Progress.WriteLine("-----------------------------------------");
+                }
+                TestContext.Progress.WriteLine("-----------------------------------------");
+
             }
+
+            TestContext.Progress.WriteLine("-----------------------------------------");
+            TestContext.Progress.WriteLine("-----------------------------------------");
+
+
+            DirectoryInfo dScreenshots = new DirectoryInfo(screenshotsDirectory);
+            FileInfo[] screenshotsFiles = dScreenshots.GetFiles("*");
+            foreach (FileInfo file in screenshotsFiles)
+            {
+                TestContext.Progress.WriteLine("Screenshort File : " + file.Name);
+                string fileToDelete = file.Name;
+                string[] fileDateParts = fileToDelete.Split("_");
+
+
+                string fileDate = fileDateParts[2];
+                TestContext.Progress.WriteLine("------ fileDate " + fileDate);
+                int fileDateInt = Int32.Parse(fileDate);
+
+                string fileMonth = fileDateParts[1];
+                TestContext.Progress.WriteLine("------ fileMonth " + fileMonth);
+                int fileMonthInt = Int32.Parse(fileMonth);
+
+                string fileYear = fileDateParts[3];
+                TestContext.Progress.WriteLine("------ fileYear " + fileYear);
+                int fileYearInt = Int32.Parse(fileYear);
+
+                DateTime fileTimestamp = new DateTime(fileYearInt, fileMonthInt, fileDateInt);
+                DateTime dateTimeNow = DateTime.Now;
+                TimeSpan days = dateTimeNow - fileTimestamp;
+                TestContext.Progress.WriteLine("------ " + days.Days);
+
+                if (days.Days >= clearDataBeforeDaysInt)
+                {
+                    TestContext.Progress.WriteLine("File can be deleted ");
+                    File.Delete(screenshotsDirectory + "\\" + file.Name);
+                }
+                TestContext.Progress.WriteLine("-----------------------------------------");
+
+            }
+
+
+
+
+
         }
 
     }
