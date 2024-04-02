@@ -13,6 +13,7 @@ namespace MPR.tests
     /// </summary>
     /// <param name="firstParameter">This is the first parameter.</param>
     /// <returns>This is the description of the return value.</returns>
+    /// Hello World
     // -------------------------------------------------------------------------------
 
     public class LoginPageShould : Base
