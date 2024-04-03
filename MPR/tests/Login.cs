@@ -58,6 +58,7 @@ namespace MPR.tests
             {
                 TestContext.Progress.WriteLine(item);
             }
+            TestContext.Progress.WriteLine(usernameValidList[0]);
 
             string btnLogoutText = loginPage.getbtnLogoutText().Text;
             //TestContext.Progress.WriteLine(btnLogoutText);

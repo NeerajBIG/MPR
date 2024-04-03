@@ -199,6 +199,8 @@ namespace MPR.tests
             aboutMePage.getclkAboutMe().Click();
 
             String stepPostion = aboutMePage.getstepPosition().Text;
+            TestContext.Progress.WriteLine("Inside Step 1");
+
             if (stepPostion.Contains("Step 1 of"))
             {
                 TestContext.Progress.WriteLine("Inside Step 1");
@@ -225,7 +227,7 @@ namespace MPR.tests
         }
 
         [Test]
-        [Ignore("Ignore test")]
+        //[Ignore("Ignore test")]
         public void VerifySubmissionYesSelection()
         {
             LoginPageObject loginPage = new LoginPageObject(getDriver());
@@ -247,6 +249,16 @@ namespace MPR.tests
             aboutMePage.getclkAboutMe().Click();
 
             String stepPostion = aboutMePage.getstepPosition().Text;
+            TestContext.Progress.WriteLine("stepPostion is " + stepPostion);
+
+            //string[] usernameValidArray = getDataParser().extractDataArray("usernameValid");
+            string[] usernameValidList = getDataParser().extractDataArray("dataSet");
+            foreach (var item in usernameValidList)
+            {
+                TestContext.Progress.WriteLine(item);
+            }
+
+
             if (stepPostion.Contains("Step 1 of"))
             {
                 TestContext.Progress.WriteLine("Inside Step 1");
