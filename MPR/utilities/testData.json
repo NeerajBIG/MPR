@@ -8,5 +8,16 @@
   "ssnInvalid": "111111111",
   "dobValid": "01/01/2001",
   "dobInvalid": "01/01/2002",
-  "dataSet": [ "Tester1001", "Tester1002" ]
+  "dataSet": [ "Tester1001", "Tester1002" ],
+  "zipcodeValid": "01/01/2002",
+
+  //TC_0012 - AboutMeVariables
+  "maritalStatusValid": "Single",
+  "address1Valid": "1234 Test Circle",
+  "countryValid": "United States of America",
+  "stateValid": "Utah",
+  "cityValid": "Salt Lake City",
+  "zipcode2Valid": "84104",
+  "phoneNumberValid": "8015785600",
+  "workNumberValid": "8015785601"
 }
