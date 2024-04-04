@@ -46,25 +46,18 @@ namespace MPR.pageObjects
             return comparePlanlink;
         }
 
-        [FindsBy(How = How.XPath, Using = "//div[@class=\"form-horizontal\"]/h1")]
+        [FindsBy(How = How.XPath, Using = "//h1[@class='page-header']")]
         private IWebElement popUpHeading;
         public IWebElement getpopUpHeading()
         {
             return popUpHeading;
         }
 
-        [FindsBy(How = How.XPath, Using = "//select[@id='ctl00_ContentPlaceHolderMain_ddlPlan']")]
+        [FindsBy(How = How.XPath, Using = "//select[@id='ctl00_ContentPlaceHolderMain_ddlPlan']/option[@selected]")]
         private IWebElement planTypeSelection;
         public IWebElement getplanTypeSelection()
         {
             return planTypeSelection;
-        }
-
-        [FindsBy(How = How.XPath, Using = "//select[@id='ctl00_ContentPlaceHolderMain_ddlPlan']")]
-        private IWebElement yesRadioSelection;
-        public IWebElement getyesRadioSelection()
-        {
-            return yesRadioSelection;
         }
 
         [FindsBy(How = How.XPath, Using = "//input[@id='ctl00_ContentPlaceHolderMain_txtZipCode_txtValidatedTextBox']")]
@@ -72,20 +65,6 @@ namespace MPR.pageObjects
         public IWebElement getzipCode()
         {
             return zipCode;
-        }
-
-        [FindsBy(How = How.XPath, Using = "//h4[text()='Contact Your Employer']")]
-        private IWebElement popupHeaderNoRadioSelection;
-        public IWebElement getpopupHeaderNoRadioSelection()
-        {
-            return popupHeaderNoRadioSelection;
-        }
-
-        [FindsBy(How = How.XPath, Using = "//h4[text()='Employee Personal Information']")]
-        private IWebElement headerTxtYesRadioSelection;
-        public IWebElement getheaderTxtYesRadioSelection()
-        {
-            return headerTxtYesRadioSelection;
         }
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Deseret Premier')]")]
@@ -109,7 +88,7 @@ namespace MPR.pageObjects
             return txtDeseretSelect;
         }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text()='Deseret Protect')]")]
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Deseret Protect')]")]
         private IWebElement txtDeseretProtect;
         public IWebElement gettxtDeseretProtect()
         {
