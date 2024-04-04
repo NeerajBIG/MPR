@@ -16,8 +16,8 @@ namespace MPR.tests
     // -------------------------------------------------------------------------------
     public class MedicalPageShould : Base
     {
-        [Test]
-        //[Ignore("Ignore test")]
+
+
         public void VerifyMedicalPageLaunching()
         {
             LoginPageObject loginPage = new LoginPageObject(getDriver());
@@ -41,6 +41,29 @@ namespace MPR.tests
             string medicalPageHeading = medicalPage.getheadingText().Text;
             string medicalPageHeadingExpected = "Medical";
             Assert.That(medicalPageHeading, Is.EqualTo(medicalPageHeadingExpected));
+        }
+
+            [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyMedicalPageLinkToNewTab()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("usernameValid2");
+            loginPage.getusername().SendKeys(usernameValid);
+
+            string passwordValid = getDataParser().extractData("passwordValid");
+            loginPage.getpassword().SendKeys(passwordValid);
+
+            loginPage.getsubmit().Click();
+
+            menuPage.getbtnContinue().Click();
+
+            medicalPage.getclkMedical().Click();
 
             // Get current window handle
             string originalWindow = driver.CurrentWindowHandle;

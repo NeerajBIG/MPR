@@ -12,7 +12,7 @@
   "dataSet": [ "Tester1001", "Tester1002" ],
   "zipcodeValid": "01/01/2002",
 
-  //TC_0012 - AboutMeVariables, used in Medical Tests TC_0117
+  //TC_0012 - AboutMeVariables, used in Medical Tests TC_0117.
   "maritalStatusValid": "Single",
   "address1Valid": "1234 Test Circle",
   "countryValid": "United States of America",
@@ -22,7 +22,7 @@
   "phoneNumberValid": "8015785600",
   "workNumberValid": "8015785601",
 
-  // TC_0118 - TC_0124. ZipCodes to Test Changes to plans
+  // TC_0118 - TC_0124. ZipCodes to Test Changes to plans.
   "zipcodeValid118": "84106",
   "zipcodeValid119": "83204",
   "zipcodeValid120": "83839",
