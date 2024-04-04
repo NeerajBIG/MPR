@@ -1,6 +1,7 @@
 ﻿{
   "DemoUrl": "https://demo.dmba.com/",
   "usernameValid": "Tester1001",
+  "usernameValid2": "Tester1005",
   "passwordValid": "Demo@one2345",
   "usernameInvalid": "aaaaaaaaa",
   "passwordInvalid": "111111111",
