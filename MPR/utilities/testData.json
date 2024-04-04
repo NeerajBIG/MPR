@@ -12,7 +12,7 @@
   "dataSet": [ "Tester1001", "Tester1002" ],
   "zipcodeValid": "01/01/2002",
 
-  //TC_0012 - AboutMeVariables
+  //TC_0012 - AboutMeVariables, used in Medical Tests TC_0117
   "maritalStatusValid": "Single",
   "address1Valid": "1234 Test Circle",
   "countryValid": "United States of America",
@@ -20,5 +20,21 @@
   "cityValid": "Salt Lake City",
   "zipcode2Valid": "84104",
   "phoneNumberValid": "8015785600",
-  "workNumberValid": "8015785601"
+  "workNumberValid": "8015785601",
+
+  // TC_0118 - TC_0124. ZipCodes to Test Changes to plans
+  "zipcodeValid118": "84106",
+  "zipcodeValid119": "83204",
+  "zipcodeValid120": "83839",
+  "zipcodeValid121": "96762",
+  "zipcodeValid122": "94102",
+  "zipcodeValid123": "92101",
+  "zipcodeValid124": "59901",
+
+
+
+
+
+
+
 }
