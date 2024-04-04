@@ -17,7 +17,8 @@ namespace MPR.tests
     public class MedicalPageShould : Base
     {
 
-
+        [Test]
+        //[Ignore("Ignore test")]
         public void VerifyMedicalPageLaunching()
         {
             LoginPageObject loginPage = new LoginPageObject(getDriver());
@@ -43,7 +44,7 @@ namespace MPR.tests
             Assert.That(medicalPageHeading, Is.EqualTo(medicalPageHeadingExpected));
         }
 
-            [Test]
+        [Test]
         //[Ignore("Ignore test")]
         public void VerifyMedicalPageLinkToNewTab()
         {
@@ -94,7 +95,6 @@ namespace MPR.tests
             Assert.That(MedicalPagePopUpZipCodeTextBox, Is.EqualTo(MedicalPagePopUpZipCodeTextBoxExpect));
 
             // Verify DP Plan Exists on Page.
-
             string MedicalPagePlanDPremier = medicalPage.gettxtDeseretPremier().Text;
             string MedicalPagePlanDPremierExpected = "Deseret Premier";
             Assert.That(MedicalPagePlanDPremier, Is.EqualTo(MedicalPagePlanDPremierExpected));
@@ -104,15 +104,80 @@ namespace MPR.tests
             string MedicalPagePlanDValueExpected = "Deseret Value";
             Assert.That(MedicalPagePlanDValue, Is.EqualTo(MedicalPagePlanDValueExpected));
 
-            // Verify DV Plan Exists on Page.
+            // Verify DS Plan Exists on Page.
             string MedicalPagePlanDSelect = medicalPage.gettxtDeseretSelect().Text;
             string MedicalPagePlanDSelectExpected = "Deseret Select";
             Assert.That(MedicalPagePlanDSelect, Is.EqualTo(MedicalPagePlanDSelectExpected));
 
-            // Verify DV Plan Exists on Page.
+            // Verify DP Plan Exists on Page.
             string MedicalPagePlanDProtect = medicalPage.gettxtDeseretProtect().Text;
             string MedicalPagePlanDProtectExpected = "Deseret Protect";
             Assert.That(MedicalPagePlanDProtect.Contains(MedicalPagePlanDProtectExpected));
+        }
+
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyMedicalPagePlanChangeWithZipCodeChange()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("usernameValid2");
+            loginPage.getusername().SendKeys(usernameValid);
+
+            string passwordValid = getDataParser().extractData("passwordValid");
+            loginPage.getpassword().SendKeys(passwordValid);
+
+            loginPage.getsubmit().Click();
+
+            menuPage.getbtnContinue().Click();
+
+            medicalPage.getclkMedical().Click();
+            string originalWindow = driver.CurrentWindowHandle;
+
+            // change ZipCode for TC_0118
+            driver.SwitchTo().NewWindow(WindowType.Tab);
+            driver.Url = "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo";
+            aboutMePage.getzipCode().SendKeys(getDataParser().extractData("zipcodeValid118"));
+            aboutMePage.getnextBtn().Click();
+            driver.Close();
+
+            // refresh page and check if plan is correct.
+            driver.SwitchTo().Window(originalWindow);
+            driver.Navigate().Refresh();
+
+
+            // Verify DP Plan Exists on Page.
+            string MedicalPagePlanDPremier = medicalPage.gettxtDeseretPremier().Text;
+            string MedicalPagePlanDPremierExpected = "Deseret Premier";
+            Assert.That(MedicalPagePlanDPremier, Is.EqualTo(MedicalPagePlanDPremierExpected));
+
+            // Verify DV Plan Exists on Page.
+            string MedicalPagePlanDValue = medicalPage.gettxtDeseretValue().Text;
+            string MedicalPagePlanDValueExpected = "Deseret Value";
+            Assert.That(MedicalPagePlanDValue, Is.EqualTo(MedicalPagePlanDValueExpected));
+
+            // Verify DS Plan Exists on Page.
+            string MedicalPagePlanDSelect = medicalPage.gettxtDeseretSelect().Text;
+            string MedicalPagePlanDSelectExpected = "Deseret Select";
+            Assert.That(MedicalPagePlanDSelect, Is.EqualTo(MedicalPagePlanDSelectExpected));
+
+            // Verify DP Plan Exists on Page.
+            string MedicalPagePlanDProtect = medicalPage.gettxtDeseretProtect().Text;
+            string MedicalPagePlanDProtectExpected = "Deseret Protect";
+            Assert.That(MedicalPagePlanDProtect.Contains(MedicalPagePlanDProtectExpected));
+
+
+
+
+
+
+
+
         }
     }
 }
