@@ -19,10 +19,10 @@ namespace MPR.pageObjects
     public class MedicalPageObject
     {
         private IWebDriver driver;
-        public MedicalPageObject(IWebDriver driver) 
+        public MedicalPageObject(IWebDriver driver)
         {
             this.driver = driver;
-            PageFactory.InitElements(driver,this);
+            PageFactory.InitElements(driver, this);
         }
 
         [FindsBy(How = How.XPath, Using = "//span[text()='Medical']")]
@@ -68,31 +68,102 @@ namespace MPR.pageObjects
         }
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Deseret Premier')]")]
+        private IWebElement txtDeseretPremierPopUp;
+        public IWebElement gettxtDeseretPremierPopUp()
+        {
+            return txtDeseretPremierPopUp;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Deseret Value')]")]
+        private IWebElement txtDeseretValuePopUp;
+        public IWebElement gettxtDeseretValuePopUp()
+        {
+            return txtDeseretValuePopUp;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Deseret Select')]")]
+        private IWebElement txtDeseretSelectPopUp;
+        public IWebElement gettxtDeseretSelectPopUp()
+        {
+            return txtDeseretSelectPopUp;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Deseret Protect')]")]
+        private IWebElement txtDeseretProtectPopUp;
+        public IWebElement gettxtDeseretProtectPopUp()
+        {
+            return txtDeseretProtectPopUp;
+        }
+
+
+
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'WAIVE')]]")]
+        private IWebElement txtwaiveMedicalCoverage;
+        public IWebElement getwaiveMedicalCoverage()
+        {
+            return txtwaiveMedicalCoverage;
+        }
+
+
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'PREMIER')]]")]
         private IWebElement txtDeseretPremier;
         public IWebElement gettxtDeseretPremier()
         {
             return txtDeseretPremier;
         }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Deseret Value')]")]
-        private IWebElement txtDeseretValue;
-        public IWebElement gettxtDeseretValue()
-        {
-            return txtDeseretValue;
-        }
-
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Deseret Select')]")]
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'SELECT')]]")]
         private IWebElement txtDeseretSelect;
         public IWebElement gettxtDeseretSelect()
         {
             return txtDeseretSelect;
         }
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Deseret Protect')]")]
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'VALUE')]]")]
+        private IWebElement txtDeseretValue;
+        public IWebElement gettxtDeseretValue()
+        {
+            return txtDeseretValue;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'PROTECT')]]")]
         private IWebElement txtDeseretProtect;
         public IWebElement gettxtDeseretProtect()
         {
             return txtDeseretProtect;
+        }
+
+        // poitions of plans will mess this up possibly. I think I should use id's after all.
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'PREMIER')]]/parent::tr/parent::tbody/tr[4]/td[1]/div/span[1]")]
+        private IWebElement txtDeseretPremierRate;
+        public IWebElement gettxtDeseretPremierRate()
+        {
+            return txtDeseretPremierRate;
+
+        }
+
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'SELECT')]]/parent::tr/parent::tbody/tr[4]/td[2]/div/span[1]")]
+        private IWebElement txtDeseretSelectRate;
+        public IWebElement gettxtDeseretSelectRate()
+        {
+            return txtDeseretSelectRate;
+
+        }
+
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'VALUE')]]/parent::tr/parent::tbody/tr[4]/td[3]/div/span[1]")]
+        private IWebElement txtDeseretValueRate;
+        public IWebElement gettxtDeseretValueRate()
+        {
+            return txtDeseretValueRate;
+
+        }
+
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'PROTECT')]]/parent::tr/parent::tbody/tr[4]/td[4]/div/span[1]")]
+        private IWebElement txtDeseretProtectRate;
+        public IWebElement gettxtDeseretProtectRate()
+        {
+            return txtDeseretProtectRate;
+
         }
 
 

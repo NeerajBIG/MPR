@@ -11,6 +11,7 @@
     "password": "111111111"
   },
   "medicalUser": {
+    "MedicalStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Medical",
     "username": "Tester1005",
     "password": "Demo@one2345",
     "maritalStatusValid": "Single",
@@ -18,16 +19,32 @@
     "countryValid": "United States of America",
     "stateValid": "Utah",
     "cityValid": "Salt Lake City",
-    "zipcode2Valid": "84104",
+    "zipcode2Valid": "84106",
     "phoneNumberValid": "8015785600",
     "workNumberValid": "8015785601",
+
+    // Number refers to TC number. ex. 118 refers to TC_0118. test date for that Test Case
     "zipcodeValid118": "84106",
     "zipcodeValid119": "83204",
     "zipcodeValid120": "83839",
     "zipcodeValid121": "96762",
     "zipcodeValid122": "94102",
     "zipcodeValid123": "92101",
-    "zipcodeValid124": "59901"
+    "zipcodeValid124": "59901",
+    // Case Zipcode and Premium Test Data
+    "zipcodeValidCase_1": "84106",
+    "PremierAmountCase_1_1": "$251.90",
+    "SelectAmountCase_1_2": "$174.60",
+    "ValueAmountCase_1_3": "$85.50",
+    "ProtectAmountCase_1_4": "$42.40",
+
+    "zipcodeValidCase_2": "83204",
+    "PremierAmountCase_2_1": "$251.90",
+    "SelectAmountCase_2_2": "$174.60",
+    "ValueAmountCase_2_3": "$85.50",
+    "ProtectAmountCase_2_4": "$42.40"
+
+
   },
   "usernameValid": "Tester1001",
   "usernameValid2": "Tester1005",
@@ -39,30 +56,8 @@
   "dobValid": "01/01/2001",
   "dobInvalid": "01/01/2002",
   "dataSet": [ "Tester1001", "Tester1002" ],
-  "zipcodeValid": "84104",
-
-  //TC_0012 - AboutMeVariables, used in Medical Tests TC_0117.
-  "maritalStatusValid": "Single",
-  "address1Valid": "1234 Test Circle",
-  "countryValid": "United States of America",
-  "stateValid": "Utah",
-  "cityValid": "Salt Lake City",
-  "zipcode2Valid": "84104",
-  "phoneNumberValid": "8015785600",
-  "workNumberValid": "8015785601",
-
-  // TC_0118 - TC_0124. ZipCodes to Test Changes to plans.
-  "zipcodeValid118": "84106",
-  "zipcodeValid119": "83204",
-  "zipcodeValid120": "83839",
-  "zipcodeValid121": "96762",
-  "zipcodeValid122": "94102",
-  "zipcodeValid123": "92101",
-  "zipcodeValid124": "59901"
-
-
-
-
+  "zipcodeValid": "84106",
+  "AboutMeStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo",
 
 
 
