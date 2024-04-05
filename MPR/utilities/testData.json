@@ -1,5 +1,34 @@
 ﻿{
   "DemoUrl": "https://demo.dmba.com/",
+  "newUser": {
+    "username": "Tester1001",
+    "password": "Demo@one2345",
+    "ssnValid": "000001001",
+    "dobValid": "01/01/2001"
+  },
+  "invalidUser": {
+    "username": "aaaaaaaaa",
+    "password": "111111111"
+  },
+  "medicalUser": {
+    "username": "Tester1005",
+    "password": "Demo@one2345",
+    "maritalStatusValid": "Single",
+    "address1Valid": "1234 Test Circle",
+    "countryValid": "United States of America",
+    "stateValid": "Utah",
+    "cityValid": "Salt Lake City",
+    "zipcode2Valid": "84104",
+    "phoneNumberValid": "8015785600",
+    "workNumberValid": "8015785601",
+    "zipcodeValid118": "84106",
+    "zipcodeValid119": "83204",
+    "zipcodeValid120": "83839",
+    "zipcodeValid121": "96762",
+    "zipcodeValid122": "94102",
+    "zipcodeValid123": "92101",
+    "zipcodeValid124": "59901"
+  },
   "usernameValid": "Tester1001",
   "usernameValid2": "Tester1005",
   "passwordValid": "Demo@one2345",
@@ -10,7 +39,7 @@
   "dobValid": "01/01/2001",
   "dobInvalid": "01/01/2002",
   "dataSet": [ "Tester1001", "Tester1002" ],
-  "zipcodeValid": "01/01/2002",
+  "zipcodeValid": "84104",
 
   //TC_0012 - AboutMeVariables, used in Medical Tests TC_0117.
   "maritalStatusValid": "Single",
@@ -29,7 +58,7 @@
   "zipcodeValid121": "96762",
   "zipcodeValid122": "94102",
   "zipcodeValid123": "92101",
-  "zipcodeValid124": "59901",
+  "zipcodeValid124": "59901"
 
 
 

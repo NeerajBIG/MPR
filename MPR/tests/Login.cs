@@ -41,11 +41,20 @@ namespace MPR.tests
         //[Test, TestCaseSource("AddTestDataConfig")]
         [Test]
         public void VerifyUserLoginValidCred()
-        {
+        {                
+            string usernameValid = getDataParser().extractData("usernameValid");
+            TestContext.Progress.WriteLine("To get json string "+usernameValid);
+
+            string usernameValid1 = getDataParser().extractData("Users.User1");
+            TestContext.Progress.WriteLine("To get nested json string " + usernameValid1);
+
+            string usernameValid2 = getDataParser().extractData("dataSet[0]");
+            TestContext.Progress.WriteLine("To get json string from array" + usernameValid2);
+
+
             LoginPageObject loginPage = new LoginPageObject(getDriver());
             loginPage.getloginLink().Click();
 
-            string usernameValid = getDataParser().extractData("usernameValid");
             loginPage.getusername().SendKeys(usernameValid);
 
             string passwordValid = getDataParser().extractData("passwordValid");
