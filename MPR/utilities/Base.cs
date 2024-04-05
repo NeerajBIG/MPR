@@ -138,7 +138,7 @@ namespace MPR.utilities
             {
 
             }
-            driver.Close();
+            driver.Quit();
             TestContext.Progress.WriteLine("########################## Closing the driver");
 
         }
