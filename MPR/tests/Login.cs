@@ -45,11 +45,11 @@ namespace MPR.tests
             string usernameValid = getDataParser().extractData("usernameValid");
             TestContext.Progress.WriteLine("To get json string "+usernameValid);
 
-            string usernameValid1 = getDataParser().extractData("Users.User1");
+            string usernameValid1 = getDataParser().extractData("newUser.username");
             TestContext.Progress.WriteLine("To get nested json string " + usernameValid1);
 
-            string usernameValid2 = getDataParser().extractData("dataSet[0]");
-            TestContext.Progress.WriteLine("To get json string from array" + usernameValid2);
+            //string usernameValid2 = getDataParser().extractData("dataSet[0]");
+            //TestContext.Progress.WriteLine("To get json string from array" + usernameValid2);
 
 
             LoginPageObject loginPage = new LoginPageObject(getDriver());
