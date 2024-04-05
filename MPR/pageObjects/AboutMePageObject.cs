@@ -115,6 +115,20 @@ namespace MPR.pageObjects
             return stepPosition;
         }
 
+        [FindsBy(How = How.XPath, Using = "//input[@id='ZipCode']")]
+        private IWebElement zipCode;
+        public IWebElement getzipCode()
+        {
+            return zipCode;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//a[contains(text(),'Next')]")]
+        private IWebElement nextBtn;
+        public IWebElement getnextBtn()
+        {
+            return nextBtn;
+        }
+
 
 
     }
