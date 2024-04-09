@@ -200,6 +200,20 @@ namespace MPR.tests
             medicalPage.getclkMedical().Click();
             string originalWindow = driver.CurrentWindowHandle;
 
+            for (int i = 1; i <= 5; i++)
+            {
+                try
+                {
+                    String test = "medicalUser.zipcodeValidCase_" + i.ToString();
+                    Console.WriteLine(test);
+                    Console.WriteLine(getDataParser().extractData(test));
+                }
+                catch
+                {
+                    Console.WriteLine("Inside Catch");
+                }
+            }
+
             // change ZipCode for TC_0118
             driver.SwitchTo().NewWindow(WindowType.Tab);
             driver.Url = "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo";
