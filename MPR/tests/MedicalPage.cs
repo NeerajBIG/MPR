@@ -2,6 +2,7 @@ using MPR.pageObjects;
 using MPR.utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System;
 using System.Security.Policy;
 using System.Xml.Serialization;
 
@@ -196,41 +197,109 @@ namespace MPR.tests
             loginPage.getsubmit().Click();
 
             menuPage.getbtnContinue().Click();
+            string[] testData = getDataParser().extractDataArray("medicalUser.PlanChangeWithZipCodeChangeTestData");
 
-            medicalPage.getclkMedical().Click();
-            string originalWindow = driver.CurrentWindowHandle;
+            foreach (var testItem in testData)
+            {
+                TestContext.Progress.WriteLine("----------------- Doing Tests For " + testItem + "------------------------------");
+                // Search for element
+                // change ZipCode for TC_0118
+                driver.SwitchTo().NewWindow(WindowType.Tab);
+                driver.Url = "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo";
+                string zc = getDataParser().extractData("medicalUser." + testItem + ".zipcode");
+                TestContext.Progress.WriteLine("ZipCode: " + zc);
+                aboutMePage.getzipCode().Clear();
+                aboutMePage.getzipCode().SendKeys(zc);
+                aboutMePage.getnextBtn().Click();
 
-            // change ZipCode for TC_0118
-            driver.SwitchTo().NewWindow(WindowType.Tab);
-            driver.Url = "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo";
-            aboutMePage.getzipCode().SendKeys(getDataParser().extractData("medicalUser.zipcodeValid118"));
-            aboutMePage.getnextBtn().Click();
-            driver.Close();
+                // Open New Tab.Go To Medical Step
+                driver.SwitchTo().NewWindow(WindowType.Tab);
+                driver.Url = getDataParser().extractData("medicalUser.MedicalStepURL");
 
-            // refresh page and check if plan is correct.
-            driver.SwitchTo().Window(originalWindow);
-            driver.Navigate().Refresh();
+                string[] planList = getDataParser().extractDataArray("medicalUser." + testItem + ".plansToValidate");
+                foreach (string item in planList)
+                {
+                    // Search for element
+                    if (item == "WAIVE")
+                    {
+                        TestContext.Progress.WriteLine("Testing If Statement " + item);
+                        string getValueToCompare = medicalPage.gettxtWaiveMedicalCoverage().Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+                    }
+                    else if (item == "PREMIER")
+                    {
+                        TestContext.Progress.WriteLine("Testing If Statement " + item);
+                        string getValueToCompare = medicalPage.gettxtDeseretPremier().Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+                    }
+                    else if (item == "SELECT")
+                    {
+                        TestContext.Progress.WriteLine("Testing If Statement " + item);
+                        string getValueToCompare = medicalPage.gettxtDeseretSelect().Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
 
+                    }
+                    else if (item == "VALUE")
+                    {
+                        TestContext.Progress.WriteLine("Testing If Statement " + item);
+                        string getValueToCompare = medicalPage.gettxtDeseretValue().Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
 
-            // Verify DP Plan Exists on Page.
-            string MedicalPagePlanDPremier = medicalPage.gettxtDeseretPremier().Text;
-            string MedicalPagePlanDPremierExpected = "PREMIER";
-            Assert.That(MedicalPagePlanDPremier, Does.Contain(MedicalPagePlanDPremierExpected));
+                    }
+                    else if (item == "PROTECT")
+                    {
+                        TestContext.Progress.WriteLine("Testing If Statement " + item);
+                        string getValueToCompare = medicalPage.gettxtDeseretProtect().Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
 
-            // Verify DV Plan Exists on Page.
-            string MedicalPagePlanDValue = medicalPage.gettxtDeseretValue().Text;
-            string MedicalPagePlanDValueExpected = "VALUE";
-            Assert.That(MedicalPagePlanDValue, Does.Contain(MedicalPagePlanDValueExpected));
+                    }
+                    else if (item == "CHOICE")
+                    {
+                        TestContext.Progress.WriteLine("Testing If Statement " + item);
+                        string getValueToCompare = medicalPage.gettxtChoiceHawaii().Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
 
-            // Verify DS Plan Exists on Page.
-            string MedicalPagePlanDSelect = medicalPage.gettxtDeseretSelect().Text;
-            string MedicalPagePlanDSelectExpected = "SELECT";
-            Assert.That(MedicalPagePlanDSelect, Does.Contain(MedicalPagePlanDSelectExpected));
+                    }
+                    else if (item == "KAISER")
+                    {
+                        TestContext.Progress.WriteLine("Testing If Statement " + item);
+                        string getValueToCompare = medicalPage.gettxtKaiserHawaii().Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
 
-            // Verify DP Plan Exists on Page.
-            string MedicalPagePlanDProtect = medicalPage.gettxtDeseretProtect().Text;
-            string MedicalPagePlanDProtectExpected = "protect";
-            Assert.That(MedicalPagePlanDProtect, Does.Contain(MedicalPagePlanDProtectExpected).IgnoreCase);
+                    }
+                    else if (item == "PERMANENTEE")
+                    {
+                        TestContext.Progress.WriteLine("Testing If Statement " + item);
+                        string getValueToCompare = medicalPage.gettxtDeseretPermanente().Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+
+                    }
+
+                    
+                    /*
+                    try
+                    {
+
+                    string getValueToCompare = driver.FindElement(By.XPath("//td[text()[contains(.,'" + item + "')]]")).Text;
+                    // compare values
+                    Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                    TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+                    }
+                    catch (Exception ex) {
+                        TestContext.Progress.WriteLine(ex);
+                    }
+                    */
+
+                }
+            }
 
         }
     }
