@@ -24,13 +24,42 @@
     "workNumberValid": "8015785601",
 
     // Number refers to TC number. ex. 118 refers to TC_0118. test date for that Test Case
-    "zipcodeValid118": "84106",
-    "zipcodeValid119": "83204",
-    "zipcodeValid120": "83839",
-    "zipcodeValid121": "96762",
-    "zipcodeValid122": "94102",
-    "zipcodeValid123": "92101",
-    "zipcodeValid124": "59901",
+    "PlanChangeWithZipCodeChangeTestData": [ "Case_1", "Case_2", "Case_3", "Case_4", "Case_5"],
+    "Case_1": {
+      "zipcode": "84106",
+      "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
+      "PREMIER": "$251.90",
+      "SELECT": "$174.60",
+      "VALUE": "$85.50",
+      "PROTECT": "$42.40" 
+    },
+    "Case_2": {
+      "zipcode": "83204",
+      "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
+      "planNames": [ "PREMIER", "SELECT", "VALUE", "PROTECT" ],
+      "planRates": [ "$251.90", "$174.60", "$85.50", "$42.40" ]
+    },
+    "Case_3": {
+      "zipcode": "83839",
+      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ]
+    },
+    "Case_4": {
+      "zipcode": "96762",
+      "plansToValidate": [ "WAIVE", "CHOICE", "KAISER" ]
+    },
+    "Case_5": {
+      "zipcode": "94102",
+      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ]
+    },
+    "TC_123": {
+      "zipcode": "92101",
+      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ]
+    },
+    "TC_124": {
+      "zipcode": "59901",
+      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ]
+    },
+
     // Case Zipcode and Premium Test Data
     "zipcodeValidCase_1": "84106",
     "PremierAmountCase_1_1": "$251.90",
