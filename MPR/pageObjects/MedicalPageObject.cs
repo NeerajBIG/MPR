@@ -99,7 +99,7 @@ namespace MPR.pageObjects
 
         [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'WAIVE')]]")]
         private IWebElement txtwaiveMedicalCoverage;
-        public IWebElement getwaiveMedicalCoverage()
+        public IWebElement gettxtwaiveMedicalCoverage()
         {
             return txtwaiveMedicalCoverage;
         }
@@ -133,16 +133,38 @@ namespace MPR.pageObjects
             return txtDeseretProtect;
         }
 
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'CHOICE')]]")]
+        private IWebElement txtDeseretHawaiiChoice;
+        public IWebElement gettxtDeseretHawaiiChoice()
+        {
+            return txtDeseretHawaiiChoice;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'KAISER')]]")]
+        private IWebElement txtDeseretHawaiiKaiser;
+        public IWebElement gettxtDeseretHawaiiKaiser()
+        {
+            return txtDeseretHawaiiKaiser;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'PERMANENTEE')]]")]
+        private IWebElement txtDeseretPermanentee;
+        public IWebElement gettxtDeseretPermanentee()
+        {
+            return txtDeseretPermanentee;
+        }
+
         // poitions of plans will mess this up possibly. I think I should use id's after all.
-        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'PREMIER')]]/parent::tr/parent::tbody/tr[4]/td[1]/div/span[1]")]
+        [FindsBy(How = How.XPath, Using = "//td[@id='tdHPPlanPremium']/div/span[1]")]
         private IWebElement txtDeseretPremierRate;
         public IWebElement gettxtDeseretPremierRate()
         {
             return txtDeseretPremierRate;
 
         }
+        
 
-        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'SELECT')]]/parent::tr/parent::tbody/tr[4]/td[2]/div/span[1]")]
+        [FindsBy(How = How.XPath, Using = "//td[@id='tdDSPlanPremium']/div/span[1]")]
         private IWebElement txtDeseretSelectRate;
         public IWebElement gettxtDeseretSelectRate()
         {
@@ -150,7 +172,7 @@ namespace MPR.pageObjects
 
         }
 
-        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'VALUE')]]/parent::tr/parent::tbody/tr[4]/td[3]/div/span[1]")]
+        [FindsBy(How = How.XPath, Using = "//td[@id='tdLPPlanPremium']/div/span[1]")]
         private IWebElement txtDeseretValueRate;
         public IWebElement gettxtDeseretValueRate()
         {
@@ -158,11 +180,51 @@ namespace MPR.pageObjects
 
         }
 
-        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'PROTECT')]]/parent::tr/parent::tbody/tr[4]/td[4]/div/span[1]")]
+        [FindsBy(How = How.XPath, Using = "//td[@id='tdP1PlanPremium']/div/span[1]")]
         private IWebElement txtDeseretProtectRate;
         public IWebElement gettxtDeseretProtectRate()
         {
             return txtDeseretProtectRate;
+
+        }
+
+        // poitions of plans will mess this up possibly. I think I should use id's after all.
+        [FindsBy(How = How.XPath, Using = "//td[@id='tdHMPlanPremium']/div/span[1]")]
+        private IWebElement txtDeseretChoiceRate;
+        public IWebElement gettxtDeseretChoiceRate()
+        {
+            return txtDeseretChoiceRate;
+
+        }
+
+        [FindsBy(How = How.XPath, Using = "//td[@id='tdKHPlanPremium']/div/span[1]")]
+        private IWebElement txtDeseretKaiserRate;
+        public IWebElement gettxtDeseretKaiserRate()
+        {
+            return txtDeseretKaiserRate;
+
+        }
+
+        [FindsBy(How = How.XPath, Using = "//td[@id='tdKSPlanPremium']/div/span[1]")]
+        private IWebElement txtDeseretPermanenteRate;
+        public IWebElement gettxtDeseretPermanenteRate()
+        {
+            return txtDeseretPermanenteRate;
+
+        }
+
+        [FindsBy(How = How.XPath, Using = "//a[@id='readMoreButton']")]
+        private IWebElement readMoreBtn;
+        public IWebElement getreadMoreBtn()
+        {
+            return readMoreBtn;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//input[@id='isInputCollapsed']")]
+        private IWebElement readMoreBtnCollapseInput;
+        public IWebElement getreadMoreBtnCollapseInput()
+        {
+            return readMoreBtnCollapseInput;
 
         }
 
