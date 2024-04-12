@@ -4,7 +4,8 @@
     "username": "Tester1011",
     "password": "Demo@one2345",
     "ssnValid": "000001001",
-    "dobValid": "01/01/2001"
+    "dobValid": "01/01/2001",
+    "Test": "Helloworld"
   },
   "invalidUser": {
     "username": "aaaaaaaaa",
