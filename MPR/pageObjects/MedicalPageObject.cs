@@ -19,6 +19,55 @@ namespace MPR.pageObjects
     public class MedicalPageObject
     {
         private IWebDriver driver;
+
+        string waiveMedicalCoveragexPath = "//td[text()[contains(.,'WAIVE')]]";
+        public string getWAIVEmedicalCoveragexPath()
+        {
+            return waiveMedicalCoveragexPath;
+        }
+
+        string premierMedicalCoveragexPath = "//td[text()[contains(.,'PREMIER')]]";
+        public string getPREMIERmedicalCoveragexPath()
+        {
+            return premierMedicalCoveragexPath;
+        }
+
+        string selectMedicalCoveragexPath = "//td[text()[contains(.,'SELECT')]]";
+        public string getSELECTmedicalCoveragexPath()
+        {
+            return selectMedicalCoveragexPath;
+        }
+
+        string valueMedicalCoveragexPath = "//td[text()[contains(.,'VALUE')]]";
+        public string getVALUEmedicalCoveragexPath()
+        {
+            return valueMedicalCoveragexPath;
+        }
+
+        string protectMedicalCoveragexPath = "//td[text()[contains(.,'PROTECT')]]";
+        public string getPROTECTmedicalCoveragexPath()
+        {
+            return protectMedicalCoveragexPath;
+        }
+
+        string choiceMedicalCoveragexPath = "//td[text()[contains(.,'CHOICE')]]";
+        public string getCHOICEmedicalCoveragexPath()
+        {
+            return choiceMedicalCoveragexPath;
+        }
+
+        string kaiserMedicalCoveragexPath = "//td[text()[contains(.,'KAISER')]]";
+        public string getKAISERmedicalCoveragexPath()
+        {
+            return kaiserMedicalCoveragexPath;
+        }
+
+        string permanenteMedicalCoveragexPath = "//td[text()[contains(.,'PERMANENTE')]]";
+        public string getPERMANENTEmedicalCoveragexPath()
+        {
+            return permanenteMedicalCoveragexPath;
+        }
+
         public MedicalPageObject(IWebDriver driver)
         {
             this.driver = driver;
@@ -28,7 +77,7 @@ namespace MPR.pageObjects
         [FindsBy(How = How.XPath, Using = "//span[text()='Medical']")]
         private IWebElement clkMedical;
         public IWebElement getclkMedical()
-        {
+        { 
             return clkMedical;
         }
 
@@ -96,10 +145,9 @@ namespace MPR.pageObjects
         }
 
 
-
         [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'WAIVE')]]")]
-        private IWebElement txtwaiveMedicalCoverage;
-        public IWebElement gettxtwaiveMedicalCoverage()
+        public IWebElement txtwaiveMedicalCoverage;
+        public IWebElement gettxtWaiveMedicalCoverage()
         {
             return txtwaiveMedicalCoverage;
         }
@@ -131,27 +179,6 @@ namespace MPR.pageObjects
         public IWebElement gettxtDeseretProtect()
         {
             return txtDeseretProtect;
-        }
-
-        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'CHOICE')]]")]
-        private IWebElement txtDeseretHawaiiChoice;
-        public IWebElement gettxtDeseretHawaiiChoice()
-        {
-            return txtDeseretHawaiiChoice;
-        }
-
-        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'KAISER')]]")]
-        private IWebElement txtDeseretHawaiiKaiser;
-        public IWebElement gettxtDeseretHawaiiKaiser()
-        {
-            return txtDeseretHawaiiKaiser;
-        }
-
-        [FindsBy(How = How.XPath, Using = "//td[text()[contains(.,'PERMANENTEE')]]")]
-        private IWebElement txtDeseretPermanentee;
-        public IWebElement gettxtDeseretPermanentee()
-        {
-            return txtDeseretPermanentee;
         }
 
         // poitions of plans will mess this up possibly. I think I should use id's after all.
@@ -229,5 +256,12 @@ namespace MPR.pageObjects
         }
 
 
+    }
+    public class MyReflectionClass
+    {
+        public string MyMethod()
+        {
+            return DateTime.Now.ToString();
+        }
     }
 }

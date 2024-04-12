@@ -2,6 +2,10 @@ using MPR.pageObjects;
 using MPR.utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
+using System;
+using System.Reflection;
+using System.Reflection.Metadata;
 using System.Security.Policy;
 using System.Xml.Serialization;
 
@@ -225,10 +229,10 @@ namespace MPR.tests
 
             loginPage.getloginLink().Click();
 
-            string usernameValid = getDataParser().extractData("medicalUser.username");
+            string usernameValid = getDataParser().extractData("validUser.username");
             loginPage.getusername().SendKeys(usernameValid);
 
-            string passwordValid = getDataParser().extractData("medicalUser.password");
+            string passwordValid = getDataParser().extractData("validUser.password");
             loginPage.getpassword().SendKeys(passwordValid);
 
             loginPage.getsubmit().Click();
@@ -328,112 +332,104 @@ namespace MPR.tests
                             Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
                             TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
 
+            // Get current window handle
+            string originalWindow = driver.CurrentWindowHandle;
+            //medicalPage.getcomparePlanlink().Click();            
 
-                            // Compare Value for Plan Rate
-                            string getRateAmount = medicalPage.gettxtDeseretValueRate().Text;
-                            string RateAmountExpected = getDataParser().extractData("medicalUser." + testItem + ".VALUE");
-                            TestContext.Progress.WriteLine("Testing if " + getRateAmount + " is equal to " + RateAmountExpected);
-                            Assert.That(RateAmountExpected, Is.EqualTo(getRateAmount));
-                        }
-                        catch (Exception ex)
-                        {
-                            TestContext.Progress.WriteLine(ex);
-                        }
+            string[] testData = getDataParser().extractDataArray("medicalUser.PlanChangeWithZipCodeChangeTestData");
 
-                    }
-                    else if (item == "PROTECT")
+            foreach (var testItem in testData)
+            {
+                TestContext.Progress.WriteLine("----------------- Doing Tests For " + testItem + "------------------------------");
+                Thread.Sleep(1000);
+
+                driver.SwitchTo().NewWindow(WindowType.Tab);
+                driver.Url = getDataParser().extractData("medicalUser.PersonalInfoStepURL");
+
+                //string originalWindow = driver.CurrentWindowHandle;
+                string zc = getDataParser().extractData("medicalUser." + testItem + ".zipcode");
+                TestContext.Progress.WriteLine("ZipCode: " + zc);
+                aboutMePage.getzipCode().Clear();
+                aboutMePage.getzipCode().SendKeys(zc);
+                //Thread.Sleep(1000);
+                aboutMePage.getnextBtn().Click();
+                Thread.Sleep(8000);
+                // Open New Tab.Go To Medical Step
+                driver.SwitchTo().NewWindow(WindowType.Tab);
+                driver.Url = getDataParser().extractData("medicalUser.MedicalStepURL");
+
+                loginPage.getbtnLogoutText().Click();
+                loginPage.getloginLink().Click();
+                loginPage.getusername().SendKeys(usernameValid);
+                loginPage.getpassword().SendKeys(passwordValid);
+                loginPage.getsubmit().Click();
+                Thread.Sleep(2000);
+                driver.Url = getDataParser().extractData("medicalUser.MedicalStepURL");
+
+                Thread.Sleep(3000);
+                string[] planList = getDataParser().extractDataArray("medicalUser." + testItem + ".plansToValidate");
+                int itemIndex = 1;
+                string getValueToCompare = null;
+                TestContext.Progress.WriteLine("##################################################");
+
+                foreach (string item in planList)
+                {
+                    Thread.Sleep(1000);
+                    if (itemIndex == 1)
                     {
-                        TestContext.Progress.WriteLine("Testing If Statement " + item);
-                        try
-                        {
-                            string getValueToCompare = medicalPage.gettxtDeseretProtect().Text;
-                            // Compare Values for Plan Labels
-                            Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
-                            TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
-
-                            // Compare Value for Plan Rate
-                            string getRateAmount = medicalPage.gettxtDeseretProtectRate().Text;
-                            string RateAmountExpected = getDataParser().extractData("medicalUser." + testItem + ".PROTECT");
-                            TestContext.Progress.WriteLine("Testing if " + getRateAmount + " is equal to " + RateAmountExpected);
-                            Assert.That(RateAmountExpected, Is.EqualTo(getRateAmount));
-                        }
-                        catch (Exception ex)
-                        {
-                            TestContext.Progress.WriteLine(ex);
-                        }
-
+                        TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
+                        string methodName = "get" + item + "medicalCoveragexPath";
+                        MedicalPageObject c = new MedicalPageObject(getDriver());
+                        Type type = typeof(MedicalPageObject);
+                        MethodInfo method = type.GetMethod(methodName);
+                        string methodXPath = (string)method.Invoke(c, null);
+                        
+                        getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        //TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
                     }
-                    else if (item == "CHOICE")
+                    if (itemIndex >= 2)
                     {
-                        TestContext.Progress.WriteLine("Testing If Statement " + item);
-                        try
-                        {
-                            string getValueToCompare = medicalPage.gettxtDeseretHawaiiChoice().Text;
-                            // Compare Values for Plan Labels
-                            Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
-                            TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+                        TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
+                        string methodName = "get" + item + "medicalCoveragexPath";
+                        MedicalPageObject c = new MedicalPageObject(getDriver());
+                        Type type = typeof(MedicalPageObject);
+                        MethodInfo method = type.GetMethod(methodName);
+                        string methodXPath = (string)method.Invoke(c, null);
+                        Thread.Sleep(1000);
 
-                            // Compare Value for Plan Rate
-                            string getRateAmount = medicalPage.gettxtDeseretChoiceRate().Text;
-                            string RateAmountExpected = getDataParser().extractData("medicalUser." + testItem + ".CHOICE");
-                            TestContext.Progress.WriteLine("Testing if " + getRateAmount + " is equal to " + RateAmountExpected);
-                            Assert.That(RateAmountExpected, Is.EqualTo(getRateAmount));
-                        }
-                        catch (Exception ex)
-                        {
-                            TestContext.Progress.WriteLine(ex);
-                        }
+                        getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
 
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        //TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
                     }
-                    else if (item == "KAISER")
-                    {
-                        TestContext.Progress.WriteLine("Testing If Statement " + item);
-                        try
-                        {
-                            string getValueToCompare = medicalPage.gettxtDeseretHawaiiKaiser().Text;
-                            // Compare Values for Plan Labels
-                            Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
-                            TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
-
-
-                            // Compare Value for Plan Rate
-                            string getRateAmount = medicalPage.gettxtDeseretKaiserRate().Text;
-                            string RateAmountExpected = getDataParser().extractData("medicalUser." + testItem + ".KAISER");
-                            TestContext.Progress.WriteLine("Testing if " + getRateAmount + " is equal to " + RateAmountExpected);
-                            Assert.That(RateAmountExpected, Is.EqualTo(getRateAmount));
-                        }
-                        catch (Exception ex)
-                        {
-                            TestContext.Progress.WriteLine(ex);
-                        }
-
-                    }
-                    else if (item == "PERMANENTEE")
-                    {
-                        TestContext.Progress.WriteLine("Testing If Statement " + item);
-                        try
-                        {
-                            string getValueToCompare = medicalPage.gettxtDeseretPermanentee().Text;
-                            // Compare Values for Plan Labels
-                            Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
-                            TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
-
-                            // Compare Value for Plan Rate
-                            string getRateAmount = medicalPage.gettxtDeseretPermanenteRate().Text;
-                            string RateAmountExpected = getDataParser().extractData("medicalUser." + testItem + ".PERMANENTEE");
-                            TestContext.Progress.WriteLine("Testing if " + getRateAmount + " is equal to " + RateAmountExpected);
-                            Assert.That(RateAmountExpected, Is.EqualTo(getRateAmount));
-                        }
-                        catch (Exception ex)
-                        {
-                            TestContext.Progress.WriteLine(ex);
-                        }
-
-                    }
-
+                    itemIndex++;
                 }
+                foreach (string window in driver.WindowHandles)
+                {
+                    if (window != originalWindow)
+                    {
+                        driver.SwitchTo().Window(window);
+                        Thread.Sleep(1000);
+                        if (driver.WindowHandles.Count != 2)
+                        {
+                            driver.Close();
+                        }
+                        else if (driver.WindowHandles.Count == 2)
+                        {
+                            driver.Close();
+                            driver.SwitchTo().Window(originalWindow);
+                        }                        
+                        Thread.Sleep(1000);
+                    }
+                    else
+                    {
+                    }
+                }
+                driver.Navigate().Refresh();
+                TestContext.Progress.WriteLine(" ");
             }
 
         }
-    }
+    }    
 }

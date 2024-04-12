@@ -45,6 +45,20 @@ namespace MPR.pageObjects
             return nextBtn;
         }
 
+        [FindsBy(How = How.XPath, Using = "//a[contains(text(),'Menu')]")]
+        private IWebElement menuBtn;
+        public IWebElement getmenuBtn()
+        {
+            return menuBtn;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Introduction')]/parent::div/parent::div/div[2]/div")]
+        private IWebElement startBtn;
+        public IWebElement getstartBtn()
+        {
+            return startBtn;
+        }
+
 
 
     }
