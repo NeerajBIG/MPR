@@ -256,7 +256,6 @@ namespace MPR.tests
                 // Open New Tab.Go To Medical Step
                 driver.SwitchTo().NewWindow(WindowType.Tab);
                 driver.Url = getDataParser().extractData("medicalUser.MedicalStepURL");
-
                 
                 string[] planList = getDataParser().extractDataArray("medicalUser." + testItem + ".plansToValidate");
                 foreach (string item in planList)
