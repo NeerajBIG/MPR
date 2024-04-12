@@ -222,7 +222,7 @@ namespace MPR.tests
                 aboutMePage.getzipCode().SendKeys(zc);
                 //Thread.Sleep(1000);
                 aboutMePage.getnextBtn().Click();
-                Thread.Sleep(8000);
+                Thread.Sleep(3000);
                 // Open New Tab.Go To Medical Step
                 driver.SwitchTo().NewWindow(WindowType.Tab);
                 driver.Url = getDataParser().extractData("medicalUser.MedicalStepURL");
