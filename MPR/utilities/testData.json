@@ -1,39 +1,27 @@
 ﻿{
-  "DemoUrl": "https://demo.dmba.com/",
-  "newUser": {
+  "DemoUrl": "https://demo2.dmba.com/",
+  "validUser": {
     "username": "Tester1011",
     "password": "Demo@one2345",
     "ssnValid": "000001001",
-    "dobValid": "01/01/2001",
-    "Test": "Helloworld"
+    "dobValid": "01/01/2001"
   },
   "invalidUser": {
     "username": "aaaaaaaaa",
     "password": "111111111"
   },
-
-  "dependantUser": {
-    "dependantStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Dependents#",
-    "AdditionalDependant1": {
-      "firstName": "John",
-      "lastName": "Smith",
-      "SSN": "100001006",
-      "birthDate": "01/01/2000",
-      "relationship": "Child"
-    },
-    "AdditionalDependant2": {
-      "firstName": "Jane",
-      "lastName": "Smith",
-      "SSN": "200001006",
-      "birthDate": "01/01/2001",
-      "relationship": "Child"
-    }
-
+  "aboutMeUser": {
+    "username": "Tester1011",
+    "password": "Demo@one2345",
+    "ssnValid": "000001007",
+    "dobValid": "07/27/1997",
+    "ssnInvalid": "111111111",
+    "dobInvalid": "01/01/2001"
   },
-
   "medicalUser": {
     "MedicalStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Medical",
-    "username": "Tester1012",
+    "PersonalInfoStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo",
+    "username": "Tester1005",
     "password": "Demo@one2345",
     "maritalStatusValid": "Single",
     "address1Valid": "1234 Test Circle",
@@ -44,13 +32,9 @@
     "phoneNumberValid": "8015785600",
     "workNumberValid": "8015785601",
 
-
     // Number refers to TC number. ex. 118 refers to TC_0118. test date for that Test Case
-    //"PlanChangeWithZipCodeChangeTestData": [ "Case_1", "Case_2", "Case_3", "Case_4", "Case_5", "Case_6", "Case_7", "Case_8", "Case_9", "Case_10", "Case_11", "Case_12", "Case_13", "Case_14", "Case_15", "Case_16", "Case_17", "Case_18", "Case_19", "Case_20", "Case_21" ],
-    "PlanChangeWithZipCodeChangeTestData": [ "Case_1", "Case_2", "Case_3", "Case_4", "Case_5", "Case_6", "Case_7" ],
-
+    "PlanChangeWithZipCodeChangeTestData": [ "Case_1", "Case_2", "Case_3", "Case_4", "Case_5" ],
     "Case_1": {
-      "PeopleOnPlan": 1,
       "zipcode": "84106",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$251.90",
@@ -59,7 +43,6 @@
       "PROTECT": "$42.40"
     },
     "Case_2": {
-      "PeopleOnPlan": 1,
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$251.90",
@@ -68,7 +51,6 @@
       "PROTECT": "$42.40"
     },
     "Case_3": {
-      "PeopleOnPlan": 1,
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
       "PREMIER": "$251.90",
@@ -76,283 +58,34 @@
       "PROTECT": "$42.40"
     },
     "Case_4": {
-      "PeopleOnPlan": 1,
       "zipcode": "96762",
-      "plansToValidate": [ "WAIVE", "CHOICE", "KAISER" ],
-      "CHOICE": "$124.10",
-      "KAISER": "$128.20"
+      "plansToValidate": [ "WAIVE", "KAISER", "CHOICE" ],
+      "CHOICE": "$251.90",
+      "KAISER": "$174.60"
     },
     "Case_5": {
-      "PeopleOnPlan": 1,
       "zipcode": "94102",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
       "PREMIER": "$251.90",
       "VALUE": "$85.50",
       "PROTECT": "$42.40",
-      "PERMANENTE": "$186.90"
-
-    },
-    "Case_6": {
-      "PeopleOnPlan": 1,
-      "zipcode": "92101",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
-      "PREMIER": "$251.90",
-      "VALUE": "$85.50",
-      "PROTECT": "$42.40",
-      "PERMANENTE": "$92.20"
-    },
-    "Case_7": {
-      "PeopleOnPlan": 1,
-      "zipcode": "59901",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
-      "PREMIER": "$251.90",
-      "VALUE": "$85.50",
-      "PROTECT": "$42.40"
-    },
-    "Case_8": {
-      "PeopleOnPlan": 2,
-      "zipcode": "84106",
-      "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
-      "PREMIER": "$506.40",
-      "SELECT": "$348.70",
-      "VALUE": "$166.90",
-      "PROTECT": "$78.90"
-    },
-    "Case_9": {
-      "PeopleOnPlan": 2,
-      "zipcode": "83204",
-      "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
-      "PREMIER": "$506.40",
-      "SELECT": "$348.70",
-      "VALUE": "$166.90",
-      "PROTECT": "$78.90"
-    },
-    "Case_10": {
-      "PeopleOnPlan": 2,
-      "zipcode": "83839",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
-      "PREMIER": "$506.40",
-      "VALUE": "$166.90",
-      "PROTECT": "$78.90"
-    },
-    "Case_11": {
-      "PeopleOnPlan": 2,
-      "zipcode": "96762",
-      "plansToValidate": [ "WAIVE", "CHOICE", "KAISER" ],
-      "CHOICE": "$245.60",
-      "KAISER": "$253.90"
-    },
-    "Case_12": {
-      "PeopleOnPlan": 2,
-      "zipcode": "94102",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
-      "PREMIER": "$506.40",
-      "VALUE": "$166.90",
-      "PROTECT": "$78.90",
-      "PERMANENTE": "$373.70"
-
-    },
-    //Is row 47 on the excel case list correct?
-    "Case_13": {
-      "PeopleOnPlan": 2,
-      "zipcode": "92101",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
-      "PREMIER": "$506.40",
-      "VALUE": "$166.90",
-      "PROTECT": "$78.90",
-      "PERMANENTE": "$180.60"
-    },
-    "Case_14": {
-      "PeopleOnPlan": 2,
-      "zipcode": "59901",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
-      "PREMIER": "$506.40",
-      "VALUE": "$166.90",
-      "PROTECT": "$78.90"
-    },
-    "Case_15": {
-      "PeopleOnPlan": 3,
-      "zipcode": "84106",
-      "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
-      "PREMIER": "$799.80",
-      "SELECT": "$547.10",
-      "VALUE": "$255.70",
-      "PROTECT": "$114.70"
-    },
-    "Case_16": {
-      "PeopleOnPlan": 3,
-      "zipcode": "83204",
-      "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
-      "PREMIER": "$799.80",
-      "SELECT": "$547.10",
-      "VALUE": "$255.70",
-      "PROTECT": "$114.70"
-    },
-    "Case_17": {
-      "PeopleOnPlan": 3,
-      "zipcode": "83839",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
-      "PREMIER": "$799.80",
-      "VALUE": "$255.70",
-      "PROTECT": "$114.70"
-    },
-    "Case_18": {
-      "PeopleOnPlan": 3,
-      "zipcode": "96762",
-      "plansToValidate": [ "WAIVE", "CHOICE", "KAISER" ],
-      "CHOICE": "$381.90",
-      "KAISER": "$395.20"
-    },
-    "Case_19": {
-      "PeopleOnPlan": 3,
-      "zipcode": "94102",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
-      "PREMIER": "$799.80",
-      "VALUE": "$255.70",
-      "PROTECT": "$114.70",
-      "PERMANENTE": "$587.10"
-
-    },
-    "Case_20": {
-      "PeopleOnPlan": 3,
-      "zipcode": "92101",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
-      "PREMIER": "$799.80",
-      "VALUE": "$255.70",
-      "PROTECT": "$114.70",
-      "PERMANENTE": "$277.60"
-    },
-    "Case_21": {
-      "PeopleOnPlan": 3,
-      "zipcode": "59901",
-      "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
-      "PREMIER": "$799.80",
-      "VALUE": "$255.70",
-      "PROTECT": "$114.70"
+      "PERMANENTE": "$174.60"
     },
 
-    "DentalPlanChangeWithZipCodeChangeTestData": [ "DentalCase_1", "DentalCase_2", "DentalCase_3", "DentalCase_4", "DentalCase_5", "DentalCase_6", "DentalCase_7", "DentalCase_8", "DentalCase_9", "DentalCase_10", "DentalCase_11", "DentalCase_12", "DentalCase_13", "DentalCase_14", "DentalCase_15" ],
-    "DentalCase_1": {
-      "PeopleOnPlan": 1,
-      "zipcode": "84106",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$2.60",
-      "PLUS": "$9.80"
-    },
-    "DentalCase_2": {
-      "PeopleOnPlan": 1,
-      "zipcode": "83204",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$2.60",
-      "PLUS": "$9.80"
-    },
-    "DentalCase_3": {
-      "PeopleOnPlan": 1,
-      "zipcode": "83839",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$2.60",
-      "PLUS": "$9.80"
-    },
-    "DentalCase_4": {
-      "PeopleOnPlan": 1,
-      "zipcode": "96762",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$2.60",
-      "PLUS": "$9.80"
-    },
-    "DentalCase_5": {
-      "PeopleOnPlan": 1,
-      "zipcode": "59901",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$2.60",
-      "PLUS": "$9.80"
-    },
-    "DentalCase_6": {
-      "PeopleOnPlan": 2,
-      "zipcode": "84106",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$5.00",
-      "PLUS": "$19.20"
-    },
-    "DentalCase_7": {
-      "PeopleOnPlan": 2,
-      "zipcode": "83204",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$5.00",
-      "PLUS": "$19.20"
-    },
-    "DentalCase_8": {
-      "PeopleOnPlan": 2,
-      "zipcode": "83839",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$5.00",
-      "PLUS": "$19.20"
-    },
-    "DentalCase_9": {
-      "PeopleOnPlan": 2,
-      "zipcode": "96762",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$5.00",
-      "PLUS": "$19.20"
-    },
-    "DentalCase_10": {
-      "PeopleOnPlan": 2,
-      "zipcode": "59901",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$5.00",
-      "PLUS": "$19.20"
-    },
-    "DentalCase_11": {
-      "PeopleOnPlan": 3,
-      "zipcode": "84106",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$11.60",
-      "PLUS": "$44.40"
-    },
-    "DentalCase_12": {
-      "PeopleOnPlan": 3,
-      "zipcode": "83204",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$11.60",
-      "PLUS": "$44.40"
-    },
-    "DentalCase_13": {
-      "PeopleOnPlan": 3,
-      "zipcode": "83839",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$11.60",
-      "PLUS": "$44.40"
-    },
-    "DentalCase_14": {
-      "PeopleOnPlan": 3,
-      "zipcode": "96762",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$11.60",
-      "PLUS": "$44.40"
-    },
-    "DentalCase_15": {
-      "PeopleOnPlan": 3,
-      "zipcode": "59901",
-      "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
-      "DENTAL": "$11.60",
-      "PLUS": "$44.40"
-    },
-    "VisionPlanChangeTestData": [ "VisionCase_1", "VisionCase_2", "VisionCase_3" ],
-    "VisionCase_1": {
-      "PeopleOnPlan": 1,
-      "NoEyeExamRate": "$6.60",
-      "YesEyeExamRate": "$9.50"
-    },
-    "VisionCase_2": {
-      "PeopleOnPlan": 2,
-      "NoEyeExamRate": "$12.50",
-      "YesEyeExamRate": "$18.30"
-    },
-    "VisionCase_3": {
-      "PeopleOnPlan": 3,
-      "NoEyeExamRate": "$18.30",
-      "YesEyeExamRate": "$28.10"
-    }
+    // Case Zipcode and Premium Test Data
+    "zipcodeValidCase_1": "84106",
+    "PremierAmountCase_1_1": "$251.90",
+    "SelectAmountCase_1_2": "$174.60",
+    "ValueAmountCase_1_3": "$85.50",
+    "ProtectAmountCase_1_4": "$42.40",
+
+    "zipcodeValidCase_2": "83204",
+    "PremierAmountCase_2_1": "$251.90",
+    "SelectAmountCase_2_2": "$174.60",
+    "ValueAmountCase_2_3": "$85.50",
+    "ProtectAmountCase_2_4": "$42.40"
+
+
   },
   "usernameValid": "Tester1001",
   "usernameValid2": "Tester1005",
@@ -366,5 +99,7 @@
   "dataSet": [ "Tester1001", "Tester1002" ],
   "zipcodeValid": "84106",
   "AboutMeStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo"
+
+
 
 }
