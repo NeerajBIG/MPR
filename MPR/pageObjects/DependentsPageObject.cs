@@ -61,14 +61,14 @@ namespace MPR.pageObjects
 
         [FindsBy(How = How.XPath, Using = "//input[@id='SSN']")]
         private IWebElement SSN;
-        public IWebElement getSSN()
+        public IWebElement getSSNField()
         {
             return SSN;
         }
 
         [FindsBy(How = How.XPath, Using = "//input[@id='BirthDate']")]
         private IWebElement birthDate;
-        public IWebElement getbirthDate()
+        public IWebElement getbirthDateField()
         {
             return birthDate;
         }
@@ -87,14 +87,14 @@ namespace MPR.pageObjects
             return radioBtnFemale;
         }
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='Relationship_SelectedValue']")]
+        [FindsBy(How = How.XPath, Using = "//select[@id='Relationship_SelectedValue']")]
         private IWebElement relationshipDropdown;
         public IWebElement getrelationshipDropdown()
         {
             return relationshipDropdown;
         }
 
-        [FindsBy(How = How.XPath, Using = "//div[@id='divDependentModalShell']/div/div/div[3]/button[2]']")]
+        [FindsBy(How = How.XPath, Using = "//div[@id='divDependentModal']/parent::div/div[@class='modal-footer']/button[@id='btnModalOK']")]
         private IWebElement continuePopUpBtn;
         public IWebElement getcontinuePopUpBtn()
         {
@@ -119,7 +119,7 @@ namespace MPR.pageObjects
         private IWebElement radioBtnMarriedYes;
         public IWebElement getradioBtnMarriedYes()
         {
-            return radioBtnMale;
+            return radioBtnMarriedYes;
         }
 
         [FindsBy(How = How.XPath, Using = "//input[@id='Married_SelectedValue' and @value='N']")]
@@ -133,7 +133,7 @@ namespace MPR.pageObjects
         private IWebElement radioBtnEnrolledYes;
         public IWebElement getradioBtnEnrolledYes()
         {
-            return radioBtnMale;
+            return radioBtnEnrolledYes;
         }
 
         [FindsBy(How = How.XPath, Using = "//input[@id='Covered_SelectedValue' and @value='N']")]
@@ -147,7 +147,7 @@ namespace MPR.pageObjects
         private IWebElement radioBtnOtherCoverageYes;
         public IWebElement getradioBtnOtherCoverageYes()
         {
-            return radioBtnMale;
+            return radioBtnOtherCoverageYes;
         }
 
         [FindsBy(How = How.XPath, Using = "//input[@id='OtherInsurance_SelectedValue' and @value='N']")]
@@ -164,21 +164,27 @@ namespace MPR.pageObjects
             return editBtn;
         }
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='Delete']")]
+        [FindsBy(How = How.XPath, Using = "//a[text()[contains(.,'Delete')]][1]")]
         private IWebElement deleteBtn;
         public IWebElement getdeleteBtn()
         {
             return deleteBtn;
         }
-        
-        /*
-        [FindsByAll(How = How.XPath, Using = "//div[@id='divDependents']/table/tbody/tr")]
-        private IWebElement dependentsList;
-        public IWebElement getdependentsList()
+
+        [FindsBy(How = How.XPath, Using = "//button[@id='delete-button']")]
+        private IWebElement confirmDeletionBtn;
+        public IWebElement getconfirmDeletionBtn()
         {
-            return dependentsList;
+            return confirmDeletionBtn;
         }
-        */
+
+
+
+        string dependentsxPath = "//div[@id='divDependents']/table/tbody/tr";
+        public string getdependentsxPath()
+        {
+            return dependentsxPath;
+        }
 
 
     }
