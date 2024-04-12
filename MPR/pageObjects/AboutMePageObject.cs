@@ -29,6 +29,13 @@ namespace MPR.pageObjects
         public IWebElement getclkAboutMe()
         {
             return clkAboutMe;
+        }              
+
+        [FindsBy(How = How.XPath, Using = "//form[@id='frmPersonalInfo']")]
+        private IWebElement PageType2;
+        public IWebElement getPageType2()
+        {
+            return PageType2;
         }
 
         [FindsBy(How = How.XPath, Using = "//span[text()='About Me']")]
@@ -36,6 +43,13 @@ namespace MPR.pageObjects
         public IWebElement getheadingText()
         {
             return headingText;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//div[@id='divEnterDobSSN']")]
+        private IWebElement PageType1;
+        public IWebElement getPageType1()
+        {
+            return PageType1;
         }
 
         [FindsBy(How = How.Id, Using = "enteredSSN")]
@@ -67,17 +81,17 @@ namespace MPR.pageObjects
         }
 
         [FindsBy(How = How.XPath, Using = "//h4[text()='Information Provided by Your Employer:']")]
-        private IWebElement aboutMeStep2Txt;
-        public IWebElement getaboutMeStep2Txt()
+        private IWebElement aboutMeStep2bTxt;
+        public IWebElement getaboutMeStep2bTxt()
         {
-            return aboutMeStep2Txt;
+            return aboutMeStep2bTxt;
         }
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Please select if the information entered by your employer is correct.')]")]
-        private IWebElement alertStep2aTxt;
-        public IWebElement getalertStep2aTxt()
+        private IWebElement alertStep2bTxt;
+        public IWebElement getalertStep2bTxt()
         {
-            return alertStep2aTxt;
+            return alertStep2bTxt;
         }
 
         [FindsBy(How = How.XPath, Using = "//input[@value='Y']")]

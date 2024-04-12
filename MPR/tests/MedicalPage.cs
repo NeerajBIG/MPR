@@ -2,6 +2,10 @@ using MPR.pageObjects;
 using MPR.utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
+using System;
+using System.Reflection;
+using System.Reflection.Metadata;
 using System.Security.Policy;
 using System.Xml.Serialization;
 
@@ -187,65 +191,114 @@ namespace MPR.tests
 
             loginPage.getloginLink().Click();
 
-            string usernameValid = getDataParser().extractData("medicalUser.username");
+            string usernameValid = getDataParser().extractData("validUser.username");
             loginPage.getusername().SendKeys(usernameValid);
 
-            string passwordValid = getDataParser().extractData("medicalUser.password");
+            string passwordValid = getDataParser().extractData("validUser.password");
             loginPage.getpassword().SendKeys(passwordValid);
 
             loginPage.getsubmit().Click();
 
             menuPage.getbtnContinue().Click();
 
-            medicalPage.getclkMedical().Click();
+            // Get current window handle
             string originalWindow = driver.CurrentWindowHandle;
+            //medicalPage.getcomparePlanlink().Click();            
 
-            for (int i = 1; i <= 5; i++)
+            string[] testData = getDataParser().extractDataArray("medicalUser.PlanChangeWithZipCodeChangeTestData");
+
+            foreach (var testItem in testData)
             {
-                try
+                TestContext.Progress.WriteLine("----------------- Doing Tests For " + testItem + "------------------------------");
+                Thread.Sleep(1000);
+
+                driver.SwitchTo().NewWindow(WindowType.Tab);
+                driver.Url = getDataParser().extractData("medicalUser.PersonalInfoStepURL");
+
+                //string originalWindow = driver.CurrentWindowHandle;
+                string zc = getDataParser().extractData("medicalUser." + testItem + ".zipcode");
+                TestContext.Progress.WriteLine("ZipCode: " + zc);
+                aboutMePage.getzipCode().Clear();
+                aboutMePage.getzipCode().SendKeys(zc);
+                //Thread.Sleep(1000);
+                aboutMePage.getnextBtn().Click();
+                Thread.Sleep(8000);
+                // Open New Tab.Go To Medical Step
+                driver.SwitchTo().NewWindow(WindowType.Tab);
+                driver.Url = getDataParser().extractData("medicalUser.MedicalStepURL");
+
+                loginPage.getbtnLogoutText().Click();
+                loginPage.getloginLink().Click();
+                loginPage.getusername().SendKeys(usernameValid);
+                loginPage.getpassword().SendKeys(passwordValid);
+                loginPage.getsubmit().Click();
+                Thread.Sleep(2000);
+                driver.Url = getDataParser().extractData("medicalUser.MedicalStepURL");
+
+                Thread.Sleep(3000);
+                string[] planList = getDataParser().extractDataArray("medicalUser." + testItem + ".plansToValidate");
+                int itemIndex = 1;
+                string getValueToCompare = null;
+                TestContext.Progress.WriteLine("##################################################");
+
+                foreach (string item in planList)
                 {
-                    String test = "medicalUser.zipcodeValidCase_" + i.ToString();
-                    Console.WriteLine(test);
-                    Console.WriteLine(getDataParser().extractData(test));
+                    Thread.Sleep(1000);
+                    if (itemIndex == 1)
+                    {
+                        TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
+                        string methodName = "get" + item + "medicalCoveragexPath";
+                        MedicalPageObject c = new MedicalPageObject(getDriver());
+                        Type type = typeof(MedicalPageObject);
+                        MethodInfo method = type.GetMethod(methodName);
+                        string methodXPath = (string)method.Invoke(c, null);
+                        
+                        getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        //TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+                    }
+                    if (itemIndex >= 2)
+                    {
+                        TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
+                        string methodName = "get" + item + "medicalCoveragexPath";
+                        MedicalPageObject c = new MedicalPageObject(getDriver());
+                        Type type = typeof(MedicalPageObject);
+                        MethodInfo method = type.GetMethod(methodName);
+                        string methodXPath = (string)method.Invoke(c, null);
+                        Thread.Sleep(1000);
+
+                        getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
+
+                        Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
+                        //TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+                    }
+                    itemIndex++;
                 }
-                catch
+                foreach (string window in driver.WindowHandles)
                 {
-                    Console.WriteLine("Inside Catch");
+                    if (window != originalWindow)
+                    {
+                        driver.SwitchTo().Window(window);
+                        Thread.Sleep(1000);
+                        if (driver.WindowHandles.Count != 2)
+                        {
+                            driver.Close();
+                        }
+                        else if (driver.WindowHandles.Count == 2)
+                        {
+                            driver.Close();
+                            driver.SwitchTo().Window(originalWindow);
+                        }                        
+                        Thread.Sleep(1000);
+                    }
+                    else
+                    {
+                    }
                 }
+                driver.Navigate().Refresh();
+                TestContext.Progress.WriteLine(" ");
             }
 
-            // change ZipCode for TC_0118
-            driver.SwitchTo().NewWindow(WindowType.Tab);
-            driver.Url = "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo";
-            aboutMePage.getzipCode().SendKeys(getDataParser().extractData("medicalUser.zipcodeValid118"));
-            aboutMePage.getnextBtn().Click();
-            driver.Close();
-
-            // refresh page and check if plan is correct.
-            driver.SwitchTo().Window(originalWindow);
-            driver.Navigate().Refresh();
-
-
-            // Verify DP Plan Exists on Page.
-            string MedicalPagePlanDPremier = medicalPage.gettxtDeseretPremier().Text;
-            string MedicalPagePlanDPremierExpected = "PREMIER";
-            Assert.That(MedicalPagePlanDPremier, Does.Contain(MedicalPagePlanDPremierExpected));
-
-            // Verify DV Plan Exists on Page.
-            string MedicalPagePlanDValue = medicalPage.gettxtDeseretValue().Text;
-            string MedicalPagePlanDValueExpected = "VALUE";
-            Assert.That(MedicalPagePlanDValue, Does.Contain(MedicalPagePlanDValueExpected));
-
-            // Verify DS Plan Exists on Page.
-            string MedicalPagePlanDSelect = medicalPage.gettxtDeseretSelect().Text;
-            string MedicalPagePlanDSelectExpected = "SELECT";
-            Assert.That(MedicalPagePlanDSelect, Does.Contain(MedicalPagePlanDSelectExpected));
-
-            // Verify DP Plan Exists on Page.
-            string MedicalPagePlanDProtect = medicalPage.gettxtDeseretProtect().Text;
-            string MedicalPagePlanDProtectExpected = "protect";
-            Assert.That(MedicalPagePlanDProtect, Does.Contain(MedicalPagePlanDProtectExpected).IgnoreCase);
-
         }
-    }
+    }    
 }
