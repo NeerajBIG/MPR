@@ -2,6 +2,7 @@ using MPR.pageObjects;
 using MPR.utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools.V120.Page;
 using OpenQA.Selenium.Interactions;
 using System;
 using System.Reflection;
@@ -188,13 +189,14 @@ namespace MPR.tests
             MenuPageObject menuPage = new MenuPageObject(getDriver());
             AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
             MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            DependentsPageObject dependentsPage = new DependentsPageObject(getDriver());
 
             loginPage.getloginLink().Click();
 
-            string usernameValid = getDataParser().extractData("validUser.username");
+            string usernameValid = getDataParser().extractData("medicalUser.username");
             loginPage.getusername().SendKeys(usernameValid);
 
-            string passwordValid = getDataParser().extractData("validUser.password");
+            string passwordValid = getDataParser().extractData("medicalUser.password");
             loginPage.getpassword().SendKeys(passwordValid);
 
             loginPage.getsubmit().Click();
@@ -222,6 +224,115 @@ namespace MPR.tests
                 aboutMePage.getzipCode().SendKeys(zc);
                 //Thread.Sleep(1000);
                 aboutMePage.getnextBtn().Click();
+
+                // on dependent page.
+                // ---------------------- Need to count dependents. decide whether to delete, add more, or do nothing if dependents are equal.
+                string dependentMethodName = "getdependentsxPath";
+                DependentsPageObject d = new DependentsPageObject(getDriver());
+                Type typeDependent = typeof(DependentsPageObject);
+                MethodInfo dependentMethod = typeDependent.GetMethod(dependentMethodName);
+                string dependentMethodXPath = (string)dependentMethod.Invoke(d, null);
+
+                // find tr elements -> list of users in the grid
+                var originalListOfDependents = driver.FindElements(By.XPath(dependentMethodXPath));
+                // count users
+                int count = originalListOfDependents.Count;
+                TestContext.Progress.WriteLine("Number of dependents in grid: " + count);
+                string peopleOnPlan = getDataParser().extractData("medicalUser." + testItem + ".PeopleOnPlan");
+                if (Int32.Parse(peopleOnPlan) == count)
+                {
+                    TestContext.Progress.WriteLine("People on plan equal dependents count");
+
+                }
+                else if (Int32.Parse(peopleOnPlan) < count) {
+                    //delete users until it matchs people on plan count
+                    while (count > Int32.Parse(peopleOnPlan))
+                    {
+                        try
+                        {
+                            TestContext.Progress.WriteLine("Delete user");
+                            dependentsPage.getdeleteBtn().Click();
+                            Thread.Sleep(2000);
+                            dependentsPage.getconfirmDeletionBtn().Click();
+                            Thread.Sleep(2000);
+                            var currentListOfDependents = driver.FindElements(By.XPath(dependentMethodXPath));
+                            count = currentListOfDependents.Count;
+                            Thread.Sleep(2000);
+                        }
+                        catch (NoSuchElementException)
+                        {
+                            TestContext.Progress.WriteLine("Could not find element");
+                            break;
+                        }
+                    }
+                }
+                else if (Int32.Parse(peopleOnPlan) > count)
+                {
+                    //Need to add users until peopleOnPlan = count
+
+                    while (Int32.Parse(peopleOnPlan) > count) {
+
+                        Random rnd = new Random();
+                        int num = rnd.Next();
+                        TestContext.Progress.WriteLine("Adding additionalDependent with same data and random number attached " + num.ToString());
+                        // extract data from Json
+                        string fN = getDataParser().extractData("dependantUser.additionalDependant1.firstName") + num.ToString();
+                        string lN = getDataParser().extractData("dependantUser.additionalDependant1.lastName");
+                        string sSN = num.ToString().Remove(9);
+                        string bD = getDataParser().extractData("dependantUser.additionalDependant1.birthDate");
+                        string R = getDataParser().extractData("dependantUser.additionalDependant1.relationship");
+                        string G = getDataParser().extractData("dependantUser.additionalDependant1.Gender");
+
+                        try
+                        {
+                            // click add dependent button
+                            dependentsPage.getaddDependentBtn().Click();
+                            Thread.Sleep(2000);
+
+                            // Send extracted data to fields
+                            dependentsPage.getfirstNameField().SendKeys(fN);
+                            dependentsPage.getlastNameField().SendKeys(lN);
+                            dependentsPage.getSSNField().SendKeys(sSN);
+                            dependentsPage.getbirthDateField().SendKeys(bD);
+                            if (G == "Male")
+                            {
+                                dependentsPage.getradioBtnMale().Click();
+                            }
+                            else
+                            {
+                                dependentsPage.getradioBtnFemale().Click();
+                            }
+                            dependentsPage.getrelationshipDropdown().Click();
+                            dependentsPage.getrelationshipDropdown().SendKeys(Keys.ArrowDown);
+                            dependentsPage.getrelationshipDropdown().SendKeys(Keys.ArrowDown);
+                            dependentsPage.getrelationshipDropdown().SendKeys(Keys.Enter);
+
+                            //continue btn
+                            dependentsPage.getcontinuePopUpBtn().Click();
+                            Thread.Sleep(3000);
+
+                            // continue entering information
+                            dependentsPage.getradioBtnMarriedNo().Click();
+                            dependentsPage.getradioBtnEnrolledYes().Click();
+                            dependentsPage.getradioBtnOtherCoverageNo().Click();
+
+                            // second continue button click
+                            dependentsPage.getcontinuePopUpBtn().Click();
+                            Thread.Sleep(2000);
+                            var currentListOfDependents = driver.FindElements(By.XPath(dependentMethodXPath));
+                            count = currentListOfDependents.Count;
+
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            TestContext.Progress.WriteLine("Could not find element");
+                            TestContext.Progress.WriteLine(ex);
+                            break;
+                        }
+
+                    }
+
+                }
                 Thread.Sleep(3000);
                 // Open New Tab.Go To Medical Step
                 driver.SwitchTo().NewWindow(WindowType.Tab);
@@ -235,7 +346,7 @@ namespace MPR.tests
                 Thread.Sleep(2000);
                 driver.Url = getDataParser().extractData("medicalUser.MedicalStepURL");
 
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
                 string[] planList = getDataParser().extractDataArray("medicalUser." + testItem + ".plansToValidate");
                 int itemIndex = 1;
                 string getValueToCompare = null;
@@ -243,7 +354,6 @@ namespace MPR.tests
 
                 foreach (string item in planList)
                 {
-                    Thread.Sleep(1000);
                     if (itemIndex == 1)
                     {
                         TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
@@ -259,6 +369,7 @@ namespace MPR.tests
                     }
                     if (itemIndex >= 2)
                     {
+                        // Compare Label with expected label
                         TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
                         string methodName = "get" + item + "medicalCoveragexPath";
                         MedicalPageObject c = new MedicalPageObject(getDriver());
@@ -271,6 +382,24 @@ namespace MPR.tests
 
                         Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
                         //TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+
+                        // Compare Price to Expected price
+                        // Test Json Value
+                        string expectedRate = getDataParser().extractData("medicalUser." + testItem + "." + item);
+                        // Get xpath and Rate from medical step page
+                        string rateMethodName = "get" + item + "medicalCoverageRatexPath";
+                        MedicalPageObject c2 = new MedicalPageObject(getDriver());
+                        Type type2 = typeof(MedicalPageObject);
+                        MethodInfo method2 = type2.GetMethod(rateMethodName);
+                        string methodXPath2 = (string)method2.Invoke(c2, null);
+                        string getValueToCompare2 = driver.FindElement(By.XPath(methodXPath2)).Text;
+
+                        TestContext.Progress.WriteLine(getValueToCompare2 + "(Rate From Medical Step Page) should equal = " + expectedRate);
+                        // compare expected rate to JSON Data rate.
+                        Assert.That(getValueToCompare2, Is.EqualTo(expectedRate));
+
+
+
                     }
                     itemIndex++;
                 }

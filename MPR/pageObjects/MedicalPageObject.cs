@@ -20,6 +20,8 @@ namespace MPR.pageObjects
     {
         private IWebDriver driver;
 
+        // -------------- Label Paths --------------------------
+
         string waiveMedicalCoveragexPath = "//td[text()[contains(.,'WAIVE')]]";
         public string getWAIVEmedicalCoveragexPath()
         {
@@ -66,6 +68,50 @@ namespace MPR.pageObjects
         public string getPERMANENTEmedicalCoveragexPath()
         {
             return permanenteMedicalCoveragexPath;
+        }
+
+        // ---------------------- Rate Paths --------------------------------
+
+        string premierMedicalCoverageRatexPath = "//td[@id='tdHPPlanPremium']/div/span[1]";
+        public string getPREMIERmedicalCoverageRatexPath()
+        {
+            return premierMedicalCoverageRatexPath;
+        }
+
+        string selectMedicalCoverageRatexPath = "//td[@id='tdDSPlanPremium']/div/span[1]";
+        public string getSELECTmedicalCoverageRatexPath()
+        {
+            return selectMedicalCoverageRatexPath;
+        }
+
+        string valueMedicalCoverageRatexPath = "//td[@id='tdLPPlanPremium']/div/span[1]";
+        public string getVALUEmedicalCoverageRatexPath()
+        {
+            return valueMedicalCoverageRatexPath;
+        }
+
+        string protectMedicalCoverageRatexPath = "//td[@id='tdP1PlanPremium']/div/span[1]";
+        public string getPROTECTmedicalCoverageRatexPath()
+        {
+            return protectMedicalCoverageRatexPath;
+        }
+
+        string choiceMedicalCoverageRatexPath = "//td[@id='tdHMPlanPremium']/div/span[1]";
+        public string getCHOICEmedicalCoverageRatexPath()
+        {
+            return choiceMedicalCoverageRatexPath;
+        }
+
+        string kaiserMedicalCoverageRatexPath = "//td[@id='tdKHPlanPremium']/div/span[1]";
+        public string getKAISERmedicalCoverageRatexPath()
+        {
+            return kaiserMedicalCoverageRatexPath;
+        }
+
+        string permanenteMedicalCoverageRatexPath = "//td[@id='tdKNPlanPremium' or @id='tdKSPlanPremium']/div/span[1]";
+        public string getPERMANENTEmedicalCoverageRatexPath()
+        {
+            return permanenteMedicalCoverageRatexPath;
         }
 
         public MedicalPageObject(IWebDriver driver)

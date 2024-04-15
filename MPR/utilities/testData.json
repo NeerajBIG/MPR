@@ -14,8 +14,8 @@
 
   "dependantUser": {
     "dependantStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Dependents#",
-    "dependentUserData": [ "AdditionalDependant1", "AdditionalDependant2" ],
-    "AdditionalDependant1": {
+    "dependentUserData": [ "additionalDependant1", "additionalDependant2" ],
+    "additionalDependant1": {
       "firstName": "John",
       "lastName": "Smith",
       "SSN": "100001006",
@@ -23,7 +23,7 @@
       "relationship": "Child",
       "Gender": "Male"
     },
-    "AdditionalDependant2": {
+    "additionalDependant2": {
       "firstName": "Jane",
       "lastName": "Smith",
       "SSN": "200001006",
@@ -50,8 +50,8 @@
 
 
     // Number refers to TC number. ex. 118 refers to TC_0118. test date for that Test Case
-    //"PlanChangeWithZipCodeChangeTestData": [ "Case_1", "Case_2", "Case_3", "Case_4", "Case_5", "Case_6", "Case_7", "Case_8", "Case_9", "Case_10", "Case_11", "Case_12", "Case_13", "Case_14", "Case_15", "Case_16", "Case_17", "Case_18", "Case_19", "Case_20", "Case_21" ],
-    "PlanChangeWithZipCodeChangeTestData": [ "Case_1", "Case_2", "Case_3", "Case_4", "Case_5", "Case_6", "Case_7" ],
+    "PlanChangeWithZipCodeChangeTestData": [ "Case_1", "Case_2", "Case_3", "Case_4", "Case_5", "Case_6", "Case_7", "Case_8", "Case_9", "Case_10", "Case_11", "Case_12", "Case_13", "Case_14", "Case_15", "Case_16", "Case_17", "Case_18", "Case_19", "Case_20", "Case_21" ],
+    //"PlanChangeWithZipCodeChangeTestData": [ "Case_1", "Case_2", "Case_3", "Case_4", "Case_5", "Case_6", "Case_7" ],
 
     "Case_1": {
       "PeopleOnPlan": 1,
