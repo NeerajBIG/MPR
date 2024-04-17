@@ -12,7 +12,7 @@
     "password": "111111111"
   },
 
-  "dependantUser": {
+  "dependentUser": {
     "dependantStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Dependents#",
     "dependentUserData": [ "additionalDependant1", "additionalDependant2" ],
     "additionalDependant1": {
@@ -32,6 +32,12 @@
       "Gender": "Female"
     }
 
+  },
+
+  "dentalUser": {
+    "username": "Tester1013",
+    "password": "Demo@one2345",
+    "DentalStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Dental"
   },
 
   "medicalUser": {
@@ -55,6 +61,7 @@
 
     "Case_1": {
       "PeopleOnPlan": 1,
+      "execute": "True",
       "zipcode": "84106",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$251.90",
@@ -64,6 +71,7 @@
     },
     "Case_2": {
       "PeopleOnPlan": 1,
+      "execute": "True",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$251.90",
@@ -73,6 +81,7 @@
     },
     "Case_3": {
       "PeopleOnPlan": 1,
+      "execute": "False",
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
       "PREMIER": "$251.90",
@@ -81,6 +90,7 @@
     },
     "Case_4": {
       "PeopleOnPlan": 1,
+      "execute": "False",
       "zipcode": "96762",
       "plansToValidate": [ "WAIVE", "CHOICE", "KAISER" ],
       "CHOICE": "$124.10",
@@ -88,6 +98,7 @@
     },
     "Case_5": {
       "PeopleOnPlan": 1,
+      "execute": "False",
       "zipcode": "94102",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
       "PREMIER": "$251.90",
@@ -98,6 +109,7 @@
     },
     "Case_6": {
       "PeopleOnPlan": 1,
+      "execute": "False",
       "zipcode": "92101",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
       "PREMIER": "$251.90",
@@ -107,6 +119,7 @@
     },
     "Case_7": {
       "PeopleOnPlan": 1,
+      "execute": "False",
       "zipcode": "59901",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
       "PREMIER": "$251.90",
@@ -115,6 +128,7 @@
     },
     "Case_8": {
       "PeopleOnPlan": 2,
+      "execute": "True",
       "zipcode": "84106",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$506.40",
@@ -124,6 +138,7 @@
     },
     "Case_9": {
       "PeopleOnPlan": 2,
+      "execute": "False",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$506.40",
@@ -133,6 +148,7 @@
     },
     "Case_10": {
       "PeopleOnPlan": 2,
+      "execute": "False",
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
       "PREMIER": "$506.40",
@@ -141,6 +157,7 @@
     },
     "Case_11": {
       "PeopleOnPlan": 2,
+      "execute": "False",
       "zipcode": "96762",
       "plansToValidate": [ "WAIVE", "CHOICE", "KAISER" ],
       "CHOICE": "$245.60",
@@ -148,6 +165,7 @@
     },
     "Case_12": {
       "PeopleOnPlan": 2,
+      "execute": "False",
       "zipcode": "94102",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
       "PREMIER": "$506.40",
@@ -159,6 +177,7 @@
     //Is row 47 on the excel case list correct?
     "Case_13": {
       "PeopleOnPlan": 2,
+      "execute": "False",
       "zipcode": "92101",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
       "PREMIER": "$506.40",
@@ -168,6 +187,7 @@
     },
     "Case_14": {
       "PeopleOnPlan": 2,
+      "execute": "False",
       "zipcode": "59901",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
       "PREMIER": "$506.40",
@@ -176,6 +196,7 @@
     },
     "Case_15": {
       "PeopleOnPlan": 3,
+      "execute": "False",
       "zipcode": "84106",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$799.80",
@@ -185,6 +206,7 @@
     },
     "Case_16": {
       "PeopleOnPlan": 3,
+      "execute": "False",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$799.80",
@@ -194,6 +216,7 @@
     },
     "Case_17": {
       "PeopleOnPlan": 3,
+      "execute": "False",
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
       "PREMIER": "$799.80",
@@ -202,6 +225,7 @@
     },
     "Case_18": {
       "PeopleOnPlan": 3,
+      "execute": "False",
       "zipcode": "96762",
       "plansToValidate": [ "WAIVE", "CHOICE", "KAISER" ],
       "CHOICE": "$381.90",
@@ -209,6 +233,7 @@
     },
     "Case_19": {
       "PeopleOnPlan": 3,
+      "execute": "False",
       "zipcode": "94102",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
       "PREMIER": "$799.80",
@@ -219,6 +244,7 @@
     },
     "Case_20": {
       "PeopleOnPlan": 3,
+      "execute": "False",
       "zipcode": "92101",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ],
       "PREMIER": "$799.80",
@@ -228,6 +254,7 @@
     },
     "Case_21": {
       "PeopleOnPlan": 3,
+      "execute": "False",
       "zipcode": "59901",
       "plansToValidate": [ "WAIVE", "PREMIER", "VALUE", "PROTECT" ],
       "PREMIER": "$799.80",
@@ -236,8 +263,10 @@
     },
 
     "DentalPlanChangeWithZipCodeChangeTestData": [ "DentalCase_1", "DentalCase_2", "DentalCase_3", "DentalCase_4", "DentalCase_5", "DentalCase_6", "DentalCase_7", "DentalCase_8", "DentalCase_9", "DentalCase_10", "DentalCase_11", "DentalCase_12", "DentalCase_13", "DentalCase_14", "DentalCase_15" ],
+    //"DentalPlanChangeWithZipCodeChangeTestData": [ "DentalCase_1", "DentalCase_6", "DentalCase_11" ],
     "DentalCase_1": {
       "PeopleOnPlan": 1,
+      "execute": "True",
       "zipcode": "84106",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$2.60",
@@ -245,6 +274,7 @@
     },
     "DentalCase_2": {
       "PeopleOnPlan": 1,
+      "execute": "True",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$2.60",
@@ -252,6 +282,7 @@
     },
     "DentalCase_3": {
       "PeopleOnPlan": 1,
+      "execute": "True",
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$2.60",
@@ -259,6 +290,7 @@
     },
     "DentalCase_4": {
       "PeopleOnPlan": 1,
+      "execute": "True",
       "zipcode": "96762",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$2.60",
@@ -266,6 +298,7 @@
     },
     "DentalCase_5": {
       "PeopleOnPlan": 1,
+      "execute": "True",
       "zipcode": "59901",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$2.60",
@@ -273,6 +306,7 @@
     },
     "DentalCase_6": {
       "PeopleOnPlan": 2,
+      "execute": "True",
       "zipcode": "84106",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -280,6 +314,7 @@
     },
     "DentalCase_7": {
       "PeopleOnPlan": 2,
+      "execute": "True",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -287,6 +322,7 @@
     },
     "DentalCase_8": {
       "PeopleOnPlan": 2,
+      "execute": "True",
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -294,6 +330,7 @@
     },
     "DentalCase_9": {
       "PeopleOnPlan": 2,
+      "execute": "True",
       "zipcode": "96762",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -301,6 +338,7 @@
     },
     "DentalCase_10": {
       "PeopleOnPlan": 2,
+      "execute": "True",
       "zipcode": "59901",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -308,6 +346,7 @@
     },
     "DentalCase_11": {
       "PeopleOnPlan": 3,
+      "execute": "True",
       "zipcode": "84106",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$11.60",
@@ -315,6 +354,7 @@
     },
     "DentalCase_12": {
       "PeopleOnPlan": 3,
+      "execute": "True",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$11.60",
@@ -322,6 +362,7 @@
     },
     "DentalCase_13": {
       "PeopleOnPlan": 3,
+      "execute": "True",
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$11.60",
@@ -329,6 +370,7 @@
     },
     "DentalCase_14": {
       "PeopleOnPlan": 3,
+      "execute": "True",
       "zipcode": "96762",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$11.60",
@@ -336,26 +378,35 @@
     },
     "DentalCase_15": {
       "PeopleOnPlan": 3,
+      "execute": "True",
       "zipcode": "59901",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$11.60",
       "PLUS": "$44.40"
     },
+
+
     "VisionPlanChangeTestData": [ "VisionCase_1", "VisionCase_2", "VisionCase_3" ],
     "VisionCase_1": {
       "PeopleOnPlan": 1,
-      "NoEyeExamRate": "$6.60",
-      "YesEyeExamRate": "$9.50"
+      "plansToValidate": [ "WAIVE", "WITHOUT", "WITH" ],
+      "execute": "True",
+      "WITHOUT": "$6.60",
+      "WITH": "$9.50"
     },
     "VisionCase_2": {
       "PeopleOnPlan": 2,
-      "NoEyeExamRate": "$12.50",
-      "YesEyeExamRate": "$18.30"
+      "plansToValidate": [ "WAIVE", "WITHOUT", "WITH" ],
+      "execute": "True",
+      "WITHOUT": "$12.50",
+      "WITH": "$18.30"
     },
     "VisionCase_3": {
       "PeopleOnPlan": 3,
-      "NoEyeExamRate": "$18.30",
-      "YesEyeExamRate": "$28.10"
+      "plansToValidate": [ "WAIVE", "WITHOUT", "WITH" ],
+      "execute": "True",
+      "WITHOUT": "$18.30",
+      "WITH": "$28.10"
     }
   },
   "usernameValid": "Tester1001",
@@ -369,6 +420,8 @@
   "dobInvalid": "01/01/2002",
   "dataSet": [ "Tester1001", "Tester1002" ],
   "zipcodeValid": "84106",
-  "AboutMeStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo"
+  "AboutMeStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo",
+  "VisionStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Vision",
+  "dependantStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Dependents#"
 
 }

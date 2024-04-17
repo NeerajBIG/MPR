@@ -227,7 +227,6 @@ namespace MPR.pageObjects
             return txtDeseretProtect;
         }
 
-        // poitions of plans will mess this up possibly. I think I should use id's after all.
         [FindsBy(How = How.XPath, Using = "//td[@id='tdHPPlanPremium']/div/span[1]")]
         private IWebElement txtDeseretPremierRate;
         public IWebElement gettxtDeseretPremierRate()
