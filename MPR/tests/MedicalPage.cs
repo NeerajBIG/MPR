@@ -273,7 +273,6 @@ namespace MPR.tests
                     else if (Int32.Parse(peopleOnPlan) > count)
                     {
                         //Need to add users until peopleOnPlan = count
-
                         while (Int32.Parse(peopleOnPlan) > count)
                         {
 
@@ -285,7 +284,6 @@ namespace MPR.tests
                             string lastName = getDataParser().extractData("dependentUser.additionalDependant1.lastName");
                             string ssn = num.ToString().Remove(9);
                             string birthDate = getDataParser().extractData("dependentUser.additionalDependant1.birthDate");
-                            //string relationship = getDataParser().extractData("dependantUser.additionalDependant1.relationship");
                             string gender = getDataParser().extractData("dependentUser.additionalDependant1.Gender");
 
                             try
@@ -355,7 +353,6 @@ namespace MPR.tests
                     Thread.Sleep(2000);
                     string[] planList = getDataParser().extractDataArray("medicalUser." + testItem + ".plansToValidate");
                     int itemIndex = 1;
-                    string getValueToCompare = null;
                     TestContext.Progress.WriteLine("##################################################");
 
                     foreach (string item in planList)
@@ -364,45 +361,41 @@ namespace MPR.tests
                         {
                             TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
                             string methodName = "get" + item + "medicalCoveragexPath";
-                            MedicalPageObject c = new MedicalPageObject(getDriver());
+                            MedicalPageObject medicalStepObject = new MedicalPageObject(getDriver());
                             Type type = typeof(MedicalPageObject);
                             MethodInfo method = type.GetMethod(methodName);
-                            string methodXPath = (string)method.Invoke(c, null);
+                            string methodXPath = (string)method.Invoke(medicalStepObject, null);
 
-                            getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
+                            string getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
                             Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
-                            //TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
                         }
                         if (itemIndex >= 2)
                         {
                             // Compare Label with expected label
                             TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
                             string methodName = "get" + item + "medicalCoveragexPath";
-                            MedicalPageObject c = new MedicalPageObject(getDriver());
+                            MedicalPageObject medicalStepObject = new MedicalPageObject(getDriver());
                             Type type = typeof(MedicalPageObject);
-                            MethodInfo method = type.GetMethod(methodName);
-                            string methodXPath = (string)method.Invoke(c, null);
+                            MethodInfo methodComparePlan = type.GetMethod(methodName);
+                            string methodComparePlanXPath = (string)methodComparePlan.Invoke(medicalStepObject, null);
                             Thread.Sleep(1000);
 
-                            getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
+                            string getPlanToCompare = driver.FindElement(By.XPath(methodComparePlanXPath)).Text;
 
-                            Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
-                            //TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+                            Assert.That(getPlanToCompare, Does.Contain(item).IgnoreCase);
 
                             // Compare Price to Expected price
                             // Test Json Value
                             string expectedRate = getDataParser().extractData("medicalUser." + testItem + "." + item);
                             // Get xpath and Rate from medical step page
                             string rateMethodName = "get" + item + "medicalCoverageRatexPath";
-                            MedicalPageObject c2 = new MedicalPageObject(getDriver());
-                            Type type2 = typeof(MedicalPageObject);
-                            MethodInfo method2 = type2.GetMethod(rateMethodName);
-                            string methodXPath2 = (string)method2.Invoke(c2, null);
-                            string getValueToCompare2 = driver.FindElement(By.XPath(methodXPath2)).Text;
+                            MethodInfo methodCompareRate = type.GetMethod(rateMethodName);
+                            string methodCompareRateXPath = (string)methodCompareRate.Invoke(medicalStepObject, null);
+                            string getRateToCompare = driver.FindElement(By.XPath(methodCompareRateXPath)).Text;
 
-                            TestContext.Progress.WriteLine(getValueToCompare2 + "(Rate From Medical Step Page) should equal = " + expectedRate);
+                            TestContext.Progress.WriteLine(getRateToCompare + "(Rate From Medical Step Page) should equal = " + expectedRate);
                             // compare expected rate to JSON Data rate.
-                            Assert.That(getValueToCompare2, Is.EqualTo(expectedRate));
+                            Assert.That(getRateToCompare, Is.EqualTo(expectedRate));
 
 
 

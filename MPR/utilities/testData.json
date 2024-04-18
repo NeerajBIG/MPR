@@ -274,7 +274,7 @@
     },
     "DentalCase_2": {
       "PeopleOnPlan": 1,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$2.60",
@@ -282,7 +282,7 @@
     },
     "DentalCase_3": {
       "PeopleOnPlan": 1,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$2.60",
@@ -290,7 +290,7 @@
     },
     "DentalCase_4": {
       "PeopleOnPlan": 1,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "96762",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$2.60",
@@ -298,7 +298,7 @@
     },
     "DentalCase_5": {
       "PeopleOnPlan": 1,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "59901",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$2.60",
@@ -314,7 +314,7 @@
     },
     "DentalCase_7": {
       "PeopleOnPlan": 2,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -322,7 +322,7 @@
     },
     "DentalCase_8": {
       "PeopleOnPlan": 2,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -330,7 +330,7 @@
     },
     "DentalCase_9": {
       "PeopleOnPlan": 2,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "96762",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -338,7 +338,7 @@
     },
     "DentalCase_10": {
       "PeopleOnPlan": 2,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "59901",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -354,7 +354,7 @@
     },
     "DentalCase_12": {
       "PeopleOnPlan": 3,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$11.60",
@@ -362,7 +362,7 @@
     },
     "DentalCase_13": {
       "PeopleOnPlan": 3,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "83839",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$11.60",
@@ -370,7 +370,7 @@
     },
     "DentalCase_14": {
       "PeopleOnPlan": 3,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "96762",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$11.60",
@@ -378,7 +378,7 @@
     },
     "DentalCase_15": {
       "PeopleOnPlan": 3,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "59901",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$11.60",

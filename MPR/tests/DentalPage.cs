@@ -40,9 +40,7 @@ namespace MPR.tests
             loginPage.getpassword().SendKeys(passwordValid);
 
             loginPage.getsubmit().Click();
-
             menuPage.getbtnContinue().Click();
-
             dentalPage.getclkDental().Click();
 
             string dentalPageHeading = dentalPage.getheadingText().Text;
@@ -73,8 +71,7 @@ namespace MPR.tests
             menuPage.getbtnContinue().Click();
 
             // Get current window handle
-            string originalWindow = driver.CurrentWindowHandle;
-            //medicalPage.getcomparePlanlink().Click();            
+            string originalWindow = driver.CurrentWindowHandle;            
 
             string[] testData = getDataParser().extractDataArray("medicalUser.DentalPlanChangeWithZipCodeChangeTestData");
 
@@ -154,7 +151,6 @@ namespace MPR.tests
                             string lastName = getDataParser().extractData("dependentUser.additionalDependant1.lastName");
                             string ssn = num.ToString().Remove(9);
                             string birthDate = getDataParser().extractData("dependentUser.additionalDependant1.birthDate");
-                            //string relationship = getDataParser().extractData("dependantUser.additionalDependant1.relationship");
                             string gender = getDataParser().extractData("dependentUser.additionalDependant1.Gender");
 
                             try
@@ -224,7 +220,6 @@ namespace MPR.tests
                     Thread.Sleep(2000);
                     string[] planList = getDataParser().extractDataArray("medicalUser." + testItem + ".plansToValidate");
                     int itemIndex = 1;
-                    string getValueToCompare = null;
                     TestContext.Progress.WriteLine("##################################################");
 
                     foreach (string item in planList)
@@ -233,12 +228,12 @@ namespace MPR.tests
                         {
                             TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
                             string methodName = "get" + item + "CoveragexPath";
-                            DentalPageObject c = new DentalPageObject(getDriver());
+                            DentalPageObject dentalObject = new DentalPageObject(getDriver());
                             Type type = typeof(DentalPageObject);
-                            MethodInfo method = type.GetMethod(methodName);
-                            string methodXPath = (string)method.Invoke(c, null);
+                            MethodInfo methodComparePlan = type.GetMethod(methodName);
+                            string methodXPath = (string)methodComparePlan.Invoke(dentalObject, null);
 
-                            getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
+                            string getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
                             Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
                             //TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
                         }
@@ -247,31 +242,28 @@ namespace MPR.tests
                             // Compare Label with expected label
                             TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
                             string methodName = "get" + item + "CoveragexPath";
-                            DentalPageObject c = new DentalPageObject(getDriver());
+                            DentalPageObject dentalObject = new DentalPageObject(getDriver());
                             Type type = typeof(DentalPageObject);
-                            MethodInfo method = type.GetMethod(methodName);
-                            string methodXPath = (string)method.Invoke(c, null);
+                            MethodInfo methodComparePlan = type.GetMethod(methodName);
+                            string methodComparePlanXPath = (string)methodComparePlan.Invoke(dentalObject, null);
                             Thread.Sleep(1000);
 
-                            getValueToCompare = driver.FindElement(By.XPath(methodXPath)).Text;
+                            string getPlanToCompare = driver.FindElement(By.XPath(methodComparePlanXPath)).Text;
 
-                            Assert.That(getValueToCompare, Does.Contain(item).IgnoreCase);
-                            //TestContext.Progress.WriteLine(getValueToCompare + " contains " + item);
+                            Assert.That(getPlanToCompare, Does.Contain(item).IgnoreCase);
 
                             // Compare Price to Expected price
                             // Test Json Value
                             string expectedRate = getDataParser().extractData("medicalUser." + testItem + "." + item);
                             // Get xpath and Rate from medical step page
                             string rateMethodName = "get" + item + "CoverageRatexPath";
-                            DentalPageObject c2 = new DentalPageObject(getDriver());
-                            Type type2 = typeof(DentalPageObject);
-                            MethodInfo method2 = type2.GetMethod(rateMethodName);
-                            string methodXPath2 = (string)method2.Invoke(c2, null);
-                            string getValueToCompare2 = driver.FindElement(By.XPath(methodXPath2)).Text;
+                            MethodInfo methodCompareRate = type.GetMethod(rateMethodName);
+                            string methodCompareRateXPath = (string)methodCompareRate.Invoke(dentalObject, null);
+                            string getRateToCompare = driver.FindElement(By.XPath(methodCompareRateXPath)).Text;
 
-                            TestContext.Progress.WriteLine(getValueToCompare2 + "(Rate From Dental Step Page) should equal = " + expectedRate);
+                            TestContext.Progress.WriteLine(getRateToCompare + "(Rate From Dental Step Page) should equal = " + expectedRate);
                             // compare expected rate to JSON Data rate.
-                            Assert.That(getValueToCompare2, Is.EqualTo(expectedRate));
+                            Assert.That(getRateToCompare, Is.EqualTo(expectedRate));
 
 
 
