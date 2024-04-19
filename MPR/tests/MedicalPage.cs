@@ -203,8 +203,6 @@ namespace MPR.tests
             // Need to verify step -> which step we are on.
             // start the loop -> complete steps one by one. up to the step we are testing. 
             // get class name
-            // 
-
 
 
             // Get current window handle
