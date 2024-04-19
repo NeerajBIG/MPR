@@ -306,7 +306,7 @@
     },
     "DentalCase_6": {
       "PeopleOnPlan": 2,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "84106",
       "plansToValidate": [ "WAIVE", "DENTAL", "PLUS" ],
       "DENTAL": "$5.00",
@@ -397,14 +397,14 @@
     "VisionCase_2": {
       "PeopleOnPlan": 2,
       "plansToValidate": [ "WAIVE", "WITHOUT", "WITH" ],
-      "execute": "True",
+      "execute": "False",
       "WITHOUT": "$12.50",
       "WITH": "$18.30"
     },
     "VisionCase_3": {
       "PeopleOnPlan": 3,
       "plansToValidate": [ "WAIVE", "WITHOUT", "WITH" ],
-      "execute": "True",
+      "execute": "False",
       "WITHOUT": "$18.30",
       "WITH": "$28.10"
     }
