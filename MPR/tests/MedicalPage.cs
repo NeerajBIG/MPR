@@ -2,7 +2,7 @@ using MPR.pageObjects;
 using MPR.utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.DevTools.V120.Page;
+using OpenQA.Selenium.DevTools.V121.Page;
 using OpenQA.Selenium.Interactions;
 using System;
 using System.Reflection;
@@ -190,7 +190,6 @@ namespace MPR.tests
             AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
             MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
             DependentsPageObject dependentsPage = new DependentsPageObject(getDriver());
-
             loginPage.getloginLink().Click();
 
             string usernameValid = getDataParser().extractData("medicalUser.username");
@@ -198,10 +197,15 @@ namespace MPR.tests
 
             string passwordValid = getDataParser().extractData("medicalUser.password");
             loginPage.getpassword().SendKeys(passwordValid);
-
             loginPage.getsubmit().Click();
-
             menuPage.getbtnContinue().Click();
+
+            // Need to verify step -> which step we are on.
+            // start the loop -> complete steps one by one. up to the step we are testing. 
+            // get class name
+            // 
+
+
 
             // Get current window handle
             string originalWindow = driver.CurrentWindowHandle;

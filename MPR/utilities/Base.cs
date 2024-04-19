@@ -14,7 +14,7 @@ using AventStack.ExtentReports.Reporter;
 using System.Security.Cryptography.X509Certificates;
 using AventStack.ExtentReports;
 using NUnit.Framework.Interfaces;
-using OpenQA.Selenium.DevTools.V120.Page;
+using OpenQA.Selenium.DevTools.V121.Page;
 using AventStack.ExtentReports.Listener.Entity;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;

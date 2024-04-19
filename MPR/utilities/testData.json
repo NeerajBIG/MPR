@@ -71,7 +71,7 @@
     },
     "Case_2": {
       "PeopleOnPlan": 1,
-      "execute": "True",
+      "execute": "False",
       "zipcode": "83204",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$251.90",
@@ -196,7 +196,7 @@
     },
     "Case_15": {
       "PeopleOnPlan": 3,
-      "execute": "False",
+      "execute": "True",
       "zipcode": "84106",
       "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": "$799.80",

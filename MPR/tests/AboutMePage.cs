@@ -278,6 +278,8 @@ namespace MPR.tests
             }
         }
 
+
+        //------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyPopupAlertMessageNoRadioSelection()
@@ -358,6 +360,9 @@ namespace MPR.tests
                 TestContext.Progress.WriteLine("Inside Step 2c");
             }
         }
+
+        //-----------------------------------------------------------------------------------------------------------------
+
 
         [Test]
         //[Ignore("Ignore test")]

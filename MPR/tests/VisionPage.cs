@@ -2,7 +2,7 @@ using MPR.pageObjects;
 using MPR.utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.DevTools.V120.Page;
+using OpenQA.Selenium.DevTools.V121.Page;
 using OpenQA.Selenium.Interactions;
 using System;
 using System.Reflection;
