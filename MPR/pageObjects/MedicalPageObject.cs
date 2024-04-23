@@ -20,7 +20,7 @@ namespace MPR.pageObjects
     {
         private IWebDriver driver;
 
-        // -------------- Label Paths --------------------------
+        // -------------- Label Paths for Medical Page --------------------------
 
         string waiveMedicalCoveragexPath = "//td[text()[contains(.,'WAIVE')]]";
         public string getWAIVEmedicalCoveragexPath()
@@ -70,7 +70,7 @@ namespace MPR.pageObjects
             return permanenteMedicalCoveragexPath;
         }
 
-        // ---------------------- Rate Paths --------------------------------
+        // ---------------------- Rate Paths For Medical Page --------------------------------
 
         string premierMedicalCoverageRatexPath = "//td[@id='tdHPPlanPremium']/div/span[1]";
         public string getPREMIERmedicalCoverageRatexPath()
@@ -114,6 +114,75 @@ namespace MPR.pageObjects
             return permanenteMedicalCoverageRatexPath;
         }
 
+        // Plan Paths for full comparison link
+        string premierComparisonLinkCoveragexPath = "//span[text()[contains(.,'Deseret Premier')] and contains(@id,'ctl00_ContentPlaceHolderMain_planCompare_lvPlanComparison_lblPlan')]";
+        public string getPREMIERComparisonLinkCoveragexPath()
+        {
+            return premierComparisonLinkCoveragexPath;
+        }
+
+        string selectComparisonLinkCoveragexPath = "//span[text()[contains(.,'Deseret Select')] and contains(@id,'ctl00_ContentPlaceHolderMain_planCompare_lvPlanComparison_lblPlan')]";
+        public string getSELECTComparisonLinkCoveragexPath()
+        {
+            return selectComparisonLinkCoveragexPath;
+        }
+
+        string valueComparisonLinkCoveragexPath = "//span[text()[contains(.,'Deseret Value')] and contains(@id,'ctl00_ContentPlaceHolderMain_planCompare_lvPlanComparison_lblPlan')]";
+        public string getVALUEComparisonLinkCoveragexPath()
+        {
+            return valueComparisonLinkCoveragexPath;
+        }
+
+        string protectComparisonLinkCoveragexPath = "//span[text()[contains(.,'Deseret Protect')] and contains(@id,'ctl00_ContentPlaceHolderMain_planCompare_lvPlanComparison_lblPlan')]";
+        public string getPROTECTComparisonLinkCoveragexPath()
+        {
+            return protectComparisonLinkCoveragexPath;
+        }
+
+        string choiceComparisonLinkCoveragexPath = "//span[text()[contains(.,'Deseret Choice Hawaii')] and contains(@id,'ctl00_ContentPlaceHolderMain_planCompare_lvPlanComparison_lblPlan')]";
+        public string getCHOICEComparisonLinkCoveragexPath()
+        {
+            return choiceComparisonLinkCoveragexPath;
+        }
+
+        string kaiserComparisonLinkCoveragexPath = "//span[text()[contains(.,'Kaiser of Hawaii')] and contains(@id,'ctl00_ContentPlaceHolderMain_planCompare_lvPlanComparison_lblPlan')]";
+        public string getKAISERComparisonLinkCoveragexPath()
+        {
+            return kaiserComparisonLinkCoveragexPath;
+        }
+        
+        string permanenteComparisonLinkCoveragexPath = "//span[text()[contains(.,'Kaiser Permanente')] and contains(@id,'ctl00_ContentPlaceHolderMain_planCompare_lvPlanComparison_lblPlan')]";
+        public string getPERMANENTEComparisonLinkCoveragexPath()
+        {
+            return permanenteComparisonLinkCoveragexPath;
+        }
+        // Selection Verification
+        string planLabelsxPath = "//td[@class='planTitleCell selectedPlanColor1' or @class='planTitleCell planColor1' or @class='waivePlanCell waiveColor']";
+        public string getPlanLabelsxPath()
+        {
+            return planLabelsxPath;
+        }
+
+
+        string planSelectionxPath = "//td[@class='planRadioCell']/input";
+        public string getPlanSelectionxPath()
+        {
+            return planSelectionxPath;
+        }
+
+        string planSelectionIndicatorxPath = "//td[@class='selectionIndicator' and text()='CURRENT SELECTION']";
+        public string getPlanSelectionIndicatorxPath()
+        {
+            return planSelectionIndicatorxPath;
+        }
+
+        string planSelectionIndicatorColorxPath = "//td[@class='raisedRow selectedPlanColor1']";
+        public string getPlanSelectionIndicatorColorxPath()
+        {
+            return planSelectionIndicatorColorxPath;
+        }
+
+
         public MedicalPageObject(IWebDriver driver)
         {
             this.driver = driver;
@@ -139,6 +208,13 @@ namespace MPR.pageObjects
         public IWebElement getcomparePlanlink()
         {
             return comparePlanlink;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//a[contains(text(),'full plan comparison')]")]
+        private IWebElement fullPlanComparisonlink;
+        public IWebElement getfullPlanComparisonlink()
+        {
+            return fullPlanComparisonlink;
         }
 
         [FindsBy(How = How.XPath, Using = "//h1[@class='page-header']")]
@@ -297,6 +373,14 @@ namespace MPR.pageObjects
         public IWebElement getreadMoreBtnCollapseInput()
         {
             return readMoreBtnCollapseInput;
+
+        }
+
+        [FindsBy(How = How.XPath, Using = "//li[text()[contains(.,'Make a medical plan choice')]]")]
+        private IWebElement noSelectionErrorMessage;
+        public IWebElement getnoSelectionErrorMessage()
+        {
+            return noSelectionErrorMessage;
 
         }
 

@@ -143,6 +143,14 @@ namespace MPR.pageObjects
             return nextBtn;
         }
 
+        [FindsBy(How = How.XPath, Using = "//a[text()[contains(.,'Prev')]]")]
+        private IWebElement prevBtn;
+        public IWebElement getprevBtn()
+        {
+            return prevBtn;
+        }
+
+
 
 
     }

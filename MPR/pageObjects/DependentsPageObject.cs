@@ -186,6 +186,13 @@ namespace MPR.pageObjects
             return dependentsxPath;
         }
 
+        [FindsBy(How = How.XPath, Using = "//a[contains(text(),'Next')]")]
+        private IWebElement nextBtn;
+        public IWebElement getnextBtn()
+        {
+            return nextBtn;
+        }
+
 
     }
 }

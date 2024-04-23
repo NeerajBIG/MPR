@@ -422,6 +422,75 @@
   "zipcodeValid": "84106",
   "AboutMeStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo",
   "VisionStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Vision",
-  "dependantStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Dependents#"
+  "dependantStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Dependents#",
+
+  // test data for the full comparison plan link
+  "fullPlanComparisonTestData": {
+    "CaseList": [ "Case_1", "Case_2", "Case_3", "Case_4", "Case_5", "Case_6", "Case_7" ],
+    "Case_1": {
+      "execute": "True",
+      "zipcode": "84106",
+      "plansToValidate": [ "PREMIER", "SELECT", "VALUE", "PROTECT" ]
+    },
+    "Case_2": {
+      "execute": "False",
+      "zipcode": "83204",
+      "plansToValidate": [ "PREMIER", "SELECT", "VALUE", "PROTECT" ],
+      "PREMIER": "$251.90"
+    },
+    "Case_3": {
+      "execute": "False",
+      "zipcode": "83839",
+      "plansToValidate": [ "PREMIER", "VALUE", "PROTECT" ]
+    },
+    "Case_4": {
+      "execute": "False",
+      "zipcode": "96762",
+      "plansToValidate": [ "CHOICE", "KAISER" ]
+    },
+    "Case_5": {
+      "execute": "False",
+      "zipcode": "94102",
+      "plansToValidate": [ "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ]
+
+    },
+    "Case_6": {
+      "execute": "False",
+      "zipcode": "92101",
+      "plansToValidate": [ "PREMIER", "VALUE", "PROTECT", "PERMANENTE" ]
+    },
+    "Case_7": {
+      "execute": "False",
+      "zipcode": "59901",
+      "plansToValidate": [ "PREMIER", "VALUE", "PROTECT" ]
+    }
+  },
+  // Test the next button for each selected plan
+  "nextButtonTestData": {
+    "CaseList": [ "Case_1", "Case_2", "Case_3", "Case_4"],
+    "Case_1": {
+      "execute": "True",
+      "zipcode": "84106",
+      "plansToValidate": [ "PREMIER", "SELECT", "VALUE", "PROTECT" ]
+    },
+    "Case_2": {
+      "execute": "True",
+      "zipcode": "96762",
+      "plansToValidate": [ "CHOICE", "KAISER" ]
+    },
+    "Case_3": {
+      "execute": "True",
+      "zipcode": "94102",
+      "plansToValidate": [ "PERMANENTE" ]
+
+    },
+    "Case_4": {
+      "execute": "True",
+      "zipcode": "92101",
+      "plansToValidate": [ "PERMANENTE" ]
+    },
+  }
+
+
 
 }

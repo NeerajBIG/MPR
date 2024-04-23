@@ -5,10 +5,12 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools.V121.Page;
 using OpenQA.Selenium.Interactions;
 using System;
+using System.Reactive.Joins;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Security.Policy;
 using System.Xml.Serialization;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MPR.tests
 {
@@ -49,6 +51,98 @@ namespace MPR.tests
             Assert.That(medicalPageHeading, Is.EqualTo(medicalPageHeadingExpected));
         }
 
+
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyMedicalPageSelection()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("medicalUser.username");
+            loginPage.getusername().SendKeys(usernameValid);
+
+            string passwordValid = getDataParser().extractData("medicalUser.password");
+            loginPage.getpassword().SendKeys(passwordValid);
+
+            loginPage.getsubmit().Click();
+
+            menuPage.getbtnContinue().Click();
+
+            medicalPage.getclkMedical().Click();
+            Thread.Sleep(2000);
+
+            // Verify Error popup when no selection 
+            aboutMePage.getnextBtn().Click();
+            Thread.Sleep(3000);
+            string expectedNoSelectionErrorMessage = "Make a medical plan choice";
+            try
+            {
+                string noSelectionErrorMessage = medicalPage.getnoSelectionErrorMessage().Text;
+                Assert.That(noSelectionErrorMessage, Does.Contain(expectedNoSelectionErrorMessage).IgnoreCase);
+
+            }
+            catch (NoSuchElementException)
+            {
+                TestContext.Progress.WriteLine("No Error Message found");
+                Assert.Fail("No Error Message Found");
+            }
+
+            // Verify that only one option can be selected at a time.
+            // get selection
+            string medicalSelectionMethodName = "getPlanSelectionxPath";
+            MedicalPageObject medicalObject = new MedicalPageObject(getDriver());
+            Type typeMedical = typeof(MedicalPageObject);
+            MethodInfo medicalSelectionMethod = typeMedical.GetMethod(medicalSelectionMethodName);
+            string medicalMethodXPath = (string)medicalSelectionMethod.Invoke(medicalObject, null);
+            // find tr elements -> list of users in the grid
+            var listOfDependentsSelectionOptionElements = driver.FindElements(By.XPath(medicalMethodXPath));
+            // select every plan once
+            foreach (var element in listOfDependentsSelectionOptionElements) {
+                Thread.Sleep(1000);
+                element.Click();
+            }
+            Thread.Sleep(1000);
+            // Verify that only one plan is still selected after selecting every plan once.
+            string medicalSelectionIndicatorMethodName = "getPlanSelectionIndicatorxPath";
+            MethodInfo medicalSelectionIndicatorMethod = typeMedical.GetMethod(medicalSelectionIndicatorMethodName);
+            string medicalSelectionIndicatorMethodXPath = (string)medicalSelectionIndicatorMethod.Invoke(medicalObject, null);
+
+            // find how many options have been selected
+            var listOfSelectorIndicatorElements = driver.FindElements(By.XPath(medicalSelectionIndicatorMethodXPath));
+            int count = listOfSelectorIndicatorElements.Count;
+            if (count == 1)
+            {
+                TestContext.Progress.WriteLine("Only one plan selected");
+            }
+            else {
+                Assert.Fail("Multiple plans are selected");
+            }
+            Thread.Sleep(1000);
+            // verify that a new color has been selected. same method there should only be one class with the changed color
+            string medicalSelectionIndicatorColorMethodName = "getPlanSelectionIndicatorColorxPath";
+            MethodInfo medicalSelectionIndicatorColorMethod = typeMedical.GetMethod(medicalSelectionIndicatorColorMethodName);
+            string medicalSelectionIndicatorColorMethodXPath = (string)medicalSelectionIndicatorColorMethod.Invoke(medicalObject, null);
+
+            // find how many options have been selected
+            var listOfSelectorIndicatorColorElements = driver.FindElements(By.XPath(medicalSelectionIndicatorColorMethodXPath));
+            int countColorElements = listOfSelectorIndicatorColorElements.Count;
+            if (countColorElements == 1)
+            {
+                TestContext.Progress.WriteLine("Only one plan has color change");
+            }
+            else
+            {
+                Assert.Fail("Multiple plans are selected and have change color");
+            }
+            Thread.Sleep(1000);
+
+        }
+
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyMedicalPageLinkToNewTab()
@@ -73,112 +167,22 @@ namespace MPR.tests
 
             // Get current window handle
             string originalWindow = driver.CurrentWindowHandle;
+            TestContext.Progress.WriteLine(originalWindow);
             medicalPage.getcomparePlanlink().Click();
 
             foreach (string window in driver.WindowHandles)
             {
+                TestContext.Progress.WriteLine(window);
                 if (originalWindow != window)
                 {
                     driver.SwitchTo().Window(window);
                     break;
                 }
             }
+            Thread.Sleep(3000);
 
-            // Did we switch to new pop up tab successfully?
-            string medicalPagePopUpHeading = medicalPage.getpopUpHeading().Text;
-            string medicalPagePopUpHeadingExpected = "2024 Plan Comparison Information";
-            Assert.That(medicalPagePopUpHeading, Is.EqualTo(medicalPagePopUpHeadingExpected));
-
-            // verify that plan type is medical
-            string MedicalPagePopUpDropdownSelection = medicalPage.getplanTypeSelection().Text;
-            string MedicalPagePopUpDropdownSelectionExpected = "Medical";
-            Assert.That(MedicalPagePopUpDropdownSelection, Is.EqualTo(MedicalPagePopUpDropdownSelectionExpected));
-
-            // verify that zip code is equal to zipcode entered on about me page
-            string MedicalPagePopUpZipCodeTextBox = medicalPage.getzipCode().GetAttribute("Value");
-            string MedicalPagePopUpZipCodeTextBoxExpect = getDataParser().extractData("medicalUser.zipcode2Valid");
-            Assert.That(MedicalPagePopUpZipCodeTextBox, Is.EqualTo(MedicalPagePopUpZipCodeTextBoxExpect));
-
-            // Verify DP Plan Exists on Page.
-            string MedicalPagePlanDPremier = medicalPage.gettxtDeseretPremierPopUp().Text;
-            string MedicalPagePlanDPremierExpected = "Deseret Premier";
-            Assert.That(MedicalPagePlanDPremier, Is.EqualTo(MedicalPagePlanDPremierExpected));
-
-            // Verify DV Plan Exists on Page.
-            string MedicalPagePlanDValue = medicalPage.gettxtDeseretValuePopUp().Text;
-            string MedicalPagePlanDValueExpected = "Deseret Value";
-            Assert.That(MedicalPagePlanDValue, Is.EqualTo(MedicalPagePlanDValueExpected));
-
-            // Verify DS Plan Exists on Page.
-            string MedicalPagePlanDSelect = medicalPage.gettxtDeseretSelectPopUp().Text;
-            string MedicalPagePlanDSelectExpected = "Deseret Select";
-            Assert.That(MedicalPagePlanDSelect, Is.EqualTo(MedicalPagePlanDSelectExpected));
-
-            // Verify DP Plan Exists on Page.
-            string MedicalPagePlanDProtect = medicalPage.gettxtDeseretProtectPopUp().Text;
-            string MedicalPagePlanDProtectExpected = "Deseret Protect";
-            Assert.That(MedicalPagePlanDProtect, Does.Contain(MedicalPagePlanDProtectExpected));
-        }
-
-
-
-        [Test]
-        //[Ignore("Ignore test")]
-        public void VerifyMedicalPagePremium()
-        {
-            LoginPageObject loginPage = new LoginPageObject(getDriver());
-            MenuPageObject menuPage = new MenuPageObject(getDriver());
-            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
-            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
-
-            loginPage.getloginLink().Click();
-
-            string usernameValid = getDataParser().extractData("medicalUser.username");
-            loginPage.getusername().SendKeys(usernameValid);
-
-            string passwordValid = getDataParser().extractData("medicalUser.password");
-            loginPage.getpassword().SendKeys(passwordValid);
-
-            loginPage.getsubmit().Click();
-
-            menuPage.getbtnContinue().Click();
-
-            // Enter in Zip Code Test Data
-            aboutMePage.getclkAboutMe().Click();
-            aboutMePage.getzipCode().Clear();
-            string zipCode = getDataParser().extractData("medicalUser.zipcodeValidCase_1");
-            TestContext.Progress.WriteLine("To get json string from array " + zipCode);
-            aboutMePage.getzipCode().SendKeys(zipCode);
-            aboutMePage.getnextBtn().Click();
-
-            // Open New Tab.Go To Medical Step
-            driver.SwitchTo().NewWindow(WindowType.Tab);
-            driver.Url = getDataParser().extractData("medicalUser.MedicalStepURL");
-
-            // Compare Rate on Medical Step 
-            // Refactor Code to a loop for code quality
-            string PremiumRate125 = getDataParser().extractData("medicalUser.PremierAmountCase_1_1");
-            TestContext.Progress.WriteLine("To get json string from array" + PremiumRate125);
-            string DeseretPremierRate = medicalPage.gettxtDeseretPremierRate().Text;
-            Assert.That(PremiumRate125, Is.EqualTo(DeseretPremierRate));
-
-            string SelectRate125 = getDataParser().extractData("medicalUser.SelectAmountCase_1_2");
-            TestContext.Progress.WriteLine("To get json string from array" + PremiumRate125);
-            string DeseretSelectRate125 = medicalPage.gettxtDeseretSelectRate().Text; 
-            Assert.That(SelectRate125, Is.EqualTo(DeseretSelectRate125));
-
-            string ValueRate125 = getDataParser().extractData("medicalUser.ValueAmountCase_1_3");
-            TestContext.Progress.WriteLine("To get json string from array" + ValueRate125);
-            string DeseretValueRate = medicalPage.gettxtDeseretValueRate().Text;
-            Assert.That(ValueRate125, Is.EqualTo(DeseretValueRate));
-
-            string ProtectRate125 = getDataParser().extractData("medicalUser.ProtectAmountCase_1_4");
-            TestContext.Progress.WriteLine("To get json string from array" + ProtectRate125);
-            string DeseretProtectRate = medicalPage.gettxtDeseretProtectRate().Text;
-            Assert.That(ProtectRate125, Is.EqualTo(DeseretProtectRate));
 
         }
-
 
 
         [Test]
@@ -206,8 +210,7 @@ namespace MPR.tests
 
 
             // Get current window handle
-            string originalWindow = driver.CurrentWindowHandle;
-            //medicalPage.getcomparePlanlink().Click();            
+            string originalWindow = driver.CurrentWindowHandle;         
 
             string[] testData = getDataParser().extractDataArray("medicalUser.PlanChangeWithZipCodeChangeTestData");
 
@@ -434,5 +437,284 @@ namespace MPR.tests
             }
 
         }
+
+
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyFullComparisonLinkPagePlanWithZipCodes()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            DependentsPageObject dependentsPage = new DependentsPageObject(getDriver());
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("medicalUser.username");
+            loginPage.getusername().SendKeys(usernameValid);
+
+            string passwordValid = getDataParser().extractData("medicalUser.password");
+            loginPage.getpassword().SendKeys(passwordValid);
+            loginPage.getsubmit().Click();
+            menuPage.getbtnContinue().Click();
+
+            // Need to verify step -> which step we are on.
+            // start the loop -> complete steps one by one. up to the step we are testing. 
+            // get class name
+
+
+            // Get current window handle
+            string originalWindow = driver.CurrentWindowHandle;          
+            string[] testData = getDataParser().extractDataArray("fullPlanComparisonTestData.CaseList");
+            TestContext.Progress.WriteLine("original window handle" +  originalWindow);
+
+            foreach (var testItem in testData)
+            {
+
+                TestContext.Progress.WriteLine("----------------- Doing Tests For " + testItem + "------------------------------");
+                Thread.Sleep(1000);
+                string execution = getDataParser().extractData("fullPlanComparisonTestData." + testItem + ".execute");
+                if (execution == "True")
+                {
+                    driver.SwitchTo().NewWindow(WindowType.Tab);
+                    driver.Url = getDataParser().extractData("medicalUser.PersonalInfoStepURL");
+
+                    //string originalWindow = driver.CurrentWindowHandle;
+                    string zipCode = getDataParser().extractData("medicalUser." + testItem + ".zipcode");
+                    TestContext.Progress.WriteLine("ZipCode: " + zipCode);
+                    aboutMePage.getzipCode().Clear();
+                    aboutMePage.getzipCode().SendKeys(zipCode);
+                    // about me page -> click the next button. This is a link?
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(3000);
+                    // dependent page -> click the next button
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(1000);
+                    // medical page -> click link
+                    string secondWindow = driver.CurrentWindowHandle;
+                    medicalPage.getfullPlanComparisonlink().Click();
+
+                    // switch to new tab that the link opened
+                    foreach (string window in driver.WindowHandles)
+                    {
+                        if (originalWindow != window & secondWindow != window)
+                        {
+                            driver.SwitchTo().Window(window);
+                            break;
+                        }
+                    }
+                    // compare new tab zip code with zipcode entered on about me page.
+                    string newLinkZipcode = medicalPage.getzipCode().GetAttribute("Value");
+                    TestContext.Progress.WriteLine(newLinkZipcode + " Equal to " + zipCode);
+                    Assert.That(newLinkZipcode, Does.Contain(zipCode).IgnoreCase);
+
+                    // Check that the dropdown has medical selected.
+                    string expectedPlanTypeSelection = "Medical";
+                    string newLinkDropdownSelection = medicalPage.getplanTypeSelection().Text;
+                    Assert.That(expectedPlanTypeSelection, Does.Contain(newLinkDropdownSelection).IgnoreCase);
+
+                    // get plans to compare with plans in new tab opened by link.
+                    string[] planList = getDataParser().extractDataArray("fullPlanComparisonTestData." + testItem + ".plansToValidate");
+                    int itemIndex = 1;
+                    TestContext.Progress.WriteLine("##################################################");
+
+                    foreach (string item in planList)
+                    {
+
+                        // Compare Label with expected label
+                        TestContext.Progress.WriteLine(itemIndex.ToString() + " Testing for " + item);
+                        string methodName = "get" + item + "ComparisonLinkCoveragexPath";
+                        MedicalPageObject medicalStepObject = new MedicalPageObject(getDriver());
+                        Type type = typeof(MedicalPageObject);
+                        MethodInfo methodComparePlan = type.GetMethod(methodName);
+                        string methodComparePlanXPath = (string)methodComparePlan.Invoke(medicalStepObject, null);
+                        Thread.Sleep(1000);
+
+                        string getPlanToCompare = driver.FindElement(By.XPath(methodComparePlanXPath)).Text;
+
+                        Assert.That(getPlanToCompare, Does.Contain(item).IgnoreCase);
+                    }
+                    // Close the new window, if that window no more required
+                    driver.Close();
+
+                    // Switch back to original browser (first window)
+                    driver.SwitchTo().Window(secondWindow);
+
+                    foreach (string window in driver.WindowHandles)
+                    {
+                        if (window != originalWindow)
+                        {
+                            driver.SwitchTo().Window(window);
+                            Thread.Sleep(1000);
+                            if (driver.WindowHandles.Count != 2)
+                            {
+                                driver.Close();
+                            }
+                            else if (driver.WindowHandles.Count == 2)
+                            {
+                                driver.Close();
+                                driver.SwitchTo().Window(originalWindow);
+                            }
+                            Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                        }
+                    }
+                    driver.Navigate().Refresh();
+                    TestContext.Progress.WriteLine(" ");
+                    
+                }
+                else
+                {
+                    TestContext.Progress.WriteLine("----------------- Skipping test for" + testItem + "------------------------------");
+                }
+            }
+
+        }
+
+
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyMedicalPageSelectionNextButton()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            DependentsPageObject dependentsPage = new DependentsPageObject(getDriver());
+            DentalPageObject dentalPage = new DentalPageObject(getDriver());
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("medicalUser.username");
+            loginPage.getusername().SendKeys(usernameValid);
+
+            // log in
+            string passwordValid = getDataParser().extractData("medicalUser.password");
+            loginPage.getpassword().SendKeys(passwordValid);
+            loginPage.getsubmit().Click();
+            menuPage.getbtnContinue().Click();
+
+            // Get current window handle
+            string originalWindow = driver.CurrentWindowHandle;
+            string[] testData = getDataParser().extractDataArray("nextButtonTestData.CaseList");
+            TestContext.Progress.WriteLine("original window handle" + originalWindow);
+
+            foreach (var testItem in testData)
+            {
+
+                TestContext.Progress.WriteLine("----------------- Doing Tests For " + testItem + "------------------------------");
+                Thread.Sleep(1000);
+                string execution = getDataParser().extractData("nextButtonTestData." + testItem + ".execute");
+                if (execution == "True")
+                {
+                    driver.SwitchTo().NewWindow(WindowType.Tab);
+                    driver.Url = getDataParser().extractData("medicalUser.PersonalInfoStepURL");
+                    // Enter in Zipcode on about me page
+                    string zipCode = getDataParser().extractData("medicalUser." + testItem + ".zipcode");
+                    TestContext.Progress.WriteLine("ZipCode: " + zipCode);
+                    aboutMePage.getzipCode().Clear();
+                    aboutMePage.getzipCode().SendKeys(zipCode);
+                    // about me page -> click the next button. This is a link?
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(3000);
+                    // dependent page -> click the next button
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(1000);
+
+                    // get plans to compare with plans in new tab opened by link.
+                    string[] planList = getDataParser().extractDataArray("nextButtonTestData." + testItem + ".plansToValidate");
+                    int itemIndex = 1;
+                    TestContext.Progress.WriteLine("##################################################");
+
+                    foreach (string item in planList)
+                    {
+                        // Find Index position of Matching Plan
+                        string medicalPlanMethodName = "getPlanLabelsxPath";
+                        MedicalPageObject medicalObject = new MedicalPageObject(getDriver());
+                        Type typeMedical = typeof(MedicalPageObject);
+                        MethodInfo medicalPlanMethod = typeMedical.GetMethod(medicalPlanMethodName);
+                        string medicalPlanMethodXPath = (string)medicalPlanMethod.Invoke(medicalObject, null);
+                        // find tr elements -> list of users in the grid
+                        var listOfPlanOptionElements = driver.FindElements(By.XPath(medicalPlanMethodXPath));
+                        // select every plan once
+                        int indexCount = 0;
+                        int planIndex = 0;
+                        foreach (var element in listOfPlanOptionElements)
+                        {
+                            indexCount++;
+                            TestContext.Progress.WriteLine("Looking for index of this plan: " + item);
+                            TestContext.Progress.WriteLine(" Text of element: " +element.Text);
+                            Thread.Sleep(1000);
+                            if (element.Text.Contains(item)) { 
+                                planIndex = indexCount;
+                                TestContext.Progress.WriteLine("Found Index of Item: " + planIndex.ToString());
+                                break;
+                            }
+                        }
+
+                        TestContext.Progress.WriteLine(planIndex.ToString() + " This is index that I need to find radio button");
+                        // Find Radio button to interact with based on matching index of plan and click
+                        string medicalSelectionMethodName = "getPlanSelectionxPath";
+                        MethodInfo medicalSelectionMethod = typeMedical.GetMethod(medicalSelectionMethodName);
+                        string medicalMethodXPath = (string)medicalSelectionMethod.Invoke(medicalObject, null);
+                        // find tr elements
+                        var listOfRadioOptionElements = driver.FindElements(By.XPath(medicalMethodXPath));
+                        // select radio button for plan based on index of plan label
+                        indexCount = 0;
+                        foreach (var element in listOfRadioOptionElements)
+                        {
+                            indexCount++;
+                            Thread.Sleep(1000);
+                            if (indexCount == planIndex) {
+                                element.Click();
+                                break;
+                            }
+                        }
+                        Thread.Sleep(1000);
+                        // medical page -> click the next button to dental
+                        // Verify that the Dental Step has been reached
+                        aboutMePage.getnextBtn().Click();
+                        Thread.Sleep(1000);
+                        string dentalPageHeading = dentalPage.getheadingText().Text;
+                        string dentalPageHeadingExpected = "Dental";
+                        Assert.That(dentalPageHeading, Is.EqualTo(dentalPageHeadingExpected));
+                        // Go back to medical step for next selection
+                        aboutMePage.getprevBtn().Click();
+
+                    }
+                    foreach (string window in driver.WindowHandles)
+                    {
+                        if (window != originalWindow)
+                        {
+                            driver.SwitchTo().Window(window);
+                            Thread.Sleep(1000);
+                            if (driver.WindowHandles.Count != 2)
+                            {
+                                driver.Close();
+                            }
+                            else if (driver.WindowHandles.Count == 2)
+                            {
+                                driver.Close();
+                                driver.SwitchTo().Window(originalWindow);
+                            }
+                            Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                        }
+                    }
+                    driver.Navigate().Refresh();
+                    TestContext.Progress.WriteLine(" ");
+
+                }
+                else
+                {
+                    TestContext.Progress.WriteLine("----------------- Skipping test for " + testItem + "------------------------------");
+                }
+            }
+
+        }
+
     }    
 }
