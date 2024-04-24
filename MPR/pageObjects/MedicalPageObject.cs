@@ -157,7 +157,7 @@ namespace MPR.pageObjects
             return permanenteComparisonLinkCoveragexPath;
         }
         // Selection Verification
-        string planLabelsxPath = "//td[@class='planTitleCell selectedPlanColor1' or @class='planTitleCell planColor1' or @class='waivePlanCell waiveColor']";
+        string planLabelsxPath = "//td[@class='planTitleCell selectedPlanColor1' or @class='planTitleCell planColor1' or @class='waivePlanCell waiveColor' or @class='waivePlanCell selectedPlanColor1' ]";
         public string getPlanLabelsxPath()
         {
             return planLabelsxPath;
@@ -182,6 +182,366 @@ namespace MPR.pageObjects
             return planSelectionIndicatorColorxPath;
         }
 
+        // ------------------------------------------------------ Plan Paths for full comparison link -----------------------------------------------------
+        /*
+        //  ---------------------------------------------------------- contract premier values ------------------------------------------------------------------
+        string premierContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[2]//td[1]";
+        public string getPREMIERContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return premierContractOfficeVisitValuesxPath;
+        }
+
+        string premierContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[2]//td[1]";
+        public string getPREMIERContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return premierContractAnnualDeductibleValuesxPath;
+        }
+
+        string premierContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[2]//td[1]";
+        public string getPREMIERContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return premierContractCoinsuranceValuesxPath;
+        }
+
+        string premierContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[2]//td[1]";
+        public string getPREMIERContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return premierContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ------------------------------------------------- non-contract premier values --------------------------------------------------------------
+        string premierNonContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[2]//td[2]";
+        public string getPREMIERNonContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return premierNonContractOfficeVisitValuesxPath;
+        }
+
+        string premierNonContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[2]//td[2]";
+        public string getPREMIERNonContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return premierNonContractAnnualDeductibleValuesxPath;
+        }
+
+        string premierNonContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[2]//td[2]";
+        public string getPREMIERNonContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return premierNonContractCoinsuranceValuesxPath;
+        }
+
+        string premierNonContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[2]//td[2]";
+        public string getPREMIERNonContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return premierNonContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ----------------------------------------------- contract select values ---------------------------------------------------------
+        string selectContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[3]//td[1]";
+        public string getSELECTContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return selectContractOfficeVisitValuesxPath;
+        }
+
+        string selectContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[3]//td[1]";
+        public string getSELECTContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return selectContractAnnualDeductibleValuesxPath;
+        }
+
+        string selectContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[3]//td[1]";
+        public string getSELECTContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return selectContractCoinsuranceValuesxPath;
+        }
+
+        string selectContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[3]//td[1]";
+        public string getSELECTContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return selectContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ------------------------------------------------------- non-contract select values -------------------------------------------------------
+        string selectNonContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[3]//td[2]";
+        public string getSELECTNonContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return selectNonContractOfficeVisitValuesxPath;
+        }
+
+        string selectNonContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[3]//td[2]";
+        public string getSELECTNonContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return selectNonContractAnnualDeductibleValuesxPath;
+        }
+
+        string selectNonContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[3]//td[2]";
+        public string getSELECTNonContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return selectNonContractCoinsuranceValuesxPath;
+        }
+
+        string selectNonContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[3]//td[2]";
+        public string getSELECTNonContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return selectNonContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ----------------------------------------------- contract value values ---------------------------------------------------------
+        string valueContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[4]//td[1]";
+        public string getVALUEContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return valueContractOfficeVisitValuesxPath;
+        }
+
+        string valueContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[4]//td[1]";
+        public string getVALUEContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return valueContractAnnualDeductibleValuesxPath;
+        }
+
+        string valueContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[4]//td[1]";
+        public string getVALUEContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return valueContractCoinsuranceValuesxPath;
+        }
+
+        string valueContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[4]//td[1]";
+        public string getVALUEContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return valueContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ------------------------------------------------------- non-contract value values -------------------------------------------------------
+        string valueNonContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[4]//td[2]";
+        public string getVALUENonContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return valueNonContractOfficeVisitValuesxPath;
+        }
+
+        string valueNonContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[4]//td[2]";
+        public string getVALUENonContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return valueNonContractAnnualDeductibleValuesxPath;
+        }
+
+        string valueNonContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[4]//td[2]";
+        public string getVALUENonContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return valueNonContractCoinsuranceValuesxPath;
+        }
+
+        string valueNonContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[4]//td[2]";
+        public string getVALUENonContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return valueNonContractOutOfPocketMaxValuesxPath;
+        }
+
+
+        // ----------------------------------------------- contract protect values ---------------------------------------------------------
+        string protectContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[5]//td[1]";
+        public string getPROTECTContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return protectContractOfficeVisitValuesxPath;
+        }
+
+        string protectContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[5]//td[1]";
+        public string getPROTECTContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return protectContractAnnualDeductibleValuesxPath;
+        }
+
+        string protectContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[5]//td[1]";
+        public string getPROTECTContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return protectContractCoinsuranceValuesxPath;
+        }
+
+        string protectContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[5]//td[1]";
+        public string getPROTECTContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return protectContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ------------------------------------------------------- non-contract protect values -------------------------------------------------------
+        string protectNonContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[5]//td[2]";
+        public string getPROTECTNonContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return protectNonContractOfficeVisitValuesxPath;
+        }
+
+        string protectNonContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[5]//td[2]";
+        public string getPROTECTNonContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return protectNonContractAnnualDeductibleValuesxPath;
+        }
+
+        string protectNonContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[5]//td[2]";
+        public string getPROTECTNonContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return protectNonContractCoinsuranceValuesxPath;
+        }
+
+        string protectNonContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[5]//td[2]";
+        public string getPROTECTNonContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return protectNonContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ----------------------------------------------- contract kaiser values ---------------------------------------------------------
+        string kaiserContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[2]//td[1]";
+        public string getKAISERContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return kaiserContractOfficeVisitValuesxPath;
+        }
+
+        string kaiserContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[2]//td[1]";
+        public string getKAISERContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return kaiserContractAnnualDeductibleValuesxPath;
+        }
+
+        string kaiserContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[2]//td[1]";
+        public string getKAISERContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return kaiserContractCoinsuranceValuesxPath;
+        }
+
+        string kaiserContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[2]//td[1]";
+        public string getKAISERContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return kaiserContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ------------------------------------------------------- non-contract kaiser values -------------------------------------------------------
+        string kaiserNonContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[2]//td[2]";
+        public string getKAISERNonContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return kaiserNonContractOfficeVisitValuesxPath;
+        }
+
+        string kaiserNonContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[2]//td[2]";
+        public string getKAISERNonContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return kaiserNonContractAnnualDeductibleValuesxPath;
+        }
+
+        string kaiserNonContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[2]//td[2]";
+        public string getKAISERNonContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return kaiserNonContractCoinsuranceValuesxPath;
+        }
+
+        string kaiserNonContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[2]//td[2]";
+        public string getKAISERNonContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return kaiserNonContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ----------------------------------------------- contract choice values ---------------------------------------------------------
+        string choiceContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[3]//td[1]";
+        public string getCHOICEContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return choiceContractOfficeVisitValuesxPath;
+        }
+
+        string choiceContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[3]//td[1]";
+        public string getCHOICEContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return choiceContractAnnualDeductibleValuesxPath;
+        }
+
+        string choiceContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[3]//td[1]";
+        public string getCHOICEContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return choiceContractCoinsuranceValuesxPath;
+        }
+
+        string choiceContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[3]//td[1]";
+        public string getCHOICEContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return choiceContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ------------------------------------------------------- non-contract choice values -------------------------------------------------------
+        string choiceNonContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[3]//td[2]";
+        public string getCHOICENonContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return choiceNonContractOfficeVisitValuesxPath;
+        }
+
+        string choiceNonContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[3]//td[2]";
+        public string getCHOICENonContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return choiceNonContractAnnualDeductibleValuesxPath;
+        }
+
+        string choiceNonContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[3]//td[2]";
+        public string getCHOICENonContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return choiceNonContractCoinsuranceValuesxPath;
+        }
+
+        string choiceNonContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[3]//td[2]";
+        public string getCHOICENonContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return choiceNonContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ----------------------------------------------- contract permanente values ---------------------------------------------------------
+        string permanenteContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[5]//td[1]";
+        public string getPERMANENTEContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return permanenteContractOfficeVisitValuesxPath;
+        }
+
+        string permanenteContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[5]//td[1]";
+        public string getPERMANENTEContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return permanenteContractAnnualDeductibleValuesxPath;
+        }
+
+        string permanenteContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[5]//td[1]";
+        public string getPERMANENTEContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return permanenteContractCoinsuranceValuesxPath;
+        }
+
+        string permanenteContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[5]//td[1]";
+        public string getPERMANENTEContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return permanenteContractOutOfPocketMaxValuesxPath;
+        }
+
+        // ------------------------------------------------------- non-contract permanente values -------------------------------------------------------
+        string permanenteNonContractOfficeVisitValuesxPath = "//table[@class='selectionTable']//tbody//tr[8]/td[5]//td[2]";
+        public string getPERMANENTENonContractOfficeVisitValuesMedicalCoveragexPath()
+        {
+            return permanenteNonContractOfficeVisitValuesxPath;
+        }
+
+        string permanenteNonContractAnnualDeductibleValuesxPath = "//table[@class='selectionTable']//tbody//tr[9]/td[5]//td[2]";
+        public string getPERMANENTENonContractAnnualDeductibleValuesMedicalCoveragexPath()
+        {
+            return permanenteNonContractAnnualDeductibleValuesxPath;
+        }
+
+        string permanenteNonContractCoinsuranceValuesxPath = "//table[@class='selectionTable']//tbody//tr[10]/td[5]//td[2]";
+        public string getPERMANENTENonContractCoinsuranceValuesMedicalCoveragexPath()
+        {
+            return permanenteNonContractCoinsuranceValuesxPath;
+        }
+
+        string permanenteNonContractOutOfPocketMaxValuesxPath = "//table[@class='selectionTable']//tbody//tr[11]/td[5]//td[2]";
+        public string getPERMANENTENonContractOutOfPocketMaxValuesMedicalCoveragexPath()
+        {
+            return permanenteNonContractOutOfPocketMaxValuesxPath;
+        }
+
+        */
+        // Grid path variable
+        string medicalGridValuesxPath = "//table[@class='selectionTable']//tbody//tr[+INSERT_TABLE_ROW_INDEX+]/td[+INSERT_LABEL_INDEX+]//td[+INSERT_CONTRACT_COLUMN_SELECTION+]";
+        public string getMedicalGridValuesxPath()
+        {
+            return medicalGridValuesxPath;
+        }
 
         public MedicalPageObject(IWebDriver driver)
         {

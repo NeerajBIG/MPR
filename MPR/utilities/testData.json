@@ -467,11 +467,11 @@
   },
   // Test the next button for each selected plan
   "nextButtonTestData": {
-    "CaseList": [ "Case_1", "Case_2", "Case_3", "Case_4"],
+    "CaseList": [ "Case_1", "Case_2", "Case_3", "Case_4" ],
     "Case_1": {
       "execute": "True",
       "zipcode": "84106",
-      "plansToValidate": [ "PREMIER", "SELECT", "VALUE", "PROTECT" ]
+      "plansToValidate": [ "WAIVE", "PREMIER", "SELECT", "VALUE", "PROTECT" ]
     },
     "Case_2": {
       "execute": "True",
@@ -488,8 +488,271 @@
       "execute": "True",
       "zipcode": "92101",
       "plansToValidate": [ "PERMANENTE" ]
+    }
+  },
+
+  "planBenefitsTestData": {
+    "CaseList": [ "Case_1", "Case_2", "Case_3", "Case_4" ],
+    "Case_1": {
+      "execute": "True",
+      "zipcode": "84106",
+      "plansToValidate": [ "PREMIER", "SELECT", "VALUE", "PROTECT" ],
+      "PREMIER": {
+        "contracted": {
+          "officeVisitPrimaryCare": "$20",
+          "officeVisitSpecialist": "$35",
+          "annualDeductiblePerPerson": "none",
+          "annualDeductiblePerFamily": "none",
+          "coinsurance": "10%",
+          "outOfPocketMaxPerPerson": "$2,800",
+          "outOfPocketMaxPerFamily": "$5,600"
+        },
+        "nonContracted": {
+          "officeVisitPrimaryCare": "$25",
+          "officeVisitSpecialist": "$40",
+          "annualDeductiblePerPerson": "$400",
+          "annualDeductiblePerFamily": "$800",
+          "coinsurance": "20%",
+          "outOfPocketMaxPerPerson": "$2,800",
+          "outOfPocketMaxPerFamily": "$5,600"
+        }
+      },
+      "SELECT": {
+        "contracted": {
+          "officeVisitPrimaryCare": "$20",
+          "officeVisitSpecialist": "$35",
+          "annualDeductiblePerPerson": "none",
+          "annualDeductiblePerFamily": "none",
+          "coinsurance": "10%",
+          "outOfPocketMaxPerPerson": "$2,800",
+          "outOfPocketMaxPerFamily": "$5,600"
+        },
+        "nonContracted": {
+          "officeVisitPrimaryCare": "$35",
+          "officeVisitSpecialist": "$45",
+          "annualDeductiblePerPerson": "none",
+          "annualDeductiblePerFamily": "none",
+          "coinsurance": "40%",
+          "outOfPocketMaxPerPerson": "$5,600",
+          "outOfPocketMaxPerFamily": "$11,200"
+        }
+      },
+      "VALUE": {
+        "contracted": {
+          "officeVisitPrimaryCare": "$20",
+          "officeVisitSpecialist": "$35",
+          "annualDeductiblePerPerson": "none",
+          "annualDeductiblePerFamily": "none",
+          "coinsurance": "30%",
+          "outOfPocketMaxPerPerson": "$5,600",
+          "outOfPocketMaxPerFamily": "$8,400"
+        },
+        "nonContracted": {
+          "officeVisitPrimaryCare": "$25",
+          "officeVisitSpecialist": "$40",
+          "annualDeductiblePerPerson": "$400",
+          "annualDeductiblePerFamily": "$800",
+          "coinsurance": "40%",
+          "outOfPocketMaxPerPerson": "$5,600",
+          "outOfPocketMaxPerFamily": "$8,400"
+        }
+      },
+      "PROTECT": {
+        "contracted": {
+          "officeVisitPrimaryCare": "$20",
+          "officeVisitSpecialist": "$40",
+          "annualDeductiblePerPerson": "$1,400",
+          "annualDeductiblePerFamily": "$2,800",
+          "coinsurance": "30%",
+          "outOfPocketMaxPerPerson": "$5,600",
+          "outOfPocketMaxPerFamily": "$8,400"
+        },
+        "nonContracted": {
+          "officeVisitPrimaryCare": "$25",
+          "officeVisitSpecialist": "$45",
+          "annualDeductiblePerPerson": "$1,800",
+          "annualDeductiblePerFamily": "$3,600",
+          "coinsurance": "40%",
+          "outOfPocketMaxPerPerson": "$5,600",
+          "outOfPocketMaxPerFamily": "$8,400"
+        }
+      }
+    },
+    "Case_2": {
+      "PeopleOnPlan": 1,
+      "execute": "True",
+      "zipcode": "96762",
+      "plansToValidate": [ "CHOICE", "KAISER" ],
+      "CHOICE": {
+        "contracted": {
+          "officeVisitPrimaryCare": "$15",
+          "officeVisitSpecialist": "$20",
+          "annualDeductiblePerPerson": "none",
+          "annualDeductiblePerFamily": "none",
+          "coinsurance": "10%",
+          "outOfPocketMaxPerPerson": "$2,000",
+          "outOfPocketMaxPerFamily": "$3,500"
+        },
+        "nonContracted": {
+          "officeVisitPrimaryCare": "$20 + 20%",
+          "officeVisitSpecialist": "$20 + 20%",
+          "annualDeductiblePerPerson": "none",
+          "annualDeductiblePerFamily": "none",
+          "coinsurance": "30%",
+          "outOfPocketMaxPerPerson": "$3,000",
+          "outOfPocketMaxPerFamily": "$7,000"
+        }
+      },
+      "KAISER": {
+        "contracted": {
+          "officeVisitPrimaryCare": "$15",
+          "officeVisitSpecialist": "$15",
+          "annualDeductiblePerPerson": "none",
+          "annualDeductiblePerFamily": "none",
+          "coinsurance": "10%",
+          "outOfPocketMaxPerPerson": "$2,500",
+          "outOfPocketMaxPerFamily": "$7,500"
+        },
+        "nonContracted": {
+          "officeVisitPrimaryCare": "not covered",
+          "officeVisitSpecialist": "not covered",
+          "annualDeductiblePerPerson": "not covered",
+          "annualDeductiblePerFamily": "not covered",
+          "coinsurance": "not covered",
+          "outOfPocketMaxPerPerson": "not covered",
+          "outOfPocketMaxPerFamily": "not covered"
+        }
+      }
+    },
+    "Case_3": {
+      "execute": "True",
+      "zipcode": "94102",
+      "plansToValidate": [ "PERMANENTE" ],
+      "PERMANENTE": {
+        "contracted": {
+          "officeVisitPrimaryCare": "$20",
+          "officeVisitSpecialist": "$20",
+          "annualDeductiblePerPerson": "none",
+          "annualDeductiblePerFamily": "none",
+          "coinsurance": "none",
+          "outOfPocketMaxPerPerson": "$1,500",
+          "outOfPocketMaxPerFamily": "$3,000"
+        },
+        "nonContracted": {
+          "officeVisitPrimaryCare": "not covered",
+          "officeVisitSpecialist": "not covered",
+          "annualDeductiblePerPerson": "not covered",
+          "annualDeductiblePerFamily": "not covered",
+          "coinsurance": "not covered",
+          "outOfPocketMaxPerPerson": "not covered",
+          "outOfPocketMaxPerFamily": "not covered"
+        }
+      }
+    },
+    "Case_4": {
+      "execute": "True",
+      "zipcode": "92101",
+      "plansToValidate": [ "PERMANENTE" ],
+      "PERMANENTE": {
+        "contracted": {
+          "officeVisitPrimaryCare": "$20",
+          "officeVisitSpecialist": "$20",
+          "annualDeductiblePerPerson": "none",
+          "annualDeductiblePerFamily": "none",
+          "coinsurance": "none",
+          "outOfPocketMaxPerPerson": "$1,500",
+          "outOfPocketMaxPerFamily": "$3,000"
+        },
+        "nonContracted": {
+          "officeVisitPrimaryCare": "not covered",
+          "officeVisitSpecialist": "not covered",
+          "annualDeductiblePerPerson": "not covered",
+          "annualDeductiblePerFamily": "not covered",
+          "coinsurance": "not covered",
+          "outOfPocketMaxPerPerson": "not covered",
+          "outOfPocketMaxPerFamily": "not covered"
+        }
+      }
+    }
+  },
+
+  "planDentalBenefitsTestData": {
+    "CaseList": [ "Case_1", "Case_2" ],
+    "Case_1": {
+      "execute": "True",
+      "zipcode": "84106",
+      "plansToValidate": [ "PREMIER", "SELECT", "VALUE", "PROTECT" ],
+      "DENTAL": {
+        "annualMax": "$1,500 per person",
+        "hospitalizationAndAnesthesia": "50% when authorized",
+        "oralSurgery": "50%",
+        "orthodontics": "50% (up to $1,500 per lifetime)",
+        "preventiveCare": "100% (Doesn't count toward annual maximum; time limits apply)",
+        "restorativeAndProsthodonticCare": "%50 (fillings, crowns, bridges, dentures, etc.)",
+        "sealants": "%100 through age 15 (Once every five years per permanent molar)"
+      },
+      "PLUS": {
+        "annualMax": "$2000 per person",
+        "hospitalizationAndAnesthesia": "80% when authorized",
+        "oralSurgery": "80%",
+        "orthodontics": "50% (up to $2,000 per lifetime)",
+        "preventiveCare": "100% (Doesn't count toward annual maximum; time limits apply)",
+        "restorativeAndProsthodonticCare": "%80 (fillings, crowns, bridges, dentures, etc.)",
+        "sealants": "%100 through age 15 (Once every five years per permanent molar)"
+      }
+    },
+    "Case_2": {
+      "PeopleOnPlan": 1,
+      "execute": "False",
+      "zipcode": "59901",
+      "plansToValidate": [ "DENTAL", "PLUS" ],
+      "DENTAL": {
+        "annualMax": "$1,500 per person The participant is responsible for all charges after reaching the annual maximum.",
+        "hospitalizationAndAnesthesia": "50% when authorized",
+        "oralSurgery": "50%",
+        "orthodontics": "50% (up to $1,500 per lifetime)",
+        "preventiveCare": "100% (Doesn't count toward annual maximum; time limits apply)",
+        "restorativeAndProsthodonticCare": "%50 (fillings, crowns, bridges, dentures, etc.)",
+        "sealants": "%100 through age 15 (Two sealants per lifetime per permanent molar)"
+      },
+      "PLUS": {
+        "annualMax": "$2,000 per person The participant is responsible for all charges after reaching the annual maximum.",
+        "hospitalizationAndAnesthesia": "80% when authorized",
+        "oralSurgery": "80%",
+        "orthodontics": "50% (up to $2,000 per lifetime)",
+        "preventiveCare": "100% (Doesn't count toward annual maximum; time limits apply)",
+        "restorativeAndProsthodonticCare": "%80 (fillings, crowns, bridges, dentures, etc.)",
+        "sealants": "%100 through age 15 (Two sealants per lifetime per permanent molar)"
+      }
+    }
+  },
+
+  "planVisionBenefitsTestData": {
+    "CaseList": [ "Case_1" ],
+    "Case_1": {
+      "execute": "True",
+      "zipcode": "84106",
+      "plansToValidate": [ "WITHOUT", "WITH" ],
+      "WITHOUT": {
+        "eyeExam": "No benefit",
+        "frames": "First $150 covered; you pay 80% of amount over $150",
+        "singleVisionLenses": "You pay nothing",
+        "framesContacts": "First $130 covered",
+        "framesContactFittings": "No benefit"
+      },
+      "WITH": {
+        "eyeExam": "One per calendar year",
+        "frames": "First $150 covered; you pay 80% of amount over $150",
+        "singleVisionLenses": "You pay nothing",
+        "framesContacts": "First $130 covered",
+        "framesContactFittings": "Up to $40"
+      }
     },
   }
+
+
+
+
 
 
 
