@@ -681,24 +681,28 @@
     "Case_1": {
       "execute": "True",
       "zipcode": "84106",
-      "plansToValidate": [ "PREMIER", "SELECT", "VALUE", "PROTECT" ],
+      "plansToValidate": [ "DENTAL", "PLUS" ],
       "DENTAL": {
         "annualMax": "$1,500 per person",
         "hospitalizationAndAnesthesia": "50% when authorized",
         "oralSurgery": "50%",
         "orthodontics": "50% (up to $1,500 per lifetime)",
-        "preventiveCare": "100% (Doesn't count toward annual maximum; time limits apply)",
-        "restorativeAndProsthodonticCare": "%50 (fillings, crowns, bridges, dentures, etc.)",
-        "sealants": "%100 through age 15 (Once every five years per permanent molar)"
+        "preventiveCarePart1": "100%",
+        "preventiveCarePart2": "(Doesn't count toward annual maximum; time limits apply)",
+        "restorativeAndProsthodonticCarePart1": "50%",
+        "restorativeAndProsthodonticCarePart2": "(fillings, crowns, bridges, dentures, etc.)",
+        "sealants": "100% through age 15 (Once every five years per permanent molar)"
       },
       "PLUS": {
-        "annualMax": "$2000 per person",
+        "annualMax": "$2,000 per person",
         "hospitalizationAndAnesthesia": "80% when authorized",
         "oralSurgery": "80%",
         "orthodontics": "50% (up to $2,000 per lifetime)",
-        "preventiveCare": "100% (Doesn't count toward annual maximum; time limits apply)",
-        "restorativeAndProsthodonticCare": "%80 (fillings, crowns, bridges, dentures, etc.)",
-        "sealants": "%100 through age 15 (Once every five years per permanent molar)"
+        "preventiveCarePart1": "100%",
+        "preventiveCarePart2": "(Doesn't count toward annual maximum; time limits apply)",
+        "restorativeAndProsthodonticCarePart1": "80%",
+        "restorativeAndProsthodonticCarePart2": "(fillings, crowns, bridges, dentures, etc.)",
+        "sealants": "100% through age 15 (Once every five years per permanent molar)"
       }
     },
     "Case_2": {
@@ -711,18 +715,22 @@
         "hospitalizationAndAnesthesia": "50% when authorized",
         "oralSurgery": "50%",
         "orthodontics": "50% (up to $1,500 per lifetime)",
-        "preventiveCare": "100% (Doesn't count toward annual maximum; time limits apply)",
-        "restorativeAndProsthodonticCare": "%50 (fillings, crowns, bridges, dentures, etc.)",
-        "sealants": "%100 through age 15 (Two sealants per lifetime per permanent molar)"
+        "preventiveCarePart1": "100%",
+        "preventiveCarePart2": "(Doesn't count toward annual maximum; time limits apply)",
+        "restorativeAndProsthodonticCarePart1": "50%",
+        "restorativeAndProsthodonticCarePart2": "(fillings, crowns, bridges, dentures, etc.)",
+        "sealants": "100% through age 15 (Two sealants per lifetime per permanent molar)"
       },
       "PLUS": {
         "annualMax": "$2,000 per person The participant is responsible for all charges after reaching the annual maximum.",
         "hospitalizationAndAnesthesia": "80% when authorized",
         "oralSurgery": "80%",
         "orthodontics": "50% (up to $2,000 per lifetime)",
-        "preventiveCare": "100% (Doesn't count toward annual maximum; time limits apply)",
-        "restorativeAndProsthodonticCare": "%80 (fillings, crowns, bridges, dentures, etc.)",
-        "sealants": "%100 through age 15 (Two sealants per lifetime per permanent molar)"
+        "preventiveCarePart1": "100%",
+        "preventiveCarePart2": "(Doesn't count toward annual maximum; time limits apply)",
+        "restorativeAndProsthodonticCarePart1": "80%",
+        "restorativeAndProsthodonticCarePart2": "(fillings, crowns, bridges, dentures, etc.)",
+        "sealants": "100% through age 15 (Two sealants per lifetime per permanent molar)"
       }
     }
   },

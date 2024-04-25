@@ -301,5 +301,237 @@ namespace MPR.tests
             }
 
         }
+
+
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyDentalPageGridValues()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            DependentsPageObject dependentsPage = new DependentsPageObject(getDriver());
+            DentalPageObject dentalPage = new DentalPageObject(getDriver());
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("medicalUser.username");
+            loginPage.getusername().SendKeys(usernameValid);
+            string passwordValid = getDataParser().extractData("medicalUser.password");
+            loginPage.getpassword().SendKeys(passwordValid);
+            loginPage.getsubmit().Click();
+            menuPage.getbtnContinue().Click();
+
+
+            // Get current window handle
+            string originalWindow = driver.CurrentWindowHandle;
+            string[] testData = getDataParser().extractDataArray("planDentalBenefitsTestData.CaseList");
+            TestContext.Progress.WriteLine("original window handle" + originalWindow);
+
+            foreach (var testItem in testData)
+            {
+
+                TestContext.Progress.WriteLine("----------------- Doing Tests For " + testItem + "------------------------------");
+                Thread.Sleep(1000);
+                string execution = getDataParser().extractData("planDentalBenefitsTestData." + testItem + ".execute");
+                if (execution == "True")
+                {
+                    driver.SwitchTo().NewWindow(WindowType.Tab);
+                    driver.Url = getDataParser().extractData("medicalUser.PersonalInfoStepURL");
+
+                    //string originalWindow = driver.CurrentWindowHandle;
+                    string zipCode = getDataParser().extractData("planDentalBenefitsTestData." + testItem + ".zipcode");
+                    TestContext.Progress.WriteLine("ZipCode: " + zipCode);
+                    aboutMePage.getzipCode().Clear();
+                    aboutMePage.getzipCode().SendKeys(zipCode);
+                    // about me page -> click the next button. This is a link?
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(3000);
+                    // dependent page -> click the next button
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(1000);
+                    // log in and log out to refresh information
+                    loginPage.getbtnLogoutText().Click();
+                    loginPage.getloginLink().Click();
+                    loginPage.getusername().SendKeys(usernameValid);
+                    loginPage.getpassword().SendKeys(passwordValid);
+                    loginPage.getsubmit().Click();
+                    Thread.Sleep(1000);
+                    menuPage.getbtnContinue().Click();
+                    Thread.Sleep(1000);
+                    // go to dental page
+                    try
+                    {
+                        dentalPage.getclkDental().Click();
+                    }
+                    catch (NoSuchElementException)
+                    {
+                        driver.Url = getDataParser().extractData("dentalUser.DentalStepURL");
+                    }
+                    // get plans to compare with plans in new tab opened by link.
+                    string[] planList = getDataParser().extractDataArray("planDentalBenefitsTestData." + testItem + ".plansToValidate");
+                    int itemIndex = 1;
+                    TestContext.Progress.WriteLine("##################################################");
+
+                    foreach (string item in planList)
+                    {
+                        TestContext.Progress.WriteLine("Testing Values for " + item);
+                        // Extract Json Data data
+                        string ExpectedAnnualMax = getDataParser().extractData("planDentalBenefitsTestData." + testItem + "." + item + ".annualMax");
+                        string ExpectedHospitalizationAndAnesthesia = getDataParser().extractData("planDentalBenefitsTestData." + testItem + "." + item + ".hospitalizationAndAnesthesia");
+                        string ExpectedOralSurgery = getDataParser().extractData("planDentalBenefitsTestData." + testItem + "." + item + ".oralSurgery");
+                        string ExpectedOrthodontics = getDataParser().extractData("planDentalBenefitsTestData." + testItem + "." + item + ".orthodontics");
+                        string ExpectedPreventiveCarePart1 = getDataParser().extractData("planDentalBenefitsTestData." + testItem + "." + item + ".preventiveCarePart1");
+                        string ExpectedPreventiveCarePart2 = getDataParser().extractData("planDentalBenefitsTestData." + testItem + "." + item + ".preventiveCarePart2");
+                        string ExpectedRestorativeAndProsthodonticCarePart1 = getDataParser().extractData("planDentalBenefitsTestData." + testItem + "." + item + ".restorativeAndProsthodonticCarePart1");
+                        string ExpectedRestorativeAndProsthodonticCarePart2 = getDataParser().extractData("planDentalBenefitsTestData." + testItem + "." + item + ".restorativeAndProsthodonticCarePart2");
+                        string ExpectedSealants = getDataParser().extractData("planDentalBenefitsTestData." + testItem + "." + item + ".sealants");
+
+                        //---------------------------------------------------------------------------------------------------------------
+                        // trying more systematic approach
+                        // Find Index position of Matching Plan and build the xpath. reusing medical plan xpath cause its the same as dental.
+                        string dentalPlanMethodName = "getPlanLabelsxPath";
+                        DentalPageObject dentalObject = new DentalPageObject(getDriver());
+                        Type typeDental = typeof(DentalPageObject);
+                        MethodInfo dentalPlanMethod = typeDental.GetMethod(dentalPlanMethodName);
+                        string dentalPlanMethodXPath = (string)dentalPlanMethod.Invoke(dentalObject, null);
+                        // find tr elements -> list of users in the grid
+                        var listOfPlanOptionElements = driver.FindElements(By.XPath(dentalPlanMethodXPath));
+                        // select every plan once
+                        int indexCount = 0;
+                        int planIndex = 0;
+                        foreach (var element in listOfPlanOptionElements)
+                        {
+                            indexCount++;
+                            TestContext.Progress.WriteLine("Looking for index of this plan: " + item);
+                            TestContext.Progress.WriteLine(" Text of element: " + element.Text);
+                            Thread.Sleep(1000);
+                            if (element.Text.Contains(item))
+                            {
+                                // Needed to add one to index. xpath is not picking up the waive plan element.
+                                planIndex = indexCount + 1;
+                                TestContext.Progress.WriteLine("Found Index of Item: " + planIndex.ToString());
+                                break;
+                            }
+                        }
+
+
+                        TestContext.Progress.WriteLine(planIndex.ToString() + " This is index that I will use to extract Plan Grid Data");
+
+                        // Hard coded row column positions. taken from Dental step page selection table.
+                        string[] tableRows = ["7", "8", "9", "10", "11", "12", "13"];
+
+                        // get xpath of dental grid
+                        string DentalPlanGridMethodName = "getDentalGridValuesxPath";
+                        MethodInfo dentalGridPlanMethod = typeDental.GetMethod(DentalPlanGridMethodName);
+                        string dentalGridMethodXPath = (string)dentalGridPlanMethod.Invoke(dentalObject, null);
+                        string[] splitXpath = dentalGridMethodXPath.Split("+");
+                        // declaring variables
+                        string annualMaxValuesMethodXPath = "";
+                        string hospitalizationAndAnesthesiaValuesMethodXPath = "";
+                        string oralSurgeryValuesMethodXPath = "";
+                        string orthodonticsValuesMethodXPath = "";
+                        string preventiveCareValuesMethodXPath = "";
+                        string restorativeAndProsthodonticCareValuesMethodXPath = "";
+                        string sealantsValuesMethodXPath = "";
+                        // using grid xpath and tableRow and planIndex location. create xpaths to extract the table values.
+                        foreach (var row in tableRows)
+                        {
+                            if (row == "7")
+                            {
+                                annualMaxValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "8")
+                            {
+                                hospitalizationAndAnesthesiaValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "9")
+                            {
+                                oralSurgeryValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "10")
+                            {
+                                orthodonticsValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "11")
+                            {
+                                preventiveCareValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "12")
+                            {
+                                restorativeAndProsthodonticCareValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "13")
+                            {
+                                sealantsValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+
+                        }
+
+                        // Extract data from Dental step selection table
+                        string annualMaxVisitValues = driver.FindElement(By.XPath(annualMaxValuesMethodXPath)).Text;
+                        string hospitalizationAndAnesthesiaValues = driver.FindElement(By.XPath(hospitalizationAndAnesthesiaValuesMethodXPath)).Text;
+                        string oralSurgeryValues = driver.FindElement(By.XPath(oralSurgeryValuesMethodXPath)).Text;
+                        string orthodonticsValues = driver.FindElement(By.XPath(orthodonticsValuesMethodXPath)).Text;
+                        string preventiveCareValues = driver.FindElement(By.XPath(preventiveCareValuesMethodXPath)).Text;
+                        string restorativeAndProsthodonticCareValues = driver.FindElement(By.XPath(restorativeAndProsthodonticCareValuesMethodXPath)).Text;
+                        string sealantsValues = driver.FindElement(By.XPath(sealantsValuesMethodXPath)).Text;
+
+                        TestContext.Progress.WriteLine("------- Value of extracted values below ------ ");
+                        TestContext.Progress.WriteLine(annualMaxVisitValues);
+                        TestContext.Progress.WriteLine(hospitalizationAndAnesthesiaValues);
+                        TestContext.Progress.WriteLine(oralSurgeryValues);
+                        TestContext.Progress.WriteLine(orthodonticsValues);
+                        TestContext.Progress.WriteLine(preventiveCareValues);
+                        TestContext.Progress.WriteLine(restorativeAndProsthodonticCareValues);
+                        TestContext.Progress.WriteLine(sealantsValues);
+
+
+
+                        // Compare Values for  Contracted and non-contract Values In Grid with expected values
+                        Assert.That(annualMaxVisitValues, Does.Contain(ExpectedAnnualMax).IgnoreCase);
+                        Assert.That(hospitalizationAndAnesthesiaValues, Does.Contain(ExpectedHospitalizationAndAnesthesia).IgnoreCase);
+                        Assert.That(oralSurgeryValues, Does.Contain(ExpectedOralSurgery).IgnoreCase);
+                        Assert.That(orthodonticsValues, Does.Contain(ExpectedOrthodontics).IgnoreCase);
+                        Assert.That(preventiveCareValues, Does.Contain(ExpectedPreventiveCarePart1).IgnoreCase);
+                        Assert.That(preventiveCareValues, Does.Contain(ExpectedPreventiveCarePart2).IgnoreCase);
+                        Assert.That(restorativeAndProsthodonticCareValues, Does.Contain(ExpectedRestorativeAndProsthodonticCarePart1).IgnoreCase);
+                        Assert.That(restorativeAndProsthodonticCareValues, Does.Contain(ExpectedRestorativeAndProsthodonticCarePart2).IgnoreCase);
+                        Assert.That(sealantsValues, Does.Contain(ExpectedSealants).IgnoreCase);
+
+
+                    }
+                    foreach (string window in driver.WindowHandles)
+                    {
+                        if (window != originalWindow)
+                        {
+                            driver.SwitchTo().Window(window);
+                            Thread.Sleep(1000);
+                            if (driver.WindowHandles.Count != 2)
+                            {
+                                driver.Close();
+                            }
+                            else if (driver.WindowHandles.Count == 2)
+                            {
+                                driver.Close();
+                                driver.SwitchTo().Window(originalWindow);
+                            }
+                            Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                        }
+                    }
+                    driver.Navigate().Refresh();
+                    TestContext.Progress.WriteLine(" ");
+
+                }
+                else
+                {
+                    TestContext.Progress.WriteLine("----------------- Skipping test for" + testItem + "------------------------------");
+                }
+            }
+
+        }
     }    
 }

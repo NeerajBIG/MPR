@@ -8,6 +8,7 @@ using System;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Security.Policy;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace MPR.tests
@@ -34,10 +35,10 @@ namespace MPR.tests
 
             loginPage.getloginLink().Click();
 
-            string usernameValid = getDataParser().extractData("dentalUser.username");
+            string usernameValid = getDataParser().extractData("medicalUser.username");
             loginPage.getusername().SendKeys(usernameValid);
 
-            string passwordValid = getDataParser().extractData("dentalUser.password");
+            string passwordValid = getDataParser().extractData("medicalUser.password");
             loginPage.getpassword().SendKeys(passwordValid);
 
             loginPage.getsubmit().Click();
@@ -46,6 +47,31 @@ namespace MPR.tests
 
             visionPage.getclkVision().Click();
             Thread.Sleep(1000);
+
+            IWebElement x = driver.FindElement(By.XPath("//*[@id='tdVISIONPlanTitle']"));
+            TestContext.Progress.WriteLine(x.GetAttribute("innerHTML"));
+            TestContext.Progress.WriteLine("------------------------------------------------");
+            string test = x.GetAttribute("innerHTML");
+            TestContext.Progress.WriteLine(test);
+            TestContext.Progress.WriteLine("------------------------------------------------");
+            string[] splitValues = test.Split("<br>");
+            foreach (var word in splitValues)
+            {
+                TestContext.Progress.WriteLine("This is from the split array ------> " + word);
+                if (word == "WITHOUT") {
+                    TestContext.Progress.WriteLine("THIS MATCHED CORRECTLY");
+                }
+            }
+            if (splitValues.Contains("WITH"))
+            {
+                TestContext.Progress.WriteLine("True");
+            }
+            else {
+                TestContext.Progress.WriteLine("False");
+            }
+            TestContext.Progress.WriteLine("------------------------------------------------");
+
+
 
             string visionPageHeading = visionPage.getheadingText().Text;
             string visionPageHeadingExpected = "Vision (VSP)";
@@ -287,6 +313,217 @@ namespace MPR.tests
                     }
                     driver.Navigate().Refresh();
                     TestContext.Progress.WriteLine(" ");
+                }
+                else
+                {
+                    TestContext.Progress.WriteLine("----------------- Skipping test for" + testItem + "------------------------------");
+                }
+            }
+
+        }
+
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyVisionPageGridValues()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            DependentsPageObject dependentsPage = new DependentsPageObject(getDriver());
+            DentalPageObject dentalPage = new DentalPageObject(getDriver());
+            VisionPageObject visionPage = new VisionPageObject(getDriver());
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("medicalUser.username");
+            loginPage.getusername().SendKeys(usernameValid);
+            string passwordValid = getDataParser().extractData("medicalUser.password");
+            loginPage.getpassword().SendKeys(passwordValid);
+            loginPage.getsubmit().Click();
+            menuPage.getbtnContinue().Click();
+
+
+            // Get current window handle
+            string originalWindow = driver.CurrentWindowHandle;
+            string[] testData = getDataParser().extractDataArray("planVisionBenefitsTestData.CaseList");
+            TestContext.Progress.WriteLine("original window handle" + originalWindow);
+
+            foreach (var testItem in testData)
+            {
+
+                TestContext.Progress.WriteLine("----------------- Doing Tests For " + testItem + "------------------------------");
+                Thread.Sleep(1000);
+                string execution = getDataParser().extractData("planVisionBenefitsTestData." + testItem + ".execute");
+                if (execution == "True")
+                {
+                    driver.SwitchTo().NewWindow(WindowType.Tab);
+                    driver.Url = getDataParser().extractData("medicalUser.PersonalInfoStepURL");
+
+                    //string originalWindow = driver.CurrentWindowHandle;
+                    string zipCode = getDataParser().extractData("planVisionBenefitsTestData." + testItem + ".zipcode");
+                    TestContext.Progress.WriteLine("ZipCode: " + zipCode);
+                    aboutMePage.getzipCode().Clear();
+                    aboutMePage.getzipCode().SendKeys(zipCode);
+                    // about me page -> click the next button. This is a link?
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(3000);
+                    // dependent page -> click the next button
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(1000);
+                    // log in and log out to refresh information
+                    loginPage.getbtnLogoutText().Click();
+                    loginPage.getloginLink().Click();
+                    loginPage.getusername().SendKeys(usernameValid);
+                    loginPage.getpassword().SendKeys(passwordValid);
+                    loginPage.getsubmit().Click();
+                    Thread.Sleep(1000);
+                    menuPage.getbtnContinue().Click();
+                    Thread.Sleep(1000);
+                    // go to dental page
+                    try
+                    {
+                        visionPage.getclkVision().Click();
+                    }
+                    catch (NoSuchElementException)
+                    {
+                        driver.Url = getDataParser().extractData("VisionStepURL");
+                    }
+                    // get plans to compare with plans in new tab opened by link.
+                    string[] planList = getDataParser().extractDataArray("planVisionBenefitsTestData." + testItem + ".plansToValidate");
+                    int itemIndex = 1;
+                    TestContext.Progress.WriteLine("##################################################");
+
+                    foreach (string item in planList)
+                    {
+                        TestContext.Progress.WriteLine("Testing Values for " + item);
+                        // Extract Json Data data
+                        string ExpectedEyeExam = getDataParser().extractData("planVisionBenefitsTestData." + testItem + "." + item + ".eyeExam");
+                        string ExpectedFrames = getDataParser().extractData("planVisionBenefitsTestData." + testItem + "." + item + ".frames");
+                        string ExpectedSingleVisionLenses = getDataParser().extractData("planVisionBenefitsTestData." + testItem + "." + item + ".singleVisionLenses");
+                        string ExpectedFramesContacts = getDataParser().extractData("planVisionBenefitsTestData." + testItem + "." + item + ".framesContacts");
+                        string ExpectedFramesContactFittings = getDataParser().extractData("planVisionBenefitsTestData." + testItem + "." + item + ".framesContactFittings");
+
+                        //---------------------------------------------------------------------------------------------------------------
+                        // trying more systematic approach
+                        // Find Index position of Matching Plan and build the xpath. reusing medical plan xpath cause its the same as dental.
+                        string visionPlanMethodName = "getPlanLabelsxPath";
+                        VisionPageObject visionObject = new VisionPageObject(getDriver());
+                        Type typeVision = typeof(VisionPageObject);
+                        MethodInfo visionPlanMethod = typeVision.GetMethod(visionPlanMethodName);
+                        string visionPlanMethodXPath = (string)visionPlanMethod.Invoke(visionObject, null);
+                        // find tr elements -> list of users in the grid
+                        var listOfPlanOptionElements = driver.FindElements(By.XPath(visionPlanMethodXPath));
+                        // select every plan once
+                        int indexCount = 0;
+                        int planIndex = 0;
+                        foreach (var element in listOfPlanOptionElements)
+                        {
+                            indexCount++;
+                            TestContext.Progress.WriteLine("Looking for index of this plan: " + item);
+                            TestContext.Progress.WriteLine(" Text of element: " + element.Text);
+                            Thread.Sleep(1000);
+                            string[] splitValues = element.GetAttribute("innerHTML").Split("<br>");
+                             if (splitValues.Contains(item))
+                            {
+                                    planIndex = indexCount;
+                                    TestContext.Progress.WriteLine("Found Index of Item: " + planIndex.ToString());
+                                    break;
+                            }
+                        }
+
+
+                        TestContext.Progress.WriteLine(planIndex.ToString() + " This is index that I will use to extract Plan Grid Data");
+
+                        // Hard coded row column positions. taken from Dental step page selection table.
+                        string[] tableRows = ["8", "9", "10", "11", "12"];
+
+                        // get xpath of dental grid
+                        string VisionPlanGridMethodName = "getVisionGridValuesxPath";
+                        MethodInfo visionGridPlanMethod = typeVision.GetMethod(VisionPlanGridMethodName);
+                        string visionGridMethodXPath = (string)visionGridPlanMethod.Invoke(visionObject, null);
+                        string[] splitXpath = visionGridMethodXPath.Split("+");
+                        // declaring variables
+                        string eyeExamValuesMethodXPath = "";
+                        string framesValuesMethodXPath = "";
+                        string singleVisionLensesValuesMethodXPath = "";
+                        string framesContactsValuesMethodXPath = "";
+                        string framesContactFittingsValuesMethodXPath = "";
+
+                        // using grid xpath and tableRow and planIndex location. create xpaths to extract the table values.
+                        foreach (var row in tableRows)
+                        {
+                            if (row == "8")
+                            {
+                                eyeExamValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "9")
+                            {
+                                framesValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "10")
+                            {
+                                singleVisionLensesValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "11")
+                            {
+                                framesContactsValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+                            else if (row == "12")
+                            {
+                                framesContactFittingsValuesMethodXPath = splitXpath[0] + row + splitXpath[2] + planIndex + splitXpath[4];
+                            }
+
+                        }
+
+                        // Extract data from Vision step selection table
+                        string eyeExamValues = driver.FindElement(By.XPath(eyeExamValuesMethodXPath)).Text;
+                        string framesValues = driver.FindElement(By.XPath(framesValuesMethodXPath)).Text;
+                        string singleVisionLensesValues = driver.FindElement(By.XPath(singleVisionLensesValuesMethodXPath)).Text;
+                        string framesContactsValues = driver.FindElement(By.XPath(framesContactsValuesMethodXPath)).Text;
+                        string framesContactFittingsValues = driver.FindElement(By.XPath(framesContactFittingsValuesMethodXPath)).Text;
+
+                        TestContext.Progress.WriteLine("------- Value of extracted values below ------ ");
+                        TestContext.Progress.WriteLine(eyeExamValues);
+                        TestContext.Progress.WriteLine(framesValues);
+                        TestContext.Progress.WriteLine(singleVisionLensesValues);
+                        TestContext.Progress.WriteLine(framesContactsValues);
+                        TestContext.Progress.WriteLine(framesContactFittingsValues);
+
+
+
+                        // Compare Values for  Contracted and non-contract Values In Grid with expected values
+                        Assert.That(eyeExamValues, Does.Contain(ExpectedEyeExam).IgnoreCase);
+                        Assert.That(framesValues, Does.Contain(ExpectedFrames).IgnoreCase);
+                        Assert.That(singleVisionLensesValues, Does.Contain(ExpectedSingleVisionLenses).IgnoreCase);
+                        Assert.That(framesContactsValues, Does.Contain(ExpectedFramesContacts).IgnoreCase);
+                        Assert.That(framesContactFittingsValues, Does.Contain(ExpectedFramesContactFittings).IgnoreCase);
+
+
+                    }
+                    foreach (string window in driver.WindowHandles)
+                    {
+                        if (window != originalWindow)
+                        {
+                            driver.SwitchTo().Window(window);
+                            Thread.Sleep(1000);
+                            if (driver.WindowHandles.Count != 2)
+                            {
+                                driver.Close();
+                            }
+                            else if (driver.WindowHandles.Count == 2)
+                            {
+                                driver.Close();
+                                driver.SwitchTo().Window(originalWindow);
+                            }
+                            Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                        }
+                    }
+                    driver.Navigate().Refresh();
+                    TestContext.Progress.WriteLine(" ");
+
                 }
                 else
                 {

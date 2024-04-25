@@ -55,6 +55,19 @@ namespace MPR.pageObjects
             return PlusCoverageRatexPath;
         }
 
+        // Selection Verification
+        string planLabelsxPath = "//td[@class='planTitleCell selectedPlanColor1' or @class='planTitleCell planColor1' ]";
+        public string getPlanLabelsxPath()
+        {
+            return planLabelsxPath;
+        }
+
+        // Grid path variable. INSERT_TABLE_ROW_INDEX -> Row locations of the content on the web page. INSERT_MATCHING_PLAN_INDEX -> matching column index of the plan.
+        string dentalGridValuesxPath = "//table[@class='selectionTable']//tbody//tr[+INSERT_TABLE_ROW_INDEX+]/td[+INSERT_MATCHING_PLAN_INDEX+]//td";
+        public string getDentalGridValuesxPath()
+        {
+            return dentalGridValuesxPath;
+        }
 
         public DentalPageObject(IWebDriver driver)
         {

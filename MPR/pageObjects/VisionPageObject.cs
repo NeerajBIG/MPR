@@ -55,6 +55,20 @@ namespace MPR.pageObjects
             return withCoverageRatexPath;
         }
 
+        // Selection Verification
+        string planLabelsxPath = "//td[@class='planTitleCell selectedPlanColor1' or @class='planTitleCell planColor1' or @class='waivePlanCell waiveColor' or @class='waivePlanCell selectedPlanColor1' ]";
+        public string getPlanLabelsxPath()
+        {
+            return planLabelsxPath;
+        }
+
+        // Grid path variable
+        string visionGridValuesxPath = "//table[@class='selectionTable']//tbody//tr[+INSERT_TABLE_ROW_INDEX+]/td[+INSERT_MATCHING_PLAN_INDEX+]//td";
+        public string getVisionGridValuesxPath()
+        {
+            return visionGridValuesxPath;
+        }
+
 
         public VisionPageObject(IWebDriver driver)
         {
