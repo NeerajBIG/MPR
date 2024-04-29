@@ -23,6 +23,12 @@ namespace MPR.tests
     public class VisionPageShould : Base
     {
 
+
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that the Menu button to navigate to Vision works.
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyVisionPageLaunching()
@@ -48,6 +54,7 @@ namespace MPR.tests
             visionPage.getclkVision().Click();
             Thread.Sleep(1000);
 
+            /*
             IWebElement x = driver.FindElement(By.XPath("//*[@id='tdVISIONPlanTitle']"));
             TestContext.Progress.WriteLine(x.GetAttribute("innerHTML"));
             TestContext.Progress.WriteLine("------------------------------------------------");
@@ -70,7 +77,8 @@ namespace MPR.tests
                 TestContext.Progress.WriteLine("False");
             }
             TestContext.Progress.WriteLine("------------------------------------------------");
-
+            Assert.Fail("Multiple plans are selected");
+            */
 
 
             string visionPageHeading = visionPage.getheadingText().Text;
@@ -78,6 +86,12 @@ namespace MPR.tests
             Assert.That(visionPageHeading, Is.EqualTo(visionPageHeadingExpected));
         }
 
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that correct plans are being displayed. Verify that correct premiums are being displayed
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 276, 278-283
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyVisionPagePlans()
@@ -322,6 +336,13 @@ namespace MPR.tests
 
         }
 
+
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that the plan benefit values in the selection grid are correct.
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 545-554
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyVisionPageGridValues()
@@ -532,5 +553,339 @@ namespace MPR.tests
             }
 
         }
+
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that when a plan is selected and the next button is clicked that it takes the
+        /// user to the FSA step.
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 286-288
+        /// </summary>
+        // -------------------------------------------------------------------------------
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyVisionPageSelectionNextButton()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            DependentsPageObject dependentsPage = new DependentsPageObject(getDriver());
+            DentalPageObject dentalPage = new DentalPageObject(getDriver());
+            VisionPageObject visionPage = new VisionPageObject(getDriver());
+            FSAPageObject FSAPage = new FSAPageObject(getDriver());
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("medicalUser.username");
+            loginPage.getusername().SendKeys(usernameValid);
+
+            // log in
+            string passwordValid = getDataParser().extractData("medicalUser.password");
+            loginPage.getpassword().SendKeys(passwordValid);
+            loginPage.getsubmit().Click();
+            menuPage.getbtnContinue().Click();
+            Thread.Sleep(1000);
+            driver.Url = getDataParser().extractData("VisionStepURL");
+            Thread.Sleep(1000);
+
+            // Get current window handle
+            string originalWindow = driver.CurrentWindowHandle;
+            string[] testData = getDataParser().extractDataArray("nextButtonVisionTestData.CaseList");
+            TestContext.Progress.WriteLine("original window handle" + originalWindow);
+
+            foreach (var testItem in testData)
+            {
+
+                TestContext.Progress.WriteLine("----------------- Doing Tests For " + testItem + "------------------------------");
+                Thread.Sleep(1000);
+                string execution = getDataParser().extractData("nextButtonVisionTestData." + testItem + ".execute");
+                if (execution == "True")
+                {
+
+                    // get plans to compare with plans in new tab opened by link.
+                    string[] planList = getDataParser().extractDataArray("nextButtonVisionTestData." + testItem + ".plansToValidate");
+                    TestContext.Progress.WriteLine("##################################################");
+
+                    foreach (string item in planList)
+                    {
+                        // Find Index position of Matching Plan and build the xpath. reusing medical plan xpath cause its the same as dental.
+                        string visionPlanMethodName = "getPlanLabelsxPath";
+                        VisionPageObject visionObject = new VisionPageObject(getDriver());
+                        Type typeVision = typeof(VisionPageObject);
+                        MethodInfo visionPlanMethod = typeVision.GetMethod(visionPlanMethodName);
+                        string visionPlanMethodXPath = (string)visionPlanMethod.Invoke(visionObject, null);
+                        // find tr elements -> list of users in the grid
+                        var listOfPlanOptionElements = driver.FindElements(By.XPath(visionPlanMethodXPath));
+                        // select every plan once
+                        int indexCount = 0;
+                        int planIndex = 0;
+                        foreach (var element in listOfPlanOptionElements)
+                        {
+                            indexCount++;
+                            TestContext.Progress.WriteLine("Looking for index of this plan: " + item);
+                            TestContext.Progress.WriteLine(" Text of element: " + element.Text);
+                            Thread.Sleep(1000);
+                            string[] splitValues = element.GetAttribute("innerHTML").Split("<br>");
+                            if (splitValues.Contains(item))
+                            {
+                                planIndex = indexCount;
+                                TestContext.Progress.WriteLine("Found Index of Item: " + planIndex.ToString());
+                                break;
+                            }
+                        }
+                        TestContext.Progress.WriteLine(planIndex.ToString() + " This is index that I will use to extract Plan Grid Data");
+
+                        // Find Radio button to interact with based on matching index of plan and click
+                        string visionSelectionMethodName = "getPlanSelectionxPath";
+                        MethodInfo visionSelectionMethod = typeVision.GetMethod(visionSelectionMethodName);
+                        string visionMethodXPath = (string)visionSelectionMethod.Invoke(visionObject, null);
+                        // find tr elements
+                        var listOfRadioOptionElements = driver.FindElements(By.XPath(visionMethodXPath));
+                        // select radio button for plan based on index of plan label
+                        indexCount = 0;
+                        foreach (var element in listOfRadioOptionElements)
+                        {
+                            indexCount++;
+                            Thread.Sleep(1000);
+                            if (indexCount == planIndex)
+                            {
+                                element.Click();
+                                break;
+                            }
+                        }
+                        Thread.Sleep(1000);
+                        // dental page -> click the next button to dental
+                        // Verify that the vision Step has been reached
+                        aboutMePage.getnextBtn().Click();
+                        Thread.Sleep(1000);
+                        string FSAPageHeading = FSAPage.getheadingText().Text;
+                        string FSAPageHeadingExpected = "Flexible Spending Account (FSA)";
+                        Assert.That(FSAPageHeading, Is.EqualTo(FSAPageHeadingExpected));
+                        // Go back to medical step for next selection
+                        aboutMePage.getprevBtn().Click();
+
+                    }
+                    foreach (string window in driver.WindowHandles)
+                    {
+                        if (window != originalWindow)
+                        {
+                            driver.SwitchTo().Window(window);
+                            Thread.Sleep(1000);
+                            if (driver.WindowHandles.Count != 2)
+                            {
+                                driver.Close();
+                            }
+                            else if (driver.WindowHandles.Count == 2)
+                            {
+                                driver.Close();
+                                driver.SwitchTo().Window(originalWindow);
+                            }
+                            Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                        }
+                    }
+                    driver.Navigate().Refresh();
+                    TestContext.Progress.WriteLine(" ");
+
+                }
+                else
+                {
+                    TestContext.Progress.WriteLine("----------------- Skipping test for " + testItem + "------------------------------");
+                }
+            }
+            // do WAIVE selection Label
+            // need to refactor this later
+            // Find Radio button to interact with based on matching index of plan and click
+            VisionPageObject visionObject2 = new VisionPageObject(getDriver());
+            Type type2 = typeof(VisionPageObject);
+            string SelectionMethodName = "getPlanSelectionxPath";
+            MethodInfo SelectionMethod = type2.GetMethod(SelectionMethodName);
+            string visionMethodXPath2 = (string)SelectionMethod.Invoke(visionObject2, null);
+            // find tr elements
+            var listOfRadioOptionElements2 = driver.FindElements(By.XPath(visionMethodXPath2));
+            listOfRadioOptionElements2[0].Click();
+            Thread.Sleep(1000);
+            // medical page -> click the next button to vision
+            // Verify that the Vision Step has been reached
+            aboutMePage.getnextBtn().Click();
+            Thread.Sleep(1000);
+            string FSAPageHeading2 = FSAPage.getheadingText().Text;
+            string FSAPageHeadingExpected2 = "Flexible Spending Account (FSA)";
+            Assert.That(FSAPageHeading2, Is.EqualTo(FSAPageHeadingExpected2));
+            // Go back to medical step for next selection
+            aboutMePage.getprevBtn().Click();
+
+        }
+
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that only one plan can be selected at a time. Check for text and color 
+        /// change highlights. 
+        /// Verify Error message when no plan is selected
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 284,285
+        /// </summary>
+        // -------------------------------------------------------------------------------
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyVisionPageSelection()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+            DentalPageObject dentalPage = new DentalPageObject(getDriver());
+            VisionPageObject visionPage = new VisionPageObject(getDriver());
+
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("medicalUser.username");
+            loginPage.getusername().SendKeys(usernameValid);
+
+            string passwordValid = getDataParser().extractData("medicalUser.password");
+            loginPage.getpassword().SendKeys(passwordValid);
+
+            loginPage.getsubmit().Click();
+
+            menuPage.getbtnContinue().Click();
+
+            Thread.Sleep(1000);
+            driver.Url = getDataParser().extractData("VisionStepURL");
+            Thread.Sleep(1000);
+
+
+            VisionPageObject visionObject = new VisionPageObject(getDriver());
+            Type typeVision = typeof(VisionPageObject);
+            string visionSelectionIndicatorMethodName = "getPlanSelectionIndicatorxPath";
+            MethodInfo visionSelectionIndicatorMethod = typeVision.GetMethod(visionSelectionIndicatorMethodName);
+            string visionSelectionIndicatorMethodXPath = (string)visionSelectionIndicatorMethod.Invoke(visionObject, null);
+            // test that the next button throws a error when no plan selected
+            try
+            {
+                // find how many options have been selected
+                var listOfSelectedElements = driver.FindElements(By.XPath(visionSelectionIndicatorMethodXPath));
+                int countOfSelected = 0;
+                foreach (var selectedElement in listOfSelectedElements)
+                {
+                    if (selectedElement.Text.Contains("CURRENT SELECTION"))
+                    {
+
+                        countOfSelected++;
+                    }
+                }
+                // No plans are selected. Can test if next button error works.
+                if (countOfSelected == 0)
+                {
+                    // Verify Error popup when no selection 
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(3000);
+                    string expectedNoSelectionErrorMessage = "Make a vision plan choice";
+                    try
+                    {
+                        string noSelectionErrorMessage = visionPage.getnoSelectionErrorMessage().Text;
+                        Assert.That(noSelectionErrorMessage, Does.Contain(expectedNoSelectionErrorMessage).IgnoreCase);
+
+                    }
+                    catch (NoSuchElementException)
+                    {
+                        TestContext.Progress.WriteLine("No Error Message found");
+                        Assert.Fail("No Error Message Found");
+                    }
+
+                }
+                else
+                {
+                    TestContext.Progress.WriteLine("Skipping test: Error message pops up when no option is selected and user hits next button. due to not being able to unselect an option ");
+                }
+
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail("Web element not found. Not on correct page. Navigation to page failed.");
+            }
+
+            // Verify that only one option can be selected at a time.
+            try
+            {
+                // get selection
+                string visionSelectionMethodName = "getPlanSelectionxPath";
+                MethodInfo visionSelectionMethod = typeVision.GetMethod(visionSelectionMethodName);
+                string visionMethodXPath = (string)visionSelectionMethod.Invoke(visionObject, null);
+                // find tr elements -> list of users in the grid
+                var listOfDependentsSelectionOptionElements = driver.FindElements(By.XPath(visionMethodXPath));
+                // select every plan once
+                foreach (var element in listOfDependentsSelectionOptionElements)
+                {
+                    Thread.Sleep(1000);
+                    element.Click();
+                }
+                Thread.Sleep(1000);
+
+                // Verify that only one plan is still selected after selecting every plan once.
+                // find how many options have been selected
+                var listOfSelectedElements = driver.FindElements(By.XPath(visionSelectionIndicatorMethodXPath));
+                int countOfSelected = 0;
+                foreach (var selectedElement in listOfSelectedElements)
+                {
+                    if (selectedElement.Text.Contains("CURRENT SELECTION"))
+                    {
+                        countOfSelected++;
+                    }
+                }
+                // No plans are selected. Can test if next button error works.
+                if (countOfSelected == 1)
+                {
+                    TestContext.Progress.WriteLine("Only one plan selected. Based on Label -> Current selection <- elements ");
+                }
+                else
+                {
+                    TestContext.Progress.WriteLine("More  selected. Based on Label -> Current selection <- elements ");
+                    Assert.Fail("More than One plan Selected. Count of Selected plans == " + countOfSelected);
+                }
+
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail("Web element not found. Not on correct page. Navigation to page failed.");
+            }
+
+            try
+            {
+                // verify that a new color has been selected. same method there should only be one element with different class indicating selection
+                string visionSelectionIndicatorColorMethodName = "getPlanSelectionIndicatorColorxPath";
+                MethodInfo visionSelectionIndicatorColorMethod = typeVision.GetMethod(visionSelectionIndicatorColorMethodName);
+                string visionSelectionIndicatorColorMethodXPath = (string)visionSelectionIndicatorColorMethod.Invoke(visionObject, null);
+
+                // find how many options have been selected
+                var listOfSelectorIndicatorColorElements = driver.FindElements(By.XPath(visionSelectionIndicatorColorMethodXPath));
+                int countOfColorChangedElements = 0;
+                foreach (var selectedElement in listOfSelectorIndicatorColorElements)
+                {
+                    if (selectedElement.GetAttribute("Class").Contains("raisedRow selectedPlanColor1"))
+                    {
+                        countOfColorChangedElements++;
+                    }
+                }
+
+                if (countOfColorChangedElements == 1)
+                {
+                    TestContext.Progress.WriteLine("Only one plan has color change");
+                }
+                else
+                {
+                    Assert.Fail("Multiple plans are selected and have change color");
+                }
+                Thread.Sleep(1000);
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail("Web element not found. Not on correct page. Navigation to page failed.");
+            }
+
+        }
+
+
+
+
     }    
 }

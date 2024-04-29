@@ -490,6 +490,23 @@
       "plansToValidate": [ "PERMANENTE" ]
     }
   },
+  // Test the next button for each selected plan
+  "nextButtonDentalTestData": {
+    "CaseList": [ "Case_1" ],
+    "Case_1": {
+      "execute": "True",
+      "plansToValidate": [ "DENTAL", "PLUS" ]
+    }
+  },
+
+  // Test the next button for each selected plan
+  "nextButtonVisionTestData": {
+    "CaseList": [ "Case_1" ],
+    "Case_1": {
+      "execute": "True",
+      "plansToValidate": [ "WITHOUT", "WITH" ]
+    }
+  },
 
   "planBenefitsTestData": {
     "CaseList": [ "Case_1", "Case_2", "Case_3", "Case_4" ],
@@ -499,7 +516,7 @@
       "plansToValidate": [ "PREMIER", "SELECT", "VALUE", "PROTECT" ],
       "PREMIER": {
         "contracted": {
-          "officeVisitPrimaryCare": "$20",
+          "officeVisitPrimaryCare": "$100",
           "officeVisitSpecialist": "$35",
           "annualDeductiblePerPerson": "none",
           "annualDeductiblePerFamily": "none",
@@ -755,7 +772,7 @@
         "framesContacts": "First $130 covered",
         "framesContactFittings": "Up to $40"
       }
-    },
+    }
   }
 
 

@@ -24,6 +24,13 @@ namespace MPR.tests
     public class MedicalPageShould : Base
     {
 
+
+
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that the Menu button to navigate to Medical works.
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyMedicalPageLaunching()
@@ -52,6 +59,14 @@ namespace MPR.tests
         }
 
 
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that only one plan can be selected at a time. Check for text and color 
+        /// change highlights. 
+        /// Verify Error message when no plan is selected
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 221-212
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyMedicalPageSelection()
@@ -143,6 +158,13 @@ namespace MPR.tests
 
         }
 
+
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that link to plan comparison page works
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 117
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyMedicalPageLinkToNewTab()
@@ -185,6 +207,15 @@ namespace MPR.tests
         }
 
 
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that when zipcode changes to states that have different plan options it changes
+        /// selectable plans on the medical page.
+        /// Verify that when zipcode changes to states that have different plan options it changes
+        /// The premium to the correct values.
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 118-196
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyMedicalPagePlanWithZipCodes()
@@ -438,7 +469,13 @@ namespace MPR.tests
 
         }
 
-
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that when zipcode changes to states that have different plan options it changes
+        /// viewable plans in the plan comparison link.
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 204 - 210
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyFullComparisonLinkPagePlanWithZipCodes()
@@ -573,7 +610,13 @@ namespace MPR.tests
 
         }
 
-
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that when a plan is selected and the next button is clicked that it takes the
+        /// user to the Dental step.
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 213 - 222
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyMedicalPageSelectionNextButton()
@@ -725,6 +768,12 @@ namespace MPR.tests
 
         }
 
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that the plan benefit values in the selection grid are correct for the given zipcodes
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 461 - 516
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyMedicalPageGridValues()
@@ -814,7 +863,6 @@ namespace MPR.tests
                         string nonContractExpectedOutOfPocketMaxPerFamily = getDataParser().extractData("planBenefitsTestData." + testItem + "." + item + ".nonContracted.outOfPocketMaxPerFamily");
 
                         //---------------------------------------------------------------------------------------------------------------
-                        // trying more systematic approach
                         // Find Index position of Matching Plan and build the xpath
                         string medicalPlanMethodName = "getPlanLabelsxPath";
                         MedicalPageObject medicalObject = new MedicalPageObject(getDriver());
@@ -909,64 +957,6 @@ namespace MPR.tests
                         TestContext.Progress.WriteLine(nonContractCoinsuranceValues);
                         TestContext.Progress.WriteLine(nonContractOutOfPocketMaxValues);
 
-
-
-
-                        // Extract Data from Medical Grid Table
-                        /* Old code that I refactored
-                        MedicalPageObject medicalStepObject = new MedicalPageObject(getDriver());
-                        Type type = typeof(MedicalPageObject);
-
-                        // Extract Contract Data Values from Grid for item (Plan)
-                        // Office Visit Values
-                        string contractOfficeVisitValuesMethodName = "get" + item + "ContractOfficeVisitValuesMedicalCoveragexPath";
-                        MethodInfo contractOfficeVisitValuesMethod = type.GetMethod(contractOfficeVisitValuesMethodName);
-                        string contractOfficeVisitValuesMethodXPath = (string)contractOfficeVisitValuesMethod.Invoke(medicalStepObject, null);
-                        string contractOfficeVisitValues = driver.FindElement(By.XPath(contractOfficeVisitValuesMethodXPath)).Text;
-
-                        // Annual Deductible
-                        string contractAnnualDeductibleValuesMethodName = "get" + item + "ContractAnnualDeductibleValuesMedicalCoveragexPath";
-                        MethodInfo contractAnnualDeductibleValuesMethod = type.GetMethod(contractAnnualDeductibleValuesMethodName);
-                        string contractAnnualDeductibleValuesMethodXPath = (string)contractAnnualDeductibleValuesMethod.Invoke(medicalStepObject, null);
-                        string contractAnnualDeductibleValues = driver.FindElement(By.XPath(contractAnnualDeductibleValuesMethodXPath)).Text;
-
-                        // Coinsurance
-                        string contractCoinsuranceValuesMethodName = "get" + item + "ContractCoinsuranceValuesMedicalCoveragexPath";
-                        MethodInfo contractCoinsuranceValuesMethod = type.GetMethod(contractCoinsuranceValuesMethodName);
-                        string contractCoinsuranceValuesMethodXPath = (string)contractCoinsuranceValuesMethod.Invoke(medicalStepObject, null);
-                        string contractCoinsuranceValues = driver.FindElement(By.XPath(contractCoinsuranceValuesMethodXPath)).Text;
-
-                        // OutOfPocketMax
-                        string contractOutOfPocketMaxValuesMethodName = "get" + item + "ContractOutOfPocketMaxValuesMedicalCoveragexPath";
-                        MethodInfo contractOutOfPocketMaxValuesMethod = type.GetMethod(contractOutOfPocketMaxValuesMethodName);
-                        string contractOutOfPocketMaxValuesMethodXPath = (string)contractOutOfPocketMaxValuesMethod.Invoke(medicalStepObject, null);
-                        string contractOutOfPocketMaxValues = driver.FindElement(By.XPath(contractOutOfPocketMaxValuesMethodXPath)).Text;
-
-                        // Extract Non-Contract Data Values from Grid for item (Plan)
-                        // Office Visit Values
-                        string nonContractOfficeVisitValuesMethodName = "get" + item + "NonContractOfficeVisitValuesMedicalCoveragexPath";
-                        MethodInfo nonContractOfficeVisitValuesMethod = type.GetMethod(nonContractOfficeVisitValuesMethodName);
-                        string nonContractOfficeVisitValuesMethodXPath = (string)nonContractOfficeVisitValuesMethod.Invoke(medicalStepObject, null);
-                        string nonContractOfficeVisitValues = driver.FindElement(By.XPath(nonContractOfficeVisitValuesMethodXPath)).Text;
-
-                        // Annual Deductible
-                        string nonContractAnnualDeductibleValuesMethodName = "get" + item + "NonContractAnnualDeductibleValuesMedicalCoveragexPath";
-                        MethodInfo nonContractAnnualDeductibleValuesMethod = type.GetMethod(nonContractAnnualDeductibleValuesMethodName);
-                        string nonContractAnnualDeductibleValuesMethodXPath = (string)nonContractAnnualDeductibleValuesMethod.Invoke(medicalStepObject, null);
-                        string nonContractAnnualDeductibleValues = driver.FindElement(By.XPath(nonContractAnnualDeductibleValuesMethodXPath)).Text;
-
-                        // Coinsurance
-                        string nonContractCoinsuranceValuesMethodName = "get" + item + "NonContractCoinsuranceValuesMedicalCoveragexPath";
-                        MethodInfo nonContractCoinsuranceValuesMethod = type.GetMethod(nonContractCoinsuranceValuesMethodName);
-                        string nonContractCoinsuranceValuesMethodXPath = (string)nonContractCoinsuranceValuesMethod.Invoke(medicalStepObject, null);
-                        string nonContractCoinsuranceValues = driver.FindElement(By.XPath(nonContractCoinsuranceValuesMethodXPath)).Text;
-
-                        // OutOfPocketMax
-                        string nonContractOutOfPocketMaxValuesMethodName = "get" + item + "NonContractOutOfPocketMaxValuesMedicalCoveragexPath";
-                        MethodInfo nonContractOutOfPocketMaxValuesMethod = type.GetMethod(nonContractOutOfPocketMaxValuesMethodName);
-                        string nonContractOutOfPocketMaxValuesMethodXPath = (string)nonContractOutOfPocketMaxValuesMethod.Invoke(medicalStepObject, null);
-                        string nonContractOutOfPocketMaxValues = driver.FindElement(By.XPath(nonContractOutOfPocketMaxValuesMethodXPath)).Text;
-                        */
 
 
                         // Compare Values for  Contracted and non-contract Values In Grid with expected values

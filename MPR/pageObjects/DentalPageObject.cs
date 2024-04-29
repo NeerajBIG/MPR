@@ -62,12 +62,34 @@ namespace MPR.pageObjects
             return planLabelsxPath;
         }
 
+        string planSelectionIndicatorxPath = "//td[@class='selectionIndicator']";
+        public string getPlanSelectionIndicatorxPath()
+        {
+            return planSelectionIndicatorxPath;
+        }
+
+        string planSelectionxPath = "//td[@class='planRadioCell']/input";
+        public string getPlanSelectionxPath()
+        {
+            return planSelectionxPath;
+        }
+
+        string planSelectionIndicatorColorxPath = "//td[@class='raisedRow selectedPlanColor1' or @class='raisedRow whiteColor']";
+        public string getPlanSelectionIndicatorColorxPath()
+        {
+            return planSelectionIndicatorColorxPath;
+        }
+
         // Grid path variable. INSERT_TABLE_ROW_INDEX -> Row locations of the content on the web page. INSERT_MATCHING_PLAN_INDEX -> matching column index of the plan.
         string dentalGridValuesxPath = "//table[@class='selectionTable']//tbody//tr[+INSERT_TABLE_ROW_INDEX+]/td[+INSERT_MATCHING_PLAN_INDEX+]//td";
         public string getDentalGridValuesxPath()
         {
             return dentalGridValuesxPath;
         }
+
+
+
+
 
         public DentalPageObject(IWebDriver driver)
         {
@@ -88,6 +110,16 @@ namespace MPR.pageObjects
         {
             return headingText;
         }
+
+        [FindsBy(How = How.XPath, Using = "//li[text()[contains(.,'Make a dental plan choice')]]")]
+        private IWebElement noSelectionErrorMessage;
+        public IWebElement getnoSelectionErrorMessage()
+        {
+            return noSelectionErrorMessage;
+
+        }
+
+
 
     }
     public class MyDentalReflectionClass

@@ -62,6 +62,26 @@ namespace MPR.pageObjects
             return planLabelsxPath;
         }
 
+        string planSelectionxPath = "//td[@class='planRadioCell']/input";
+        public string getPlanSelectionxPath()
+        {
+            return planSelectionxPath;
+        }
+
+        string planSelectionIndicatorxPath = "//td[@class='selectionIndicator' and contains(text(),'CURRENT SELECTION')]";
+        public string getPlanSelectionIndicatorxPath()
+        {
+            return planSelectionIndicatorxPath;
+        }
+
+        string planSelectionIndicatorColorxPath = "//td[@class='raisedRow selectedPlanColor1']";
+        public string getPlanSelectionIndicatorColorxPath()
+        {
+            return planSelectionIndicatorColorxPath;
+        }
+
+
+
         // Grid path variable
         string visionGridValuesxPath = "//table[@class='selectionTable']//tbody//tr[+INSERT_TABLE_ROW_INDEX+]/td[+INSERT_MATCHING_PLAN_INDEX+]//td";
         public string getVisionGridValuesxPath()
@@ -88,6 +108,14 @@ namespace MPR.pageObjects
         public IWebElement getheadingText()
         {
             return headingText;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//li[text()[contains(.,'Make a vision plan choice')]]")]
+        private IWebElement noSelectionErrorMessage;
+        public IWebElement getnoSelectionErrorMessage()
+        {
+            return noSelectionErrorMessage;
+
         }
 
     }

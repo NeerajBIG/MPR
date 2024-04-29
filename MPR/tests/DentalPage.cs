@@ -22,6 +22,11 @@ namespace MPR.tests
     public class DentalPageShould : Base
     {
 
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that the Menu button to navigate to Dental works.
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyDentalPageLaunching()
@@ -48,6 +53,181 @@ namespace MPR.tests
             Assert.That(dentalPageHeading, Is.EqualTo(dentalPageHeadingExpected));
         }
 
+
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that only one plan can be selected at a time. Check for text and color 
+        /// change highlights. 
+        /// Verify Error message when no plan is selected
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 266 - 267
+        /// </summary>
+        // -------------------------------------------------------------------------------
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyDentalPageSelection()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+            DentalPageObject dentalPage = new DentalPageObject(getDriver());
+
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("medicalUser.username");
+            loginPage.getusername().SendKeys(usernameValid);
+
+            string passwordValid = getDataParser().extractData("medicalUser.password");
+            loginPage.getpassword().SendKeys(passwordValid);
+
+            loginPage.getsubmit().Click();
+
+            menuPage.getbtnContinue().Click();
+
+            dentalPage.getclkDental().Click();
+            Thread.Sleep(2000);
+
+
+            DentalPageObject dentalObject = new DentalPageObject(getDriver());
+            Type typeDental = typeof(DentalPageObject);
+            string dentalSelectionIndicatorMethodName = "getPlanSelectionIndicatorxPath";
+            MethodInfo dentalSelectionIndicatorMethod = typeDental.GetMethod(dentalSelectionIndicatorMethodName);
+            string dentalSelectionIndicatorMethodXPath = (string)dentalSelectionIndicatorMethod.Invoke(dentalObject, null);
+            // test that the next button throws a error when no plan selected
+            try
+            {
+                // find how many options have been selected
+                var listOfSelectedElements = driver.FindElements(By.XPath(dentalSelectionIndicatorMethodXPath));
+                int countOfSelected = 0;
+                foreach ( var selectedElement in listOfSelectedElements )
+                {
+                    if( selectedElement.Text.Contains("CURRENT SELECTION") ) 
+                    {
+
+                        countOfSelected++;
+                    }
+                }
+                // No plans are selected. Can test if next button error works.
+                if (countOfSelected == 0)
+                {
+                    // Verify Error popup when no selection 
+                    aboutMePage.getnextBtn().Click();
+                    Thread.Sleep(3000);
+                    string expectedNoSelectionErrorMessage = "Make a dental plan choice";
+                    try
+                    {
+                        string noSelectionErrorMessage = dentalPage.getnoSelectionErrorMessage().Text;
+                        Assert.That(noSelectionErrorMessage, Does.Contain(expectedNoSelectionErrorMessage).IgnoreCase);
+
+                    }
+                    catch (NoSuchElementException)
+                    {
+                        TestContext.Progress.WriteLine("No Error Message found");
+                        Assert.Fail("No Error Message Found");
+                    }
+
+                }
+                else 
+                {
+                    TestContext.Progress.WriteLine("Skipping test: Error message pops up when no option is selected and user hits next button. due to not being able to unselect an option ");
+                }
+
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail("Web element not found. Not on correct page. Navigation to page failed.");
+            }
+
+            // Verify that only one option can be selected at a time.
+            try
+            {
+                // get selection
+                string dentalSelectionMethodName = "getPlanSelectionxPath";
+                MethodInfo dentalSelectionMethod = typeDental.GetMethod(dentalSelectionMethodName);
+                string dentalMethodXPath = (string)dentalSelectionMethod.Invoke(dentalObject, null);
+                // find tr elements -> list of users in the grid
+                var listOfDependentsSelectionOptionElements = driver.FindElements(By.XPath(dentalMethodXPath));
+                // select every plan once
+                foreach (var element in listOfDependentsSelectionOptionElements)
+                {
+                    Thread.Sleep(1000);
+                    element.Click();
+                }
+                Thread.Sleep(1000);
+
+                // Verify that only one plan is still selected after selecting every plan once.
+                // find how many options have been selected
+                var listOfSelectedElements = driver.FindElements(By.XPath(dentalSelectionIndicatorMethodXPath));
+                int countOfSelected = 0;
+                foreach (var selectedElement in listOfSelectedElements)
+                {
+                    if (selectedElement.Text.Contains("CURRENT SELECTION"))
+                    {
+                        countOfSelected++;
+                    }
+                }
+                // No plans are selected. Can test if next button error works.
+                if (countOfSelected == 1)
+                {
+                    TestContext.Progress.WriteLine("Only one plan selected. Based on Label -> Current selection <- elements ");
+                }
+                else
+                {
+                    TestContext.Progress.WriteLine("More  selected. Based on Label -> Current selection <- elements ");
+                    Assert.Fail("More than One plan Selected. Count of Selected plans == " + countOfSelected);
+                }
+
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail("Web element not found. Not on correct page. Navigation to page failed.");
+            }
+
+            try
+            {
+                // verify that a new color has been selected. same method there should only be one element with different class indicating selection
+                string dentalSelectionIndicatorColorMethodName = "getPlanSelectionIndicatorColorxPath";
+                MethodInfo dentalSelectionIndicatorColorMethod = typeDental.GetMethod(dentalSelectionIndicatorColorMethodName);
+                string dentalSelectionIndicatorColorMethodXPath = (string)dentalSelectionIndicatorColorMethod.Invoke(dentalObject, null);
+
+                // find how many options have been selected
+                var listOfSelectorIndicatorColorElements = driver.FindElements(By.XPath(dentalSelectionIndicatorColorMethodXPath));
+                int countOfColorChangedElements = 0;
+                foreach (var selectedElement in listOfSelectorIndicatorColorElements)
+                {
+                    if (selectedElement.GetAttribute("Class").Contains("raisedRow selectedPlanColor1"))
+                    {
+                        countOfColorChangedElements++;
+                    }
+                }
+
+                if (countOfColorChangedElements == 1)
+                {
+                    TestContext.Progress.WriteLine("Only one plan has color change");
+                }
+                else
+                {
+                    Assert.Fail("Multiple plans are selected and have change color");
+                }
+                Thread.Sleep(1000);
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail("Web element not found. Not on correct page. Navigation to page failed.");
+            }
+
+        }
+
+
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that when zipcode changes to states that have different plan options it changes
+        /// selectable plans on the Dental page.
+        /// Verify that when zipcode changes to states that have different plan options it changes
+        /// The premium to the correct values.
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 230 - 265
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyDentalPagePlanWithZipCodes()
@@ -57,6 +237,7 @@ namespace MPR.tests
             AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
             MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
             DependentsPageObject dependentsPage = new DependentsPageObject(getDriver());
+
 
             loginPage.getloginLink().Click();
 
@@ -303,6 +484,172 @@ namespace MPR.tests
         }
 
 
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that when a plan is selected and the next button is clicked that it takes the
+        /// user to the Vision step.
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 268-270
+        /// </summary>
+        // -------------------------------------------------------------------------------
+        [Test]
+        //[Ignore("Ignore test")]
+        public void VerifyDentalPageSelectionNextButton()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+            AboutMePageObject aboutMePage = new AboutMePageObject(getDriver());
+            MedicalPageObject medicalPage = new MedicalPageObject(getDriver());
+            DependentsPageObject dependentsPage = new DependentsPageObject(getDriver());
+            DentalPageObject dentalPage = new DentalPageObject(getDriver());
+            VisionPageObject visionPage = new VisionPageObject(getDriver());
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("medicalUser.username");
+            loginPage.getusername().SendKeys(usernameValid);
+            // log in
+            string passwordValid = getDataParser().extractData("medicalUser.password");
+            loginPage.getpassword().SendKeys(passwordValid);
+            loginPage.getsubmit().Click();
+            menuPage.getbtnContinue().Click();
+            dentalPage.getclkDental().Click();
+
+            // Get current window handle
+            string originalWindow = driver.CurrentWindowHandle;
+            string[] testData = getDataParser().extractDataArray("nextButtonDentalTestData.CaseList");
+            TestContext.Progress.WriteLine("original window handle" + originalWindow);
+
+            foreach (var testItem in testData)
+            {
+
+                TestContext.Progress.WriteLine("----------------- Doing Tests For " + testItem + "------------------------------");
+                Thread.Sleep(1000);
+                string execution = getDataParser().extractData("nextButtonDentalTestData." + testItem + ".execute");
+                if (execution == "True")
+                {
+                    // get plans to compare with plans in new tab opened by link.
+                    string[] planList = getDataParser().extractDataArray("nextButtonDentalTestData." + testItem + ".plansToValidate");
+                    int itemIndex = 0;
+                    TestContext.Progress.WriteLine("##################################################");
+                    foreach (string item in planList)
+                    {
+
+                        // Loop Through and find index of Plan
+                        string methodName = "getPlanLabelsxPath";
+                        DentalPageObject dentalObject = new DentalPageObject(getDriver());
+                        Type type = typeof(DentalPageObject);
+                        MethodInfo methodComparePlan = type.GetMethod(methodName);
+                        string methodXPath = (string)methodComparePlan.Invoke(dentalObject, null);
+                        var listOfItems = driver.FindElements(By.XPath(methodXPath));
+                        int indexCount = 0;
+                        int planIndex = 0;
+                        foreach (var element in listOfItems)
+                        {
+                            indexCount++;
+                            TestContext.Progress.WriteLine("Looking for index of this plan: " + item);
+                            TestContext.Progress.WriteLine(" Text of element: " + element.Text);
+                            Thread.Sleep(1000);
+                            if (element.Text.Contains(item))
+                            {
+                                planIndex = indexCount +1;
+                                TestContext.Progress.WriteLine("Found Index of Item: " + planIndex.ToString());
+                                break;
+                            }
+                        }
+                        TestContext.Progress.WriteLine(planIndex.ToString() + " This is index that I need to find radio button");
+                        Thread.Sleep(1000);
+
+                        // Find Radio button to interact with based on matching index of plan and click
+                        string dentalSelectionMethodName = "getPlanSelectionxPath";
+                        MethodInfo dentalSelectionMethod = type.GetMethod(dentalSelectionMethodName);
+                        string dentalMethodXPath = (string)dentalSelectionMethod.Invoke(dentalObject, null);
+                        // find tr elements
+                        var listOfRadioOptionElements = driver.FindElements(By.XPath(dentalMethodXPath));
+                        // select radio button for plan based on index of plan label
+                        indexCount = 0;
+                        foreach (var element in listOfRadioOptionElements)
+                        {
+                            indexCount++;
+                            Thread.Sleep(1000);
+                            if (indexCount == planIndex)
+                            {
+                                element.Click();
+                                break;
+                            }
+                        }
+                        Thread.Sleep(1000);
+                        // medical page -> click the next button to dental
+                        // Verify that the Vision Step has been reached
+                        aboutMePage.getnextBtn().Click();
+                        Thread.Sleep(1000);
+                        string visionPageHeading = visionPage.getheadingText().Text;
+                        string visionPageHeadingExpected = "Vision (VSP)";
+                        Assert.That(visionPageHeading, Is.EqualTo(visionPageHeadingExpected));
+                        // Go back to medical step for next selection
+                        aboutMePage.getprevBtn().Click();
+
+
+                    }
+
+                    foreach (string window in driver.WindowHandles)
+                    {
+                        if (window != originalWindow)
+                        {
+                            driver.SwitchTo().Window(window);
+                            Thread.Sleep(1000);
+                            if (driver.WindowHandles.Count != 2)
+                            {
+                                driver.Close();
+                            }
+                            else if (driver.WindowHandles.Count == 2)
+                            {
+                                driver.Close();
+                                driver.SwitchTo().Window(originalWindow);
+                            }
+                            Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                        }
+                    }
+                    driver.Navigate().Refresh();
+                    TestContext.Progress.WriteLine(" ");
+
+                }
+                else
+                {
+                    TestContext.Progress.WriteLine("----------------- Skipping test for " + testItem + "------------------------------");
+                }
+            }
+            // do WAIVE selection Label
+            // need to refactor this later
+            // Find Radio button to interact with based on matching index of plan and click
+            DentalPageObject dentalObject2 = new DentalPageObject(getDriver());
+            Type type2 = typeof(DentalPageObject);
+            string SelectionMethodName = "getPlanSelectionxPath";
+            MethodInfo SelectionMethod = type2.GetMethod(SelectionMethodName);
+            string dentalMethodXPath2 = (string)SelectionMethod.Invoke(dentalObject2, null);
+            // find tr elements
+            var listOfRadioOptionElements2 = driver.FindElements(By.XPath(dentalMethodXPath2));
+            listOfRadioOptionElements2[0].Click();
+            Thread.Sleep(1000);
+            // medical page -> click the next button to dental
+            // Verify that the Vision Step has been reached
+            aboutMePage.getnextBtn().Click();
+            Thread.Sleep(1000);
+            string visionPageHeading2 = visionPage.getheadingText().Text;
+            string visionPageHeadingExpected2 = "Vision (VSP)";
+            Assert.That(visionPageHeading2, Is.EqualTo(visionPageHeadingExpected2));
+            // Go back to medical step for next selection
+            aboutMePage.getprevBtn().Click();
+
+        }
+
+        // -------------------------------------------------------------------------------
+        /// <summary>
+        /// Verify that the plan benefit values in the selection grid are correct for the given zipcodes
+        /// Covers Text Cases from TestCases Excel Document. Test Cases 517 - 544
+        /// </summary>
+        // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
         public void VerifyDentalPageGridValues()
