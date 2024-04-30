@@ -423,6 +423,7 @@
   "AboutMeStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/AboutMe/PersonalInfo",
   "VisionStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Vision",
   "dependantStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Dependents#",
+  "userHireDate": "6/30/2024",
 
   // test data for the full comparison plan link
   "fullPlanComparisonTestData": {
