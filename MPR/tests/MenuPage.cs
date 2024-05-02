@@ -73,30 +73,32 @@ namespace MPR.tests
 
             loginPage.getloginLink().Click();
 
-            string usernameValid = getDataParser().extractData("usernameValid");
+            string usernameValid = getDataParser().extractData("newUser.username");
             loginPage.getusername().SendKeys(usernameValid);
 
-            string passwordValid = getDataParser().extractData("passwordValid");
+            string passwordValid = getDataParser().extractData("newUser.password");
             loginPage.getpassword().SendKeys(passwordValid);
 
             loginPage.getsubmit().Click();
 
-            menuPage.getbtnContinue().Click();
-            
+            menuPage.getbtnContinue().Click();                      
+            Thread.Sleep(2000);
+
+            menuPage.getPremiumDetailsLink().Click();
             Thread.Sleep(3000);
-            Actions actions = new Actions(driver);
-            actions.MoveToElement(menuPage.getPremiumDetailsLink());
-            actions.Pause(TimeSpan.FromSeconds(3));
-            actions.Build().Perform();
-            int index = 0;
-            IList<IWebElement> premiumDetailsContents = menuPage.getPremiumDetailsContents();
-            foreach ( IWebElement element in premiumDetailsContents)
+
+            int iRowsCount = menuPage.getPremiumDetailsPopoverContents().Count;
+            for (int iRows = 1; iRows <= iRowsCount; iRows++) 
             {
-                foreach (IWebElement subElement in element.FindElements(By.XPath("//td"))) {
-                    TestContext.Progress.WriteLine("index: " + index + " Value: " + subElement.Text);
-                }
-                index++;
+                string bb = menuPage.getpremiumDetailsPopoverxPath();
+                string bb2 = menuPage.getpremiumDetailsPopoverxPath();
+                string premiumType = driver.FindElement(By.XPath(bb+"["+ iRows +"]/td[1]")).Text;
+                string premiumValue = driver.FindElement(By.XPath(bb + "[" + iRows + "]/td[2]")).Text;
+                TestContext.Progress.WriteLine(premiumType +" -- "+ premiumValue);
             }
+            string aa = menuPage.getpremiumDetailsPopoverFooter1xPath().Text;
+            string ab = menuPage.getpremiumDetailsPopoverFooter2xPath().Text;
+            TestContext.Progress.WriteLine(aa + " -- " + ab);
         }
     }
 }

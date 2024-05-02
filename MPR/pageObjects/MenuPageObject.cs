@@ -65,12 +65,32 @@ namespace MPR.pageObjects
         {
             return premiumDetailsLink;
         }
-
-        [FindsBy(How = How.XPath, Using = "//div[@class='//div[@class='popover fade left in']/div/table/tbody/tr']")]
+                
+        [FindsBy(How = How.XPath, Using = "//table[@id='tblPopoverContent']/tbody/tr")]
         private IList<IWebElement> premiumDetailsPopover;
-        public IList<IWebElement> getPremiumDetailsContents()
+        public IList<IWebElement> getPremiumDetailsPopoverContents()
         {
             return premiumDetailsPopover;
+        }
+
+        string premiumDetailsPopoverxPath = "//table[@id='tblPopoverContent']/tbody/tr";
+        public string getpremiumDetailsPopoverxPath()
+        {
+            return premiumDetailsPopoverxPath;
+        }   
+
+        [FindsBy(How = How.XPath, Using = "//table[@id='tblPopoverContent']/tfoot/tr[1]/td[1]")]
+        private IWebElement premiumDetailsPopoverFooter1xPath;
+        public IWebElement getpremiumDetailsPopoverFooter1xPath()
+        {
+            return premiumDetailsPopoverFooter1xPath;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//table[@id='tblPopoverContent']/tfoot/tr[1]/td[2]")]
+        private IWebElement premiumDetailsPopoverFooter2xPath;
+        public IWebElement getpremiumDetailsPopoverFooter2xPath()
+        {
+            return premiumDetailsPopoverFooter2xPath;
         }
 
 
