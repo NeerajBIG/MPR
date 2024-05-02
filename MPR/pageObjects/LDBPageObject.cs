@@ -40,6 +40,13 @@ namespace MPR.pageObjects
             return headingText;
         }
 
+        [FindsBy(How = How.XPath, Using = "//span[text()='Beneficiaries for Group Term Life']")]
+        private IWebElement secondPageHeadingText;
+        public IWebElement getSecondPageHeadingText()
+        {
+            return secondPageHeadingText;
+        }
+
 
         // Hyper link related
         [FindsBy(How = How.XPath, Using = "//title")]
@@ -69,6 +76,15 @@ namespace MPR.pageObjects
         {
             return moreOADDInformationLink;
         }
+
+        // estimated monthly benefit
+        [FindsBy(How = How.XPath, Using = "//*[@id='frmGroupTermLife']/p[1]/span")]
+        private IWebElement disabilityPlanText;
+        public IWebElement getDisabilityPlanText()
+        {
+            return disabilityPlanText;
+        }
+
 
 
 

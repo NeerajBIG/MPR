@@ -59,6 +59,20 @@ namespace MPR.pageObjects
             return startBtn;
         }
 
+        [FindsBy(How = How.XPath, Using = "//a[text()='Premium Details']")]
+        private IWebElement premiumDetailsLink;
+        public IWebElement getPremiumDetailsLink()
+        {
+            return premiumDetailsLink;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='//div[@class='popover fade left in']/div/table/tbody/tr']")]
+        private IList<IWebElement> premiumDetailsPopover;
+        public IList<IWebElement> getPremiumDetailsContents()
+        {
+            return premiumDetailsPopover;
+        }
+
 
 
     }

@@ -2,6 +2,7 @@ using MPR.pageObjects;
 using MPR.utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 
 namespace MPR.tests
 {
@@ -32,6 +33,7 @@ namespace MPR.tests
 
             menuPage.getbtnContinue().Click();
 
+
             //int menuStepsCount = driver.FindElements(By.XPath("//span[text()='Introduction']/parent::div/parent::div/parent::div/parent::div/div[@onclick]")).Count;
             //TestContext.Progress.WriteLine(menuStepsCount);
 
@@ -60,6 +62,41 @@ namespace MPR.tests
 
             string txtIntroductionExpected = "Introduction";
             Assert.That(txtIntroduction, Is.EqualTo(txtIntroductionExpected));
+        }
+
+
+        [Test]
+        public void VerifyMenuPremiumDetails()
+        {
+            LoginPageObject loginPage = new LoginPageObject(getDriver());
+            MenuPageObject menuPage = new MenuPageObject(getDriver());
+
+            loginPage.getloginLink().Click();
+
+            string usernameValid = getDataParser().extractData("usernameValid");
+            loginPage.getusername().SendKeys(usernameValid);
+
+            string passwordValid = getDataParser().extractData("passwordValid");
+            loginPage.getpassword().SendKeys(passwordValid);
+
+            loginPage.getsubmit().Click();
+
+            menuPage.getbtnContinue().Click();
+            
+            Thread.Sleep(3000);
+            Actions actions = new Actions(driver);
+            actions.MoveToElement(menuPage.getPremiumDetailsLink());
+            actions.Pause(TimeSpan.FromSeconds(3));
+            actions.Build().Perform();
+            int index = 0;
+            IList<IWebElement> premiumDetailsContents = menuPage.getPremiumDetailsContents();
+            foreach ( IWebElement element in premiumDetailsContents)
+            {
+                foreach (IWebElement subElement in element.FindElements(By.XPath("//td"))) {
+                    TestContext.Progress.WriteLine("index: " + index + " Value: " + subElement.Text);
+                }
+                index++;
+            }
         }
     }
 }
