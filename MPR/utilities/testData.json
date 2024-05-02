@@ -409,7 +409,7 @@
       "WITH": "$28.10"
     }
   },
-  "usernameValid": "Tester1001",
+  "usernameValid": "Tester1012",
   "usernameValid2": "Tester1005",
   "passwordValid": "Demo@one2345",
   "usernameInvalid": "aaaaaaaaa",
@@ -424,6 +424,7 @@
   "VisionStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Vision",
   "dependantStepURL": "https://demo2.dmba.com/DMBA_Enrollment/IE/Dependents#",
   "userHireDate": "6/30/2024",
+  "userSalary": "78475",
 
   // test data for the full comparison plan link
   "fullPlanComparisonTestData": {
