@@ -93,6 +93,28 @@ namespace MPR.pageObjects
             return premiumDetailsPopoverFooter2xPath;
         }
 
+        [FindsBy(How = How.XPath, Using = "//div[contains(@style,'#476A7D')]//span[text()]")]
+        private IList<IWebElement> completedStepsByBGColor;
+        public IList<IWebElement> getCompletedStepsByBGColor()
+        {
+            return completedStepsByBGColor;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(@style,'background-color: #A4C786;')]//span")]
+        private IList<IWebElement> currentStepsByBGColor;
+        public IList<IWebElement> getCurrentStepsByBGColor()
+        {
+            return currentStepsByBGColor;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(@onclick,'Dependents') and contains(.,'Manage Dependents')]")]
+        private IWebElement clkManageDependents;
+        public IWebElement getclkManageDependents()
+        {
+            return clkManageDependents;
+        }
+
+
 
 
     }

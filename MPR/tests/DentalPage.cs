@@ -436,7 +436,7 @@ namespace MPR.tests
                             // Compare Price to Expected price
                             // Test Json Value
                             string expectedRate = getDataParser().extractData("medicalUser." + testItem + "." + item);
-                            // Get xpath and Rate from medical step page
+                            // Get xpath and Rate from dental step page
                             string rateMethodName = "get" + item + "CoverageRatexPath";
                             MethodInfo methodCompareRate = type.GetMethod(rateMethodName);
                             string methodCompareRateXPath = (string)methodCompareRate.Invoke(dentalObject, null);

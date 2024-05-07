@@ -68,7 +68,7 @@ namespace MPR.tests
         // -------------------------------------------------------------------------------
         [Test]
         //[Ignore("Ignore test")]
-        public void VerifyFSAErrorMessageLaunching()
+        public void VerifyFSAErrorMessage()
         {
             LoginPageObject loginPage = new LoginPageObject(getDriver());
             MenuPageObject menuPage = new MenuPageObject(getDriver());
