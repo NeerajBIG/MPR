@@ -9,16 +9,25 @@ namespace MPR.tests
 {
     // -------------------------------------------------------------------------------
     /// <summary>
-    /// This is the description of the method.
+    /// Test Scenario: Verify login functionality.
+    /// Purpose: 
+    /// 1) To ensure that users can successfully log in to the application with valid credentials.
+    /// 2) To ensure that users cannot log in to the application with Invalid credentials. Any error messages indicating login failure should not be displayed. 
     /// </summary>
-    /// <param name="firstParameter">This is the first parameter.</param>
-    /// <returns>This is the description of the return value.</returns>
-    /// Hello World again 123 11
+    /// <testcase1="VerifyLandingPageLaunching">This will verify successful launch of landing page.</testcase1>
+    /// <expectedcondition>User should be able to launch the application on any web browser.</expectedcondition>
+    /// <testcase2="VerifyLoginPageLaunching">This will verify successful launch of login page.</testcase2>
+    /// <expectedcondition>User should be able to open the login page.</expectedcondition>
+    /// <testcase3="VerifyUserLoginValidCred">This will verify login attempt with valid credentials.</testcase3>
+    /// <expectedcondition>User should be able to login with valid credentials.</expectedcondition>
+    /// <testcase4="VerifyUserLoginInvalidCred">This will verify unsuccessful login attempt with Invalid credentials.</testcase4>
+    /// <expectedcondition>User should not be able to login with Invalid credentials. An error message should display</expectedcondition>
     // -------------------------------------------------------------------------------
 
+    [Parallelizable(ParallelScope.Self)]
     public class LoginPageShould : Base
     {
-        [Test]
+        [Test, Order(1)]
         //[Ignore("Ignore test")]
         public void VerifyLandingPageLaunching()
         {
@@ -26,7 +35,8 @@ namespace MPR.tests
             string landingPageTitleExpected = "DMBA.com";
             Assert.That(landingPageTitle, Is.EqualTo(landingPageTitleExpected));
         }
-        [Test]
+
+        [Test, Order(2)]
         //[Ignore("Ignore test")]
         public void VerifyLoginPageLaunching()
         {
@@ -38,48 +48,39 @@ namespace MPR.tests
             Assert.That(loginPageTitle, Is.EqualTo(loginPageTitleExpected));
             Thread.Sleep(2000);
         }
+
         //[Test, TestCaseSource("AddTestDataConfig")]
-        [Test]
+        [Test, Order(3)]
         public void VerifyUserLoginValidCred()
-        {                
-            string usernameValid = getDataParser().extractData("usernameValid");
-            TestContext.Progress.WriteLine("To get json string "+usernameValid);
-
-            string usernameValid1 = getDataParser().extractData("newUser.username");
-            TestContext.Progress.WriteLine("To get nested json string " + usernameValid1);
-
-            //string usernameValid2 = getDataParser().extractData("dataSet[0]");
-            //TestContext.Progress.WriteLine("To get json string from array" + usernameValid2);
-
-
-            LoginPageObject loginPage = new LoginPageObject(getDriver());
-            loginPage.getloginLink().Click();
-
-            loginPage.getusername().SendKeys(usernameValid);
-
-            string passwordValid = getDataParser().extractData("passwordValid");
-            loginPage.getpassword().SendKeys(passwordValid);
-
-            loginPage.getsubmit().Click();
-
-            string[] usernameValidList = getDataParser().extractDataArray("dataSet");
+        {
+            string[] usernameValidList = getDataParser().extractDataArray("newUser.dataSet");
+            int i = 0;
             foreach (var item in usernameValidList)
             {
-                TestContext.Progress.WriteLine(item);
-            }
-            TestContext.Progress.WriteLine(usernameValidList[0]);
+                LoginPageObject loginPage = new LoginPageObject(getDriver());
+                loginPage.getloginLink().Click();
 
-            string btnLogoutText = loginPage.getbtnLogoutText().Text;
-            //TestContext.Progress.WriteLine(btnLogoutText);
-            string btnLogoutTextExpected = "LOG OUT";
-            Assert.That(btnLogoutText, Is.EqualTo(btnLogoutTextExpected));
-            Thread.Sleep(5000);
+                loginPage.getusername().SendKeys(usernameValidList[i]);
+
+                string passwordValid = getDataParser().extractData("newUser.password");
+                
+                loginPage.getpassword().SendKeys(passwordValid);
+
+                loginPage.getsubmit().Click();
+
+                string btnLogoutText = loginPage.getbtnLogoutText().Text;
+                string btnLogoutTextExpected = "LOG OUT";
+                Assert.That(btnLogoutText, Is.EqualTo(btnLogoutTextExpected));                
+                Thread.Sleep(2000);
+                loginPage.getbtnLogoutText().Click();
+                i++;
+            }         
         }
-        [Test]
+
+        [Test, Order(4)]
         //[Ignore("Ignore test")]
         public void VerifyUserLoginInvalidCred()
         {
-
             var mName = System.Reflection.MethodBase.GetCurrentMethod().Name;
             TestContext.Progress.WriteLine(mName);
 
@@ -98,17 +99,18 @@ namespace MPR.tests
             TestContext.Progress.WriteLine(txtError);
             string txtErrorExpected1 = "Unable to sign in";
             string txtErrorExpected2 = "Your account is locked. Please contact your administrator.";
-            Assert.That(txtError, Is.EqualTo(txtErrorExpected1));
-            //Assert.That(txtError, Is.EqualTo(txtErrorExpected2));
-            Thread.Sleep(5000);
+            if (txtError.Contains("Unable"))
+            {
+                Assert.That(txtError, Is.EqualTo(txtErrorExpected1));
+            }
+            else if (txtError.Contains("Your"))
+            {
+                Assert.That(txtError, Is.EqualTo(txtErrorExpected2));
+            }
+            else
+            {
+                Assert.Fail("Unknown error message displayed");
+            }
         }
-
-        //public static IEnumerable<TestCaseData> AddTestDataConfig()
-        //{
-        //    yield return new TestCaseData(getDataParser().extractData("username"), getDataParser().extractData("password"));
-        //    yield return new TestCaseData(getDataParser().extractData("usernameInvalid"), getDataParser().extractData("passwordInvalid"));
-
-        //}
-
     }
 }

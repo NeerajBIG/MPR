@@ -28,7 +28,6 @@ namespace MPR.utilities
     {
         public IWebDriver driver;
 
-
         public ExtentReports extent;
         public ExtentTest testExtent;
 
@@ -46,11 +45,8 @@ namespace MPR.utilities
             extent.AttachReporter(htmlReporter);
             string projectDirectoryName = Directory.GetParent(workingDirectory).Parent.Parent.Name;
             extent.AddSystemInfo("Project Name", "DMBA-"+ projectDirectoryName);
-            extent.AddSystemInfo("Environment", "QA");
-            extent.AddSystemInfo("Tester Name", "Neeraj");
-            
-            TestContext.Progress.WriteLine("########################## Initiating the Extent Report");
-
+            extent.AddSystemInfo("Environment", getDataParser().extractData("Env"));
+            extent.AddSystemInfo("Tester Name", "DMBA Automation Team");
         }
 
         [SetUp]
@@ -59,7 +55,7 @@ namespace MPR.utilities
             string browserName = ConfigurationManager.AppSettings["browser"];
             InitBrowser(browserName);
 
-            string url1 = getDataParser().extractData("DemoUrl");
+            string url1 = getDataParser().extractData("Url");
             driver.Url = url1;
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -137,20 +133,14 @@ namespace MPR.utilities
             }
             else if (status == TestStatus.Passed)
             {
-
             }
-            driver.Quit();
-            TestContext.Progress.WriteLine("########################## Closing the driver");
-
+            driver.Close();
         }
 
         [OneTimeTearDown]
         public void FlushExtentReport()
-        {
-            
+        {            
             extent.Flush();
-            TestContext.Progress.WriteLine("########################## Flushing the Extent Report");
-
             string clearDataBeforeDays = ConfigurationManager.AppSettings["clearDataBeforeDays"];
             int clearDataBeforeDaysInt = Int32.Parse(clearDataBeforeDays);
 
@@ -189,17 +179,13 @@ namespace MPR.utilities
                 {
                     File.Delete(reportsDirectory + "\\" + file.Name);
                 }
-
             }
-
-
             DirectoryInfo dScreenshots = new DirectoryInfo(screenshotsDirectory);
             FileInfo[] screenshotsFiles = dScreenshots.GetFiles("*");
             foreach (FileInfo file in screenshotsFiles)
             {
                 string fileToDelete = file.Name;
                 string[] fileDateParts = fileToDelete.Split("_");
-
 
                 string fileDate = fileDateParts[2];
                 int fileDateInt = Int32.Parse(fileDate);
@@ -218,10 +204,7 @@ namespace MPR.utilities
                 {
                     File.Delete(screenshotsDirectory + "\\" + file.Name);
                 }
-
             }
-
         }
-
     }
 }

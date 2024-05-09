@@ -12,6 +12,8 @@ namespace MPR.tests
     /// <param name="firstParameter">This is the first parameter.</param>
     /// <returns>This is the description of the return value.</returns>
     // -------------------------------------------------------------------------------
+
+    [Parallelizable(ParallelScope.Self)]
     public class WelcomePageShould : Base
     {
 
