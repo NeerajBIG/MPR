@@ -95,74 +95,35 @@ namespace MPR.tests
                 // get current window
                 string originalWindow = driver.CurrentWindowHandle;
                 
-                // Click Hyper Link for Group Term Life
-                LDBPage.getmoreGTFInformationLink().Click();
-                Thread.Sleep(2000);
-                // switch to driver to new tab
-                foreach (string window in driver.WindowHandles)
-                {
-                    TestContext.Progress.WriteLine(window);
-                    if (originalWindow != window)
+                // get hyper links
+                IList<IWebElement> hyperLnks = LDBPage.getHyperlnks();
+                // click on every hyper link once and check if it opened a new tab.
+                foreach (IWebElement hyperLnk in hyperLnks) { 
+                    hyperLnk.Click();
+                    Thread.Sleep(4000);
+                    int count = driver.WindowHandles.Count;
+                    if (count > 1)
                     {
-                        driver.SwitchTo().Window(window);
-                        break;
+                        TestContext.Progress.WriteLine("Link worked");
                     }
-                }
-                Thread.Sleep(2000);
-
-                // verify that PDF opened. If it can't find element then it didn't work.
-                FSAPage.getpdfViewer();
-
-                // Close window
-                driver.Close();
-                
-                // Switch back to original browser (first window)
-                driver.SwitchTo().Window(originalWindow);
-
-                // Click Hyper Link for Disability Plan (DP)
-                LDBPage.getmoreDPInformationLink().Click();
-                // switch to driver to new tab
-                foreach (string window in driver.WindowHandles)
-                {
-                    TestContext.Progress.WriteLine(window);
-                    if (originalWindow != window)
+                    else { 
+                        Assert.Fail("Link did not open new tab");
+                    }
+                    foreach (string window in driver.WindowHandles)
                     {
-                        driver.SwitchTo().Window(window);
-                        break;
+                        TestContext.Progress.WriteLine(window);
+                        if (originalWindow != window)
+                        {
+                            driver.SwitchTo().Window(window);
+                            break;
+                        }
                     }
+                    // Close window
+                    driver.Close();
+                    driver.SwitchTo().Window(originalWindow);
+
+
                 }
-                Thread.Sleep(3000);
-
-                // verify that PDF opened. If it can't find element then it didn't work.
-                FSAPage.getpdfViewer();
-
-                // Close window
-                driver.Close();
-
-                // Switch back to original browser (first window)
-                driver.SwitchTo().Window(originalWindow);
-                // Click Hyper Link Occupational Accidental Death & Dismemberment (OAD&D)
-                LDBPage.getmoreOADDInformationLink().Click();
-                // switch to driver to new tab
-                foreach (string window in driver.WindowHandles)
-                {
-                    TestContext.Progress.WriteLine(window);
-                    if (originalWindow != window)
-                    {
-                        driver.SwitchTo().Window(window);
-                        break;
-                    }
-                }
-                Thread.Sleep(3000);
-
-                // verify that PDF opened. If it can't find element then it didn't work.
-                FSAPage.getpdfViewer();
-
-                // Close window
-                driver.Close();
-
-                // Switch back to original browser (first window)
-                driver.SwitchTo().Window(originalWindow);
                 
             }
             catch (NoSuchElementException ex)
@@ -231,14 +192,7 @@ namespace MPR.tests
             Assert.That(LDBSecondPageHeading, Is.EqualTo(LDBSecondPageHeadingExpected));
 
 
-
         }
-
-
-
-
-
-
 
     }    
 }

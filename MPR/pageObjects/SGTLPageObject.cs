@@ -41,6 +41,37 @@ namespace MPR.pageObjects
             return headingText;
         }
 
+        // drop down for coverage amount
+        [FindsBy(How = How.XPath, Using = "//select[@name='ContractAmtDropDown.SelectedValue']")]
+        private IWebElement ddlCoverage;
+        public IWebElement getDdlCoverage()
+        {
+            return ddlCoverage;
+        }
+
+        // SGTL form information for each person
+
+        [FindsBy(How = How.XPath, Using = "//span[text()='FT']/parent::div/input")]
+        private IWebElement txtHeightFT;
+        public IWebElement getTxtHeightFT()
+        {
+            return txtHeightFT;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//span[text()='IN']/parent::div/input[@maxlength='2']")]
+        private IWebElement txtHeightIN;
+        public IWebElement getTxtHeightIN()
+        {
+            return txtHeightIN;
+        }
+
+        [FindsBy(How = How.XPath, Using = "")]
+        private IWebElement txtCurrentWeight;
+        public IWebElement getTxtCurrentWeight()
+        {
+            return txtCurrentWeight;
+        }
+
 
     }
     public class MySGTLReflectionClass

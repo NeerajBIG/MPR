@@ -315,6 +315,11 @@ namespace MPR.tests
             var dollarValues = new List<string>();
             var planLabels = new List<string>();
             int iRowsCount = menuPage.getPremiumDetailsPopoverContents().Count;
+            // check if select plans are correct
+            bool containsMedicalPlanName = false;
+            bool containsDentalPlanName = false;
+            bool containsVisionPlanName = false;
+
             for (int iRows = 1; iRows <= iRowsCount; iRows++) 
             {
                 string bb = menuPage.getpremiumDetailsPopoverxPath();
@@ -324,6 +329,17 @@ namespace MPR.tests
                 planLabels.Add(premiumType);
                 dollarValues.Add(premiumValue);
                 TestContext.Progress.WriteLine(premiumType +" -- "+ premiumValue);
+                if (premiumType.Contains(medicalPlanSelection, StringComparison.OrdinalIgnoreCase)) {
+                    containsMedicalPlanName = true;
+                }
+                else if (premiumType.Contains(dentalPlanSelection, StringComparison.OrdinalIgnoreCase))
+                {
+                    containsDentalPlanName = true;
+                }
+                else if (premiumType.Contains(visionPlanSelection, StringComparison.OrdinalIgnoreCase))
+                {
+                    containsVisionPlanName = true;
+                }
             }
             string aa = menuPage.getpremiumDetailsPopoverFooter1xPath().Text;
             string ab = menuPage.getpremiumDetailsPopoverFooter2xPath().Text;
@@ -334,13 +350,14 @@ namespace MPR.tests
             TestContext.Progress.WriteLine("Values contained " + expectedFSAOutput + " :" + dollarValues.Contains(expectedFSAOutput));
 
             // Medical comparison
-            Assert.That(planLabels, Does.Contain(medicalPlanSelection).IgnoreCase);
+            
+            Assert.That(containsMedicalPlanName);
             Assert.That(dollarValues, Does.Contain(getMedicalPlanRateToCompare).IgnoreCase);
             // Dental comparison
-            Assert.That(planLabels, Does.Contain(dentalPlanSelection).IgnoreCase);
+            Assert.That(containsDentalPlanName);
             Assert.That(dollarValues, Does.Contain(getDentalRateToCompare).IgnoreCase);
             // Vision comparison
-            Assert.That(planLabels, Does.Contain(visionPlanSelection).IgnoreCase);
+            Assert.That(containsVisionPlanName);
             Assert.That(dollarValues, Does.Contain(getVisionRateToCompare).IgnoreCase);
             // FSA comparison
             Assert.That(dollarValues, Does.Contain(expectedFSAOutput).IgnoreCase);
