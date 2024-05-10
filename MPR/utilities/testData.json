@@ -1,6 +1,7 @@
 ﻿{
   "Url": "https://demo.dmba.com/",
-  "Env":"Test",
+  "Env": "Test",
+  "browsers": [ "Chrome", "Firefox", "Edge" ],
   "newUser": {
     "username": "Tester1011",
     "password": "Demo@one2345",

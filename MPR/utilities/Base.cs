@@ -20,6 +20,8 @@ using System.Xml.Linq;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using OpenQA.Selenium.Internal.Logging;
 using AventStack.ExtentReports.Model;
+using AventStack.ExtentReports.Gherkin.Model;
+using OpenQA.Selenium.Safari;
 
 
 namespace MPR.utilities
@@ -51,8 +53,22 @@ namespace MPR.utilities
 
         [SetUp]
         public void Setup()
-        {            
-            string browserName = ConfigurationManager.AppSettings["browser"];
+        {
+            string browserExecutionType = ConfigurationManager.AppSettings["browser"];
+            string selectedBrowser = null;
+            if (browserExecutionType=="All")
+            {
+                string[] browser = getDataParser().extractDataArray("browsers");
+                Random rand = new Random();
+                int index = rand.Next(browser.Length);;
+                selectedBrowser = browser[index];
+                //TestContext.Progress.WriteLine("selectedBrowser " + selectedBrowser);
+            }
+            else
+            {
+                selectedBrowser = ConfigurationManager.AppSettings["browser"];
+            }
+            string browserName = selectedBrowser;
             InitBrowser(browserName);
 
             string url1 = getDataParser().extractData("Url");
@@ -100,6 +116,10 @@ namespace MPR.utilities
                     EdgeOptions optionEdge = new EdgeOptions();
                     optionEdge.AddArgument("--headless");
                     driver = new EdgeDriver(optionEdge);
+                    break;
+
+                case "Safari":
+                    driver = new SafariDriver();
                     break;
             }
         }
