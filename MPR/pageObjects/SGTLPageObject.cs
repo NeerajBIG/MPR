@@ -65,11 +65,26 @@ namespace MPR.pageObjects
             return txtHeightIN;
         }
 
-        [FindsBy(How = How.XPath, Using = "")]
+        // multiple users
+        [FindsBy(How = How.XPath, Using = "//input[@data-syncname='PostedDependents[0].Weight' and @maxlength='4']")]
         private IWebElement txtCurrentWeight;
         public IWebElement getTxtCurrentWeight()
         {
             return txtCurrentWeight;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//input[@data-syncname='PostedDependents[0].OldWeight' and @maxlength='4']")]
+        private IWebElement txtOldWeight;
+        public IWebElement getTxtOldWeight()
+        {
+            return txtOldWeight;
+        }
+
+        [FindsBy(How = How.XPath, Using = "//input[@data-syncname='PostedDependents[0].OldWeight' and @maxlength='4']")]
+        private IWebElement txtOccupation;
+        public IWebElement getTxtOccupation()
+        {
+            return txtOccupation;
         }
 
 

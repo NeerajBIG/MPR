@@ -151,6 +151,13 @@ namespace MPR.pageObjects
             return txtPhoneNumber;
         }
 
+        [FindsBy(How = How.XPath, Using = "//button[@id='btnModalOK']")]
+        private IWebElement modalAddBtn;
+        public IWebElement getModalAddBtn()
+        {
+            return modalAddBtn;
+        }
+
 
 
 
