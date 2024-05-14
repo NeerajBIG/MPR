@@ -90,6 +90,18 @@ namespace MPR.tests
             ConfirmationPage.getclkConfirmation().Click();
             Thread.Sleep(5000);
 
+
+            // Expected Confirmation Values
+
+
+            string expectedMedicalPlan = "";
+            string expectedMedicalPlanRate = "";
+            string expectedDentalPlan = "";
+            string expectedDentalPlanRate = "";
+            string expectedVisionPlan = "";
+            string expectedVisionPlanRate = "";
+
+
             IList<IWebElement> dependentRows = ConfirmationPage.getDependentsTableValues();
             foreach (IWebElement dependentRow in dependentRows)
             {
